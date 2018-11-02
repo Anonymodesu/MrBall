@@ -1,0 +1,161 @@
+Use W,A,S,D to move.
+Use the mouse to control the camera.
+Navigate to the red panel to claim victory.
+
+
+Purple ramps induce extreme speed.
+Use with caution.
+You can brake using right-click.
+
+
+Left-click to jump.
+Try vaulting over these walls.
+
+
+
+Yellow ramps make you jump much higher.
+
+
+
+
+White ramps are checkpoints.
+They save your progress in the current level.
+Hurray!
+
+
+Are you ready for your first real level?
+Nice and easy.
+
+
+
+Have you tried collecting cubies?
+They unlock cool stuff if you do.
+(actually, they dont. i havent implemented this yet)
+
+
+Rest assured, each cubie has been proven collectable by calm and collected cubie collectors.
+
+
+
+
+How are you finding these levels?
+Send your thoughts and concerns to mr.flyingpants@gmail.com
+
+
+
+The 5th level of each stage ramps up the difficulty.
+You can press Escape to pause if you'd like a break.
+
+
+
+There may be multiple paths you can take to finish a level. 
+Some are faster (and less obvious) than others.
+
+
+
+The crosshair in the centre of Mr. Ball's visuals can be used to navigate to hard-to-reach areas.
+
+
+
+
+If Mr. Ball is in contact with many surfaces, he will take advantage of any special effects that they have to offer.
+
+
+
+
+Having sufficient angular momentum is required to scale certain obstacles.
+Which means Mr. Ball should have a run-up before attempting the jumps in this level.
+
+
+
+Mr. Ball was inspired by a very old game called 'Marble Blast Gold'.
+
+
+
+
+Orange ramps push Mr. Ball in the direction that they are facing when he jumps on them.
+
+
+
+
+If Mr.Ball is touching both yellow and orange ramps, both types of jump effects will be applied.
+
+
+
+
+The Sun just unleashed a violent burst of radiation!	
+Some ramps have mutated, but functionally behave the same.
+
+
+
+Some people ask me how Mr. Ball rolls with such elegance. 
+I say that it's with state-of-the-art gyroscope technology.
+
+
+
+In case you were wondering, cubies also gyrate using state-of-the-art gyroscope tech.
+
+
+
+
+Blue ramps change gravity by considering the normal to surface from a raycast originating from the centre of...
+Actually, it's best if you try it out for yourself.
+
+
+
+Using the same blue ramp may lead to very different gravities, in the same way that the same orange ramp may push you in different directions.
+
+
+
+
+The dude who implemented these gravity ramps spent a lot of time on them.
+He hopes that you enjoy playing around with them.
+
+
+
+There's only one checkpoint in this level...or are there 6?
+
+
+
+
+
+
+
+
+If Mr.Ball accelerates using gyroscopes, why can't he move in midair? 
+That's because he developed a fear of heights, and freezes up.
+
+
+
+The sun emitted another burst of solar radiation!
+Be advised that the once docile ramps may exhibit spasmodic motions.
+
+
+
+White ramps are your friends.
+...most of the time anyway.
+
+
+
+Some cubies aren't difficult to collect; they are just well hidden.
+
+
+
+
+All cubies have a nonlethal method of collecting them. 
+They are key to getting the gold challenge cubie.
+
+
+
+Although dying is normally ill-advised, sometimes Mr.Ball needs to suicide to make progress in a level.
+
+
+Unless you're a very brave person, you should attempt these levels in order.
+
+
+
+One might ask why this ball is male. Mr. Ball once watched an episode of Downton Abbey and was obsessed with becoming a gentleman every since.
+
+Black panels emit electromagnetic radiation, which interfere with Mr. Ball's visual sensors!
+
+Roses are red, violets are blue, I wonder what both colours will

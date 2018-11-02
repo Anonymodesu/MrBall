@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c8570f7208c133645bfc3f9a5730c497
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ramp_0: {fileID: 2100000, guid: ef7ce987f9cae544480e78d5cf7228db, type: 2}
+  - ramp_1: {fileID: 2100000, guid: f186c658d9909db4182d28af22b96244, type: 2}
+  - ramp_2: {fileID: 2100000, guid: 144c49526daf9ae4bbb3895256d95209, type: 2}
+  - ramp_3: {instanceID: 0}
+  - ramp_4: {instanceID: 0}
+  - ramp_5: {instanceID: 0}
+  - ramp_6: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

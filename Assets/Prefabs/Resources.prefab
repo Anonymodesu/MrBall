@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1331483372099504}
+  m_IsPrefabAsset: 1
+--- !u!1 &1331483372099504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4352211893278168}
+  - component: {fileID: 114005131404682600}
+  - component: {fileID: 114736134254049876}
+  m_Layer: 0
+  m_Name: Resources
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4352211893278168
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331483372099504}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.6771255, y: 11.8736515, z: 2.1556983}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114005131404682600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331483372099504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d644c8997fceedb4db0eaf2f45e6321f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music0: {fileID: 8300000, guid: 581bcc5fc858c7f47a8db292b904f2c6, type: 3}
+  music1: {fileID: 8300000, guid: 09d62a76d6946c94f9846fc17a72e85c, type: 3}
+  music2: {fileID: 8300000, guid: cae33bec15bb42a4aaa234537a77bdbc, type: 3}
+  music3: {fileID: 8300000, guid: dcbb07eb5d34b894b8105887ef8ab721, type: 3}
+  music4: {fileID: 8300000, guid: 191f7f275c804c942aefb3451c12eab6, type: 3}
+  music5: {fileID: 0}
+  music6: {fileID: 0}
+--- !u!114 &114736134254049876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331483372099504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8570f7208c133645bfc3f9a5730c497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ramp_0: {fileID: 2100000, guid: ef7ce987f9cae544480e78d5cf7228db, type: 2}
+  ramp_1: {fileID: 2100000, guid: f186c658d9909db4182d28af22b96244, type: 2}
+  ramp_2: {fileID: 2100000, guid: 144c49526daf9ae4bbb3895256d95209, type: 2}
+  ramp_3: {fileID: 2100000, guid: bec3c4204c28ef74aa9ca210c5db945d, type: 2}
+  ramp_4: {fileID: 2100000, guid: 23dc9d2a1a7cba44389f5c9589246c7b, type: 2}
+  ramp_5: {fileID: 2100000, guid: b4f58c614da34b048b238a2b2197e0d8, type: 2}
+  ramp_6: {fileID: 2100000, guid: 4fec0696e1173b2489b507a37494d30a, type: 2}

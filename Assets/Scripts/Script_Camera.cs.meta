@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 56983528187cb394ea20881e5cd3bac9
+timeCreated: 1531823889
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - skyBox0: {instanceID: 0}
+  - skyBox1: {instanceID: 0}
+  - skyBox2: {instanceID: 0}
+  - skyBox3: {instanceID: 0}
+  - skyBox4: {instanceID: 0}
+  - gameManager: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

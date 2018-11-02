@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 7522f63fc1d35f1409acfa56594af636
+timeCreated: 1520310250
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - normalBall: {fileID: 1442603209427466, guid: 0e8c8c29113364245a72a967c0b78dc4,
+      type: 2}
+  - fastBall: {fileID: 1442603209427466, guid: fa1fad5a2cf77a749804bd637f120773, type: 2}
+  - perpendicularBall: {fileID: 1442603209427466, guid: 22ef4fa4176ee7c44a76134782796ce9,
+      type: 2}
+  - bouncyBall: {fileID: 1442603209427466, guid: edcaa7458a7f4d24a97bd01cf9337da4,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

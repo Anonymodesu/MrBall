@@ -5,6 +5,7 @@ using UnityEngine;
 //holds materials assigned in the inspector for the TextureManager to use
 public class Materials : MonoBehaviour {
 
+	//set in the editor
 	public List<Texture> rampTextures;
 	public List<Texture> rampNormalMaps;
 

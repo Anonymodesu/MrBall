@@ -81,17 +81,7 @@ public class SoundManager {
 		AudioClip nextBGM = null;
 		MusicFiles musicFiles = GameObject.Find("Resources").GetComponent<MusicFiles>();
 		
-		switch(stage) { //background music is dependent on the stage
-			case 0: nextBGM = musicFiles.music0; break;
-			case 1: nextBGM = musicFiles.music1; break;
-			case 2: nextBGM = musicFiles.music2; break;
-			case 3: nextBGM = musicFiles.music3; break;
-			case 4: nextBGM = musicFiles.music4; break;
-			case 5: nextBGM = musicFiles.music5; break;
-			case 6: nextBGM = musicFiles.music6; break;
-		}
-		
-		bgMusic.clip = nextBGM;
+		bgMusic.clip = musicFiles.music[stage];
 		bgMusic.volume = 0.8f;
 		bgMusic.loop = true;
 		bgMusic.Play();

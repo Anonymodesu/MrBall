@@ -4,13 +4,20 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - ramp_0: {fileID: 2100000, guid: ef7ce987f9cae544480e78d5cf7228db, type: 2}
-  - ramp_1: {fileID: 2100000, guid: f186c658d9909db4182d28af22b96244, type: 2}
-  - ramp_2: {fileID: 2100000, guid: 144c49526daf9ae4bbb3895256d95209, type: 2}
-  - ramp_3: {instanceID: 0}
-  - ramp_4: {instanceID: 0}
-  - ramp_5: {instanceID: 0}
-  - ramp_6: {instanceID: 0}
+  - ramp_0: {fileID: 2800000, guid: 8776c927d91a0aa4abc8128d5bab073d, type: 3}
+  - ramp_1: {fileID: 2800000, guid: b7e7c3d906d809c48a0dc019bd730fea, type: 3}
+  - ramp_2: {fileID: 2800000, guid: 5cf635e2a976cce49b12b57f1d5ae8f2, type: 3}
+  - ramp_3: {fileID: 2800000, guid: 45cdf8af4f6742c4683d9e1e7240cdad, type: 3}
+  - ramp_4: {fileID: 2800000, guid: 69a4ec6cbf2c6094882e4a15d06b42c6, type: 3}
+  - ramp_5: {fileID: 2800000, guid: 8776c927d91a0aa4abc8128d5bab073d, type: 3}
+  - ramp_6: {fileID: 2800000, guid: 8776c927d91a0aa4abc8128d5bab073d, type: 3}
+  - ramp_0_normal: {instanceID: 0}
+  - ramp_1_normal: {instanceID: 0}
+  - ramp_2_normal: {instanceID: 0}
+  - ramp_3_normal: {instanceID: 0}
+  - ramp_4_normal: {instanceID: 0}
+  - ramp_5_normal: {instanceID: 0}
+  - ramp_6_normal: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -72,7 +72,9 @@ public class GameManager { //a singleton
 	}
 */
 	void changedScene(Scene scene, LoadSceneMode mode) {
-		Resources.UnloadUnusedAssets(); //destroys the materials created in TextureManager; whenever a material is modified, a clone of it is made
+		 //destroys the materials created in TextureManager; whenever a material is modified, a clone of it is made
+		//already called when the scene changes
+		//Resources.UnloadUnusedAssets();
 		
 		Level newLevel = null;		
 		Script_Camera currentCamera = GameObject.FindWithTag("MainCamera").GetComponent<Script_Camera>(); //polymorphism :0

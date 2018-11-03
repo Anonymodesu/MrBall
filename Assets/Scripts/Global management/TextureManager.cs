@@ -39,30 +39,43 @@ public class TextureManager {
 				
 			} else { //is a physical gameObject; these objects are assumed to have no children
 				//renderer.material.mainTextureScale = new Vector2(child.lossyScale.x * 0.66f, child.lossyScale.z * 0.66f);
-				
+				//MaterialPropertyBlock materialBlock = new MaterialPropertyBlock();
+				//renderer.GetPropertyBlock(materialBlock);
+
+				/*
 				Materials materials = GameObject.Find("Resources").GetComponent<Materials>();
 				switch(stage) { //assign the material corresponding to the stage to all ramps
-					case 0: renderer.material = materials.ramp_0; break;
-					case 1: renderer.material = materials.ramp_1; break;
-					case 2: renderer.material = materials.ramp_2; break;
-					case 3: renderer.material = materials.ramp_3; break;
-					case 4: renderer.material = materials.ramp_4; break;
-					case 5: renderer.material = materials.ramp_5; break;
-					case 6: renderer.material = materials.ramp_6; break;
+					case 0: materialBlock.SetTexture("_MainTex", materials.ramp_0); break;
+					case 1: materialBlock.SetTexture("_MainTex", materials.ramp_1); break;
+					case 2: materialBlock.SetTexture("_MainTex", materials.ramp_2); break;
+					case 3: materialBlock.SetTexture("_MainTex", materials.ramp_3); break;
+					case 4: materialBlock.SetTexture("_MainTex", materials.ramp_4); break;
+					case 5: materialBlock.SetTexture("_MainTex", materials.ramp_5); break;
+					case 6: materialBlock.SetTexture("_MainTex", materials.ramp_6); break;
 					default: Debug.Log("incorrect stage supplied to texture manager"); break;
 				}
+				
 
 				switch(child.gameObject.tag) {
-					case "Ground": renderer.material.color = Color.green; break;
-					case "Fast": renderer.material.color = Color.magenta; break;
-					case "Bouncy": renderer.material.color = Color.yellow; break;
-					case "Checkpoint": renderer.material.color = Color.white; break;
-					case "Win": renderer.material.color = Color.red; break;
-					case "Perpendicular": renderer.material.color = new Color(255f/255, 150f/255, 0f/255, 255f/255); break;
-					case "Gravity": renderer.material.color = Color.cyan; break;
+					case "Ground": materialBlock.SetColor("_Color", Color.green); break;
+					case "Fast": materialBlock.SetColor("_Color", Color.magenta); break;
+					case "Bouncy": materialBlock.SetColor("_Color", Color.yellow); break;
+					case "Checkpoint": materialBlock.SetColor("_Color", Color.white); break;
+					case "Win": materialBlock.SetColor("_Color", Color.red); break;
+					case "Perpendicular": materialBlock.SetColor("_Color", new Color(255f/255, 150f/255, 0f/255, 255f/255)); break;
+					case "Gravity": materialBlock.SetColor("_Color", Color.cyan); break;
 					default: Debug.Log("incorrect tag " + child.gameObject.tag + " supplied to " + child.gameObject.name); break;
 				}
-				
+				renderer.SetPropertyBlock(materialBlock);
+				*/
+
+
+				Materials materials = GameObject.Find("Resources").GetComponent<Materials>();
+				renderer.sharedMaterial.EnableKeyword("_NORMALMAP"); //used to ensure that normal maps are included in the build
+				renderer.sharedMaterial.SetTexture("_MainTex", materials.rampTextures[stage]);
+				renderer.sharedMaterial.SetTexture("_DetailAlbedoMap", materials.rampTextures[stage]);
+				renderer.sharedMaterial.SetTexture("_BumpMap", materials.rampNormalMaps[stage]);
+
 				tileTexture(child.gameObject);
 			}
 		}
@@ -143,7 +156,7 @@ public class TextureManager {
 				
 		if(obj.name.Equals("Ramp_Test_3")) {
 			foreach(Vector2 vector in mesh.uv) {
-				Debug.Log(vector);
+				//Debug.Log(vector);
 			}
 		}
 				

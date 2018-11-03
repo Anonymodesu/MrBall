@@ -4,13 +4,9 @@ using UnityEngine;
 
 //holds materials assigned in the inspector for the TextureManager to use
 public class Materials : MonoBehaviour {
-	public Material ramp_0;
-	public Material ramp_1;
-	public Material ramp_2;
-	public Material ramp_3;
-	public Material ramp_4;
-	public Material ramp_5;
-	public Material ramp_6;
+
+	public List<Texture> rampTextures;
+	public List<Texture> rampNormalMaps;
 
 /*
 	public Material neutral_0;

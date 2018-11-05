@@ -34,6 +34,7 @@ public class Script_Game_Camera : Script_Camera {
 		Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
 		Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
 		
+
 			//deltatime is still required to freeze camera during pause
 		rotation.x -= mouseSensitivity*Input.GetAxis("Mouse Y") * Time.deltaTime * 60;
 		rotation.y += mouseSensitivity*Input.GetAxis("Mouse X") * Time.deltaTime * 60; 
@@ -51,15 +52,16 @@ public class Script_Game_Camera : Script_Camera {
 			rotation.y = 0;
 		}
 		
-		Vector3 temp = Quaternion.AngleAxis(rotation.y, yAxis) * (Quaternion.AngleAxis(rotation.x, xAxis) * zAxis);
+		Vector3 temp = Quaternion.AngleAxis(rotation.y, yAxis) * Quaternion.AngleAxis(rotation.x, xAxis) * zAxis;
 		transform.rotation = Quaternion.LookRotation(temp, yAxis);
 		
-		transform.position = player.GetComponent<Transform>().position //transform.forward is always normalized
+		transform.position = player.transform.position //transform.forward is always normalized
 							+ (yAxis * 0.7f - transform.forward * 2) * positionOffset; //position the camera behind the ball 
 		
     }
 	
 	public void updateAxes() { //called when a change in gravity is registered by Script_Player
+
 		yAxis = -Physics.gravity.normalized;
 		xAxis = Vector3.Cross(yAxis, transform.forward).normalized;
 		
@@ -67,6 +69,13 @@ public class Script_Game_Camera : Script_Camera {
 			xAxis = Vector3.Cross(yAxis, Random.insideUnitSphere).normalized;
 		}
 		zAxis = Vector3.Cross(xAxis, yAxis).normalized;
+
+		/* makes the camera face what the camera was previously facing
+		float xRotation = Vector3.SignedAngle(zAxis, transform.forward, xAxis);
+		float yRotation = Vector3.SignedAngle(zAxis, transform.forward, yAxis);
+		rotation = new Vector3(xRotation, yRotation, 0);
+		*/
+
 		rotation = Vector3.zero;
 	}
 	

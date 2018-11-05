@@ -23,12 +23,19 @@ public class Script_Balls_Generator : MonoBehaviour {
 	
 	private GameObject[] balls;
 
-	//Construct a grid of balls based on specs defined by public variables
-	//called in Awake() to allow Script_OutOfBounds to include the balls in its calculations
-	void Awake () {
+	//in awake so that Script_OutOfBounds includes the balls in the bounds checking.
+	//also destroys balls created using the inspector button;
+	//this ensures that balls use the most recent prefab
+	void Awake() {
 		foreach(Transform child in transform) {
 			Destroy(child.gameObject);
 		}
+		makeBalls();
+	}
+
+	//Construct a grid of balls based on specs defined by public variables
+	//See Script_Balls_Generator_Helper
+	public void makeBalls () {
 		
 		GameObject mainBall = null; //get rid of use of unassigned var error
 		balls = new GameObject[numCol * numRow];

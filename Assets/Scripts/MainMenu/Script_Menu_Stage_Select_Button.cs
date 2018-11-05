@@ -23,7 +23,7 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 	public override void OnPointerEnter(PointerEventData eventData) {
 		base.OnPointerEnter(eventData); //move the cubie next to the button next to the button
 		
-		Level level = GameManager.getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
+		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
 		
 		Achievement current = achievements[level.stage * GameManager.numSubstages + level.substage]; //substages start indexing from 1
 		

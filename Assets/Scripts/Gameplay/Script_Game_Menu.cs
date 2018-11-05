@@ -45,7 +45,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		crossHair.transform.localScale = Vector3.zero;
 		
 		currentLevel = GameManager.getInstance().getLevel();
-		menuText.text = GameManager.getLevelDescription(currentLevel);
+		menuText.text = GameManager.getInstance().getLevelDescription(currentLevel);
 	}
 	
 	/*

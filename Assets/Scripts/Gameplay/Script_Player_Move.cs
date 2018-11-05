@@ -24,13 +24,11 @@ public class Script_Player_Move : MonoBehaviour {
     private const float superSpeed = 3960;
 	private const float maxNormalSpeed = 13;
 	private const float maxSuperSpeed = 100;
-	private float maxSpeed; //maximum speed depends on the time of panel being contacted
-    private const float brakeStrength = 110;
+    private const float brakeStrength = 70;
     private const float brakeThreshold = 0.1f; //threshold velocity at which the player will brake to a complete stop
 	private const float maxTorque = 60; //maximum rotational speed
     Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
 	
-	Script_Player playerScript;
 	Script_Game_Camera cameraScript; 
 	Rigidbody rb;
 
@@ -41,31 +39,18 @@ public class Script_Player_Move : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		lastInstruction = new Movement(0,0,false);
 		rb.maxAngularVelocity = maxTorque;
-		maxSpeed = maxNormalSpeed;
 		
 		cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<Script_Game_Camera>();
-		playerScript = this.gameObject.GetComponent<Script_Player>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		processNextInstruction(); //process user input even when not on ground/unpaused
-	}
-	
-	void FixedUpdate() {
-		if(playerScript.getContacts().Any() && !playerScript.isPaused()) { //if list is nonempty
-			processMovement(playerScript.getContacts());
-		}
-	}
-	
-	private void processMovement(List<GameObject> contacts) {
+
+	public void processMovement(List<GameObject> contacts) {
         float speed = normalSpeed;
-		maxSpeed = maxNormalSpeed; // speed reverts to normal speed
+		float maxSpeed = maxNormalSpeed;  //maximum speed depends on the type of panel being contacted
         bool onGround = false;
         
-        foreach(GameObject surface in playerScript.getContacts()) { //process the current surfaces in contact with the player
+        foreach(GameObject surface in contacts) { //process the current surfaces in contact with the player
             
-            if(playerScript.isPhysical(surface.tag)) {
+            if(Script_Player.isPhysical(surface.tag)) {
                 onGround = true;
             }
             
@@ -74,37 +59,20 @@ public class Script_Player_Move : MonoBehaviour {
                 speed = superSpeed; //fast movement on purple surfaces
 				maxSpeed = maxSuperSpeed; //if on fast panel, maxSuperSpeed is used for speed calcs below
                 break;
-                
-                case "Checkpoint":
-                playerScript.setCheckpoint(surface, Physics.gravity.normalized);
-                break;
-                
-                case "Lose":
-				playerScript.die();
-                break;
-                
-                case "Win":
-                playerScript.win();
-                break;
-				
-				case "Gravity":
-				playerScript.processGravity(surface);
-				break;
+             
             }
         }
 
         
         if(onGround) { //process player input
-        
-            //processNextInstruction() called in Update(); format is forward/right/brake
-            
+                    
             if(lastInstruction.brake) { //currently braking
                 if(rb.velocity.magnitude < brakeThreshold) {
                     rb.velocity = Vector3.zero; //complete stop under a certain speed
 					
                 } else {
                     rb.AddForce(-brakeStrength * rb.velocity * Time.deltaTime); //braking force proportional to current velocity
-					rb.AddTorque(-brakeStrength * 0.05f * rb.angularVelocity * Time.deltaTime);
+					rb.AddTorque(-brakeStrength * 0.3f * rb.angularVelocity * Time.deltaTime);
                 }
 				
 				if(rb.angularVelocity.magnitude < brakeThreshold) {
@@ -139,72 +107,35 @@ public class Script_Player_Move : MonoBehaviour {
         
     }
 	
-	    /* 
-        processes current movement instruction
-        most recent keypress overrides any previous conflicting instruction
-        first argument is forward/backward
-        second argument is left/right
-        third argument is brake
-        jump not included as it does not interfere with any of these
-        */
-    private void processNextInstruction() {
+    public void processNextInstruction() {
         int forward = 0;
         int right = 0;
         bool brake = false;
 			
 		if(forward == 0) { //sometimes getkeydown/up events are not detected?
-			if(Input.GetKey("w")) {
+			if(Input.GetButton("Forward")) {
 				forward = 1;
-			} else if(Input.GetKey("s")) {
+			} else if(Input.GetButton("Backward")) {
 				forward = -1;
 			} else {
 				forward = 0;
 			}
 		}
 		if(right == 0) {
-			if(Input.GetKey("d")) {
+			if(Input.GetButton("Right")) {
 				right = 1;
-			} else if(Input.GetKey("a")) {
+			} else if(Input.GetButton("Left")) {
 				right = -1;
 			} else {
 				right = 0;
 			}
 		}
-		
         
-        if(Input.GetKeyDown("w")) {
-            brake = false; //overrides conflicting braking instruction
-            forward = 1; 
-        } else if(Input.GetKeyUp("w")) {
-            forward = 0;
-        }
-        
-        if(Input.GetKeyDown("s")) {
-            brake = false;
-            forward = -1; 
-        } else if(Input.GetKeyUp("s")) {
-            forward = 0;
-        }
-        
-        if(Input.GetKeyDown("a")) {
-            brake = false;
-            right = -1; 
-        } else if(Input.GetKeyUp("a")) {
-            right = 0;
-        }
-        
-        if(Input.GetKeyDown("d")) {
-            brake = false;
-            right = 1; 
-        } else if(Input.GetKeyUp("d")) {
-            right = 0;
-        }
-        
-        if(Input.GetMouseButtonDown(1) || Input.GetMouseButton(1)) {  //right click = brake
+        if(Input.GetMouseButton(1)) {  //right click = brake
             forward = 0; //overrides all previous movement instructions
             right = 0;
             brake = true;
-        } else if (Input.GetMouseButtonUp(1)) { //released brake
+        } else { //released brake
             brake = false;
         }
         
@@ -221,4 +152,5 @@ public class Script_Player_Move : MonoBehaviour {
 	public float getMaxNormalSpeed() {
 		return maxNormalSpeed;
 	}
+
 }

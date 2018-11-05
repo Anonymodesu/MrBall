@@ -9,25 +9,31 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 //organising class for the all the player's functionality ingame
+[RequireComponent(typeof(Script_Player_Move))]
+[RequireComponent(typeof(Script_OutOfBounds))]
+[RequireComponent(typeof(Script_Player_Jump))]
 public class Script_Player : MonoBehaviour {
 	
 	//player collider variables
-	public SphereCollider triggerCollider; 
+	[SerializeField]
+	private SphereCollider triggerCollider; 
 	private const float minSize = 0.55f;
 	private const float maxSize = 1;
 	private const float maxSpeed = 22; //maxSpeed under most circumstances
     
 	//misc
 	private bool stopGame;
-	Script_Game_Camera cameraScript; 
-	Script_Player_Move movementScript;
-    Rigidbody rb;
-    List<GameObject> contacts; //holds the current ramps in contact with mr.ball
+	private Script_Game_Camera cameraScript; 
+	private Script_Player_Move movementScript;
+	private Script_Player_Jump jumpScript;
+	private Script_OutOfBounds outOfBoundsScript;
+    private Rigidbody rb;
+    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball
 	private bool pauseable;
-    GameObject startPos;
+    private GameObject startPos;
 	
 	//gravity variables
-	Vector3 startGravityDirection; //stores the gravity at the last checkpoint
+	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint
 	private const float gravityStrength = 9.8f;
 	private Vector3 defaultGravityDirection = Vector3.down; //stores gravity loaded at the beginning of each level
 	private float gravityEpsilon = 0.05f; //minimum change in gravity to change the coordinate axes
@@ -49,7 +55,9 @@ public class Script_Player : MonoBehaviour {
         
         Cursor.visible = true; 
 		cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<Script_Game_Camera>();
-		movementScript = this.gameObject.GetComponent<Script_Player_Move>();
+		movementScript = GetComponent<Script_Player_Move>();
+		jumpScript = GetComponent<Script_Player_Jump>();
+		outOfBoundsScript = GetComponent<Script_OutOfBounds>();
         rb = GetComponent<Rigidbody>();     
 
         Time.timeScale = 0;
@@ -78,26 +86,31 @@ public class Script_Player : MonoBehaviour {
     
     // Update is called once per frame
     void Update () { //REPLACE WITH FIXED UPDATE?    
-    
-        
         if(!stopGame) {
 			Cursor.lockState = CursorLockMode.Locked;
             GUIScript.displayProgress(cubies, getTime(), deaths, requirements);
-            //Debug.Log(1.0f / Time.smoothDeltaTime);
+
+            jumpScript.processJump(contacts);
+
+            if(outOfBoundsScript.outOfBounds()) {
+            	die();
+            }
             
         } else {
 			Cursor.lockState = CursorLockMode.None; 
 		}
         
-        if(Input.GetKeyDown(KeyCode.Escape) && pauseable) {
+        if(Input.GetButtonDown("Cancel") && pauseable) {
             pause();
         }
 
+		movementScript.processNextInstruction(); //process user input regardless of pause state
     }
 	
 	void FixedUpdate() { //for physics interactions
 		if(contacts.Any() && !stopGame) { //if list is nonempty
 			processCollider();
+			movementScript.processMovement(contacts);
 		}
 	}
 
@@ -110,7 +123,7 @@ public class Script_Player : MonoBehaviour {
     }
 	
 	public void endGame() {
-		Physics.gravity = defaultGravityDirection * gravityStrength;//this is needed as the call to reset() in Start() occurs after Script_Game_Camera accesses Physics.gravity
+		Physics.gravity = defaultGravityDirection * gravityStrength;
         SceneManager.LoadSceneAsync("Scene_Menu");
     }
 	
@@ -132,7 +145,7 @@ public class Script_Player : MonoBehaviour {
 		SceneManager.LoadSceneAsync(nextLevel.ToString());
 	}
 
-    void OnTriggerEnter(Collider other) { 
+	void OnTriggerEnter(Collider other) { 
         string tag = other.gameObject.tag;
         
         if(tag == "Cubie") {
@@ -143,13 +156,24 @@ public class Script_Player : MonoBehaviour {
             cubies++;
             
         } else if (isPhysical(tag)) {
-			
-			if(!contacts.Contains(other.gameObject)) { //only add an object if is not being contacted
-				contacts.Add(other.gameObject);
-				
+        	switch(tag) {
+        		case "Checkpoint":
+                setCheckpoint(other.gameObject, Physics.gravity.normalized);
+                break;
+                
+                case "Lose":
+				die();
+                break;
+                
+                case "Win":
+                win();
+                break;
+        	}
+
+			if(!contacts.Contains(other.gameObject)) { //only add an object if it is not already being contacted
+				contacts.Add(other.gameObject);	
 			}
         }
-
     }
     
     void OnTriggerExit(Collider other) {
@@ -159,87 +183,14 @@ public class Script_Player : MonoBehaviour {
             contacts.Remove(other.gameObject);
         }
     }
-    
-	
-	//change the gravity to the vector opposing the normal of the surface
-	public void processGravity(GameObject surface) {
-		Vector3 normal = findNormalVector(surface);
-		
-		if((Physics.gravity.normalized + normal.normalized).magnitude > gravityEpsilon) { //change in gravity is significant enough
-			Physics.gravity = -normal.normalized * gravityStrength;
-			cameraScript.updateAxes(); //elicit a change in camera perspective
-		}
-	}
-	
-	//returns the normal vector if a ray was sent from the ball to the target
-	public Vector3 findNormalVector(GameObject target) {
-		
-		//ray originating from the ball, ending at the physical panel.
-		Ray ray = new Ray(this.transform.position, target.transform.position - this.transform.position);
-		RaycastHit[] hits = Physics.RaycastAll(ray, maxSize * 500);
-					
-		foreach(RaycastHit hit in hits) { //look for the game object that the ball is in contact with
-			if(hit.collider.gameObject == target) {
-				return hit.normal;
-			}
-		}
-		
-		Debug.Log("ray cast didnt encounter required collider"); //should never happen
-		return Vector3.zero;
-	}
-    
-    public void reset() {
-        Physics.gravity = startGravityDirection * gravityStrength;
-		transform.position = startPos.transform.position - startGravityDirection; //make sure in startPos, player is not colliding with anything!
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-		
-		cameraScript.updateAxes();
-        movementScript.resetInput();
-        //contacts.Clear(); //sometimes deaths are counted twice
+
+    void OnTriggerStay(Collider other) {
+    	//not in OnTriggerEnter() as the same collider has several normals
+    	if(other.gameObject.tag == "Gravity") {
+			processGravity(other.gameObject);
+    	}
     }
-	
-	public void setCheckpoint(GameObject checkPoint, Vector3 gravity) {
-		startPos = checkPoint;
-		startGravityDirection = gravity.normalized;
-	}
-	
-	public void die() {
-		reset();
-		deaths++;
-	}
-	
-	public void win() {
-        pauseable = false;
-        pause();
-		processScoreAchievements();
-    }
-	
-	public float getTime() {
-		return (Time.time - startTime);
-	}
-    
-    public bool isPhysical(string surface) {        
-        return surface == "Fast" || 
-               surface == "Bouncy" || 
-               surface == "Ground" || 
-               surface == "Win" || 
-               surface == "Lose" || 
-               surface == "Checkpoint" ||
-			   surface == "Perpendicular" ||
-			   surface == "Gravity";
-    }
-	
-	public List<GameObject> getContacts() {
-		return contacts;
-	}
-	
-	public bool isPaused() {
-		return stopGame;
-	}
-    
-	
-	
+
 	private void processCollider() { //adjust hitbox of player depending on velocity.
 	
 		//interpolate between minSize and maxSize depending velocity
@@ -248,8 +199,46 @@ public class Script_Player : MonoBehaviour {
 			proportion = 1;
 		}
 		triggerCollider.radius = minSize * (1 - proportion) + maxSize * proportion;
+	}
+	
+	//change the gravity to the vector opposing the normal of the surface
+	private void processGravity(GameObject surface) {
+		Vector3 normal = findNormalVector(surface, this.gameObject);
 		
+		if((Physics.gravity.normalized + normal.normalized).magnitude > gravityEpsilon) { //change in gravity is significant enough
+			Physics.gravity = -normal.normalized * gravityStrength;
+			cameraScript.updateAxes(); //elicit a change in camera perspective
+		}
+	}
+	
+    private void reset() {
+        Physics.gravity = startGravityDirection * gravityStrength;
+		transform.position = startPos.transform.position - startGravityDirection; //make sure in startPos, player is not colliding with anything!
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 		
+		cameraScript.updateAxes();
+        movementScript.resetInput();
+    }
+	
+	private void setCheckpoint(GameObject checkPoint, Vector3 gravity) {
+		startPos = checkPoint;
+		startGravityDirection = gravity.normalized;
+	}
+	
+	private void die() {
+		reset();
+		deaths++;
+	}
+	
+	private void win() {
+        pauseable = false;
+        pause();
+		processScoreAchievements();
+    }
+	
+	public float getTime() {
+		return (Time.time - startTime);
 	}
 		
 	//when the level ends, process the final score and any acquired achievements
@@ -287,6 +276,32 @@ public class Script_Player : MonoBehaviour {
         }
         
     }
-	
-	
+
+    public static bool isPhysical(string surface) {        
+        return surface == "Fast" || 
+               surface == "Bouncy" || 
+               surface == "Ground" || 
+               surface == "Win" || 
+               surface == "Lose" || 
+               surface == "Checkpoint" ||
+			   surface == "Perpendicular" ||
+			   surface == "Gravity";
+    }
+
+    //returns the normal vector if a ray was sent from the ball to the target
+	public static Vector3 findNormalVector(GameObject target, GameObject source) {
+		
+		//ray originating from the ball, ending at the physical panel.
+		Ray ray = new Ray(source.transform.position, target.transform.position - source.transform.position);
+		RaycastHit[] hits = Physics.RaycastAll(ray, maxSize * 500);
+					
+		foreach(RaycastHit hit in hits) { //look for the game object that the ball is in contact with
+			if(hit.collider.gameObject == target) {
+				return hit.normal;
+			}
+		}
+		
+		Debug.Log("ray cast didnt encounter required collider"); //should never happen
+		return Vector3.zero;
+	}
 }

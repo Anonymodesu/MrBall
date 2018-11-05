@@ -105,7 +105,7 @@ public class GameManager { //a singleton
 	}
 	
 	//saves the stage/substage corresponding to the scene name
-	public static Level getLevel(string sceneName) {
+	public Level getLevel(string sceneName) {
 		string temp = sceneName.Split(new char[] {' '})[1]; //get second term of the scene name
         string[] temp2 = temp.Split(new char[] {'-'});
         
@@ -116,7 +116,7 @@ public class GameManager { //a singleton
 	}
 	
 	//returns the flavour text displayed at the beginning of each level
-	public static string getLevelDescription(Level level) {
+	public string getLevelDescription(Level level) {
 		
 		int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
 		string[] lines = null;

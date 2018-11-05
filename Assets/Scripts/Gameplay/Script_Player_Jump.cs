@@ -6,51 +6,40 @@ using UnityEngine;
 //contains jump functionality for the player
 public class Script_Player_Jump : MonoBehaviour {
 	
-	Script_Player playerScript;
-	Rigidbody rb;
+	private Rigidbody rb;
 	
-    const float jumpStrength = 4;
-    const int jumpCooldown = 5;
-    int jumpStep;
-    const float superJumpMultiplier = 3;
-	const float perpendicularJumpStrength = 12;
+    private const float jumpStrength = 4;
+    private const int jumpCooldown = 5;
+    private int jumpStep;
+    private const float superJumpMultiplier = 3;
+	private const float perpendicularJumpStrength = 12;
 	private const float jumpAngle = -0.1f; //used to stop wall jumping
 	
 	// Use this for initialization
 	void Start () {		
-		playerScript = this.gameObject.GetComponent<Script_Player>();
 		rb = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-	
-	void FixedUpdate() { //for physics interactions
-		if(playerScript.getContacts().Any() && !playerScript.isPaused()) { //if list is nonempty
-			processJump(playerScript.getContacts());
-		}
-	}
-	
-	private void processJump(List<GameObject> contacts) {
+	public void processJump(List<GameObject> contacts) {
 		if(jumpStep > 0) {
             jumpStep--;
         }
 			
-        if((Input.GetKeyDown("space") || Input.GetMouseButtonDown(0)) && jumpStep == 0) { //jump command issued
+        if((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && jumpStep == 0) { //jump command issued
             //only jump when jumpStep = 0; jump is off cooldown; prevents multiple contact surfaces causing AddForce to be called multiple times
 
             bool onGround = false; //ball cant jump if the only contact surface is a wall
 			bool super = false;
 			bool perpend = false;
+			bool specialJump = false; //whether a special jump surface is being contacted
+
 			Vector3 normalVector = Vector3.zero; //only used for perpendicular panels
             foreach(GameObject obj in contacts) {
                 string tag = obj.tag;
                 
-                if(playerScript.isPhysical(tag)) { //is a physically interactable surface
+                if(Script_Player.isPhysical(tag)) { //is a physically interactable surface
                     jumpStep = jumpCooldown; 
-					Vector3 normal = playerScript.findNormalVector(obj);
+					Vector3 normal = Script_Player.findNormalVector(obj, this.gameObject);
                           
                     if(tag == "Bouncy") {
                         super = true;
@@ -68,7 +57,6 @@ public class Script_Player_Jump : MonoBehaviour {
                 }
             }
 
-			bool specialJump = false; //whether a special jump surface is being contacted
 			
 			if(super && onGround) { //yellow panel is being contacted
 				rb.AddForce(-Physics.gravity.normalized * jumpStrength * superJumpMultiplier, ForceMode.Impulse);

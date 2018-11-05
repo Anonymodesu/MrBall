@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Script_Player_Move))]
 [RequireComponent(typeof(Script_OutOfBounds))]
 [RequireComponent(typeof(Script_Player_Jump))]
+[RequireComponent(typeof(Script_Player_Trails))]
 public class Script_Player : MonoBehaviour {
 	
 	//player collider variables
@@ -20,17 +21,21 @@ public class Script_Player : MonoBehaviour {
 	private const float minSize = 0.55f;
 	private const float maxSize = 1;
 	private const float maxSpeed = 22; //maxSpeed under most circumstances
+	private Rigidbody rb;
+    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball
     
-	//misc
-	private bool stopGame;
+	//scripts
 	private Script_Game_Camera cameraScript; 
 	private Script_Player_Move movementScript;
 	private Script_Player_Jump jumpScript;
 	private Script_OutOfBounds outOfBoundsScript;
-    private Rigidbody rb;
-    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball
-	private bool pauseable;
+
+	//last encountered checkpoint
     private GameObject startPos;
+
+    //pausing
+    private bool stopGame;
+	private bool pauseable;
 	
 	//gravity variables
 	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint

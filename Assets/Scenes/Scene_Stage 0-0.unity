@@ -7198,23 +7198,163 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.012703091
       objectReference: {fileID: 0}
     - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.02082864
       objectReference: {fileID: 0}
     - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.52053314
       objectReference: {fileID: 0}
     - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8534929
       objectReference: {fileID: 0}
     - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -62.729004
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -2.486
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323214577705686, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -1.281
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShapeModule.type
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6e32faea1a95de64aa654cc322c7ac3f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_RenderMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.rotation3D
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startRotationX.scalar
+      value: 1.5707963
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scalingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: VelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InheritVelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_MotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShapeModule.type
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShapeModule.m_TextureColorAffectsParticles
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_RenderMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 6a69fee162ea4734c8b6cd4c77e5e414, type: 3}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startSize.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.rotation3D
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startRotationX.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startRotationY.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startRotation.scalar
+      value: 1.5707963
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6e32faea1a95de64aa654cc322c7ac3f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_MotionVectors
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Time
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Parameters.alignment
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9fcc8202f45452418b91ed453a9192d, type: 2}

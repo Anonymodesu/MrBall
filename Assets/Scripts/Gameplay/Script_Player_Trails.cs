@@ -9,8 +9,8 @@ public class Script_Player_Trails : MonoBehaviour {
 
 	private Rigidbody rb;
 	private float fadeTime;
-	private TrailRenderer mainTrail;
-	private TrailRenderer[] secondaryTrails;
+	private TrailRenderer mainTrail; //child of the player
+	private TrailRenderer[] secondaryTrails; //do not have parents
 	private Vector3[] secondaryPositions;
 
 	private const float threshold = 5;
@@ -21,8 +21,9 @@ public class Script_Player_Trails : MonoBehaviour {
 	private const float spawnRadius = 0.25f;
 	private const float secondaryWidth = 0.4f;
 	private const float secondaryTime = 0.3f;
-	private const int numSecondaryTrails = 3;
+	private const int numSecondaryTrails = 4;
 	private const float spawnDelay = 0.3f;
+	private const float secondarySpinSpeed = 3;
 
 
 	// Use this for initialization
@@ -33,31 +34,30 @@ public class Script_Player_Trails : MonoBehaviour {
 
 		trailRenderer.time = time;
 		trailRenderer.widthMultiplier = width;
-		mainTrail = Instantiate(trail).GetComponent<TrailRenderer>();
+		mainTrail = Instantiate(trail, transform.position, Quaternion.identity, transform).GetComponent<TrailRenderer>();
 		mainTrail.emitting = false;
 
 		//secondary trails are thinner and expire faster
 		trailRenderer.widthMultiplier = secondaryWidth; 
 		trailRenderer.time = secondaryTime;
 
+		//initial reference positions for secondary trails
+		secondaryPositions = new Vector3[numSecondaryTrails];
+		for(int i = 0; i < numSecondaryTrails; i++) {
+			float degrees = Mathf.Deg2Rad * i * (360 / numSecondaryTrails);
+			secondaryPositions[i] = spawnRadius * (new Vector3(Mathf.Cos(degrees), Mathf.Sin(degrees), 0));
+		}
+
 		secondaryTrails = new TrailRenderer[numSecondaryTrails];
 		for(int i = 0; i < numSecondaryTrails; i++) {
 			secondaryTrails[i] = Instantiate(trail).GetComponent<TrailRenderer>();
 			secondaryTrails[i].emitting = false;
-		}
-
-		//initial reference positions for secondary trails
-		secondaryPositions = new Vector3[numSecondaryTrails];
-		for(int i = 0; i < numSecondaryTrails; i++) {
-			float degrees = Mathf.Deg2Rad * i * 120;
-			secondaryPositions[i] = spawnRadius * (new Vector3(Mathf.Cos(degrees), Mathf.Sin(degrees), 0));
 		}
 	}
 	
 	// Toggle trail visibility when above/below velocity thresholds
 	void Update () {
 
-		mainTrail.transform.position = transform.position;
 		if(rb.velocity.magnitude > threshold) {
 			mainTrail.emitting = true;
 		} else {
@@ -87,12 +87,19 @@ public class Script_Player_Trails : MonoBehaviour {
 		}
 	}
 
+	//makes the trails spin on the plane perpendicular to velocity 
 	private void setSecondaryPositions() {
 		//the rotation that will make the emission plane perpendicular to velocity
 		Quaternion velocityRotation = Quaternion.FromToRotation(Vector3.forward, rb.velocity);
 
+		//how much the ball is spinning around its velocity vector
+		Vector3 spin = Vector3.Project(rb.angularVelocity, rb.velocity);
+
+		//rpm is scaled on spin and velocity
+		Quaternion spinRotation = Quaternion.AngleAxis(spin.magnitude * rb.velocity.magnitude * secondarySpinSpeed, rb.velocity);
+
 		for(int i = 0; i < numSecondaryTrails; i++) {
-			secondaryTrails[i].transform.position = transform.position + velocityRotation * secondaryPositions[i];
+			secondaryTrails[i].transform.position = transform.position + spinRotation * velocityRotation * secondaryPositions[i];
 		}
 	}
 

@@ -30,9 +30,9 @@ public class Script_Game_Camera : Script_Camera {
     // Update is called once per frame
     void LateUpdate () {
 		
-		Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
-		Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
-		Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
+		//Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
+		//Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
+		//Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
 		
 
 			//deltatime is still required to freeze camera during pause

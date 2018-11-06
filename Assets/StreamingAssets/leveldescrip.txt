@@ -3,17 +3,17 @@ Use the mouse to control the camera.
 Navigate to the red panel to claim victory.
 
 
-Purple ramps induce extreme speed.
-Use with caution.
-You can brake using right-click.
-
-
-Left-click to jump.
-Try vaulting over these walls.
-
-
-
+Left-click to jump. Try vaulting over these walls.
 Yellow ramps make you jump much higher.
+
+
+
+Purple ramps induce extreme speed. Use with caution.
+Right-click to brake. Braking is your friend.
+
+
+
+The floating cubes, also known as cubies, grant a hefty amount of points if you collect them, among other things...
 
 
 
@@ -28,9 +28,9 @@ Nice and easy.
 
 
 
-Have you tried collecting cubies?
-They unlock cool stuff if you do.
-(actually, they dont. i havent implemented this yet)
+Unless you're a very brave person, you should attempt these levels in order.
+
+
 
 
 Rest assured, each cubie has been proven collectable by calm and collected cubie collectors.
@@ -44,7 +44,7 @@ Send your thoughts and concerns to mr.flyingpants@gmail.com
 
 
 The 5th level of each stage ramps up the difficulty.
-You can press Escape to pause if you'd like a break.
+...hehe, get it?
 
 
 
@@ -118,12 +118,8 @@ There's only one checkpoint in this level...or are there 6?
 
 
 
+This level is the most non-linear one you've encountered so far.
 
-
-
-
-If Mr.Ball accelerates using gyroscopes, why can't he move in midair? 
-That's because he developed a fear of heights, and freezes up.
 
 
 
@@ -150,8 +146,9 @@ They are key to getting the gold challenge cubie.
 Although dying is normally ill-advised, sometimes Mr.Ball needs to suicide to make progress in a level.
 
 
-Unless you're a very brave person, you should attempt these levels in order.
 
+If Mr.Ball accelerates using gyroscopes, why can't he move in midair? 
+That's because he once had a traumatic experience in an airplane and has since developed a fear of flying, so he freezes up.
 
 
 One might ask why this ball is male. Mr. Ball once watched an episode of Downton Abbey and was obsessed with becoming a gentleman every since.

@@ -65,6 +65,7 @@ public class Script_Player_Jump : MonoBehaviour {
 			
 			if(perpend) { 	//perpendicular panel is being contacted
 				rb.AddForce(normalVector * perpendicularJumpStrength, ForceMode.Impulse);
+				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
 			}
             

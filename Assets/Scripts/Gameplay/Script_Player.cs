@@ -41,7 +41,7 @@ public class Script_Player : MonoBehaviour {
 	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint
 	private const float gravityStrength = 9.8f;
 	private Vector3 defaultGravityDirection = Vector3.down; //stores gravity loaded at the beginning of each level
-	private float gravityEpsilon = 0.05f; //minimum change in gravity to change the coordinate axes
+	private float gravityEpsilon = 0.01f; //minimum change in gravity to change the coordinate axes
 
 	//UI variables
     private Script_Game_Menu GUIScript;
@@ -77,7 +77,7 @@ public class Script_Player : MonoBehaviour {
         pauseable = false;
         
         startPos = GameObject.Find("Ramp_Start");
-		startGravityDirection = defaultGravityDirection; //startPos.transform.rotation * Vector3.down
+		startGravityDirection = -startPos.transform.up;// // defaultGravityDirection;
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
@@ -113,7 +113,7 @@ public class Script_Player : MonoBehaviour {
     }
 	
 	void FixedUpdate() { //for physics interactions
-		if(contacts.Any() && !stopGame) { //if list is nonempty
+		if(!stopGame) {
 			processCollider();
 			movementScript.processMovement(contacts);
 		}

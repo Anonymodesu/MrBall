@@ -8,7 +8,6 @@ public class Script_Player_Trails : MonoBehaviour {
 	private GameObject trail;
 
 	private Rigidbody rb;
-	private float fadeTime;
 	private TrailRenderer mainTrail; //child of the player
 	private TrailRenderer[] secondaryTrails; //do not have parents
 	private Vector3[] secondaryPositions;
@@ -29,7 +28,6 @@ public class Script_Player_Trails : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		TrailRenderer trailRenderer = trail.GetComponent<TrailRenderer>();
-		fadeTime = trailRenderer.time;
 		rb = GetComponent<Rigidbody>();
 
 		trailRenderer.time = time;

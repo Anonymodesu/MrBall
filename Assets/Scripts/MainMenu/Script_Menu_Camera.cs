@@ -12,6 +12,7 @@ public class Script_Menu_Camera : Script_Camera {
 
 	// Use this for initialization
 	void Start () {
+        GameManager.getInstance();
 		source = Quaternion.LookRotation(new Vector3(-0.2f, 0, 1));
         dest = source;
         rotationStep = rotationTime;        
@@ -22,7 +23,7 @@ public class Script_Menu_Camera : Script_Camera {
 		if(rotationStep < rotationTime) {
             transform.rotation = Quaternion.Slerp(source, dest, rotationStep / rotationTime);
             
-            rotationStep++;
+            rotationStep += Time.deltaTime * 60;
             
         } else {
             transform.rotation = dest;

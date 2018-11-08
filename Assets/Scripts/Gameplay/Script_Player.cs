@@ -77,7 +77,7 @@ public class Script_Player : MonoBehaviour {
         pauseable = false;
         
         startPos = GameObject.Find("Ramp_Start");
-		startGravityDirection = -startPos.transform.up;// // defaultGravityDirection;
+		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up;
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
@@ -129,7 +129,8 @@ public class Script_Player : MonoBehaviour {
 	
 	public void endGame() {
 		Physics.gravity = defaultGravityDirection * gravityStrength;
-        SceneManager.LoadSceneAsync("Scene_Menu");
+		SceneManager.LoadSceneAsync("Scene_Menu");
+		Time.timeScale = 1;
     }
 	
 	public void restartGame() {

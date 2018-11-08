@@ -106,7 +106,7 @@ public class ScoreManager {
             }
         }
         
-        System.IO.File.WriteAllText("Other_Data/highscores.txt", emptyScores.ToString());
+        System.IO.File.WriteAllText(Application.streamingAssetsPath + "/highscores.txt", emptyScores.ToString());
     }
     
     //update high scores list with the new score; return true iff there is a new high score

@@ -1,6 +1,4 @@
 New Player,0,0,4
-New Player,0,0,4
-New Player,0,0,5
 
 
 
@@ -63,7 +61,6 @@ New Player,0,0,5
 
 
 
-mista,0,0,0
 
 
 
@@ -113,12 +110,15 @@ mista,0,0,0
 
 
 
-New Player,0,0,0
 
 
 
 
-New Player,0,0,0
+
+
+
+
+
 
 
 

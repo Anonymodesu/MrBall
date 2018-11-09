@@ -60,6 +60,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 191f7f275c804c942aefb3451c12eab6, type: 3}
   - {fileID: 0}
   - {fileID: 0}
+  soundFX:
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 65c347858ca426f46ac5611b8625ef6d, type: 3}
+  - {fileID: 8300000, guid: 4264c49e3883d86489ec8b305ae83641, type: 3}
+  - {fileID: 8300000, guid: 41f6c4e020e2b334eb6d6ed299e91459, type: 3}
+  - {fileID: 8300000, guid: 8e151fb9333675341b6e613ba0595074, type: 3}
+  - {fileID: 8300000, guid: 8b26097209c4c0d49bc6be3a6332631b, type: 3}
+  - {fileID: 8300000, guid: 7d88a9787854d06419452d4c3a84f42e, type: 3}
+  - {fileID: 8300000, guid: e9e0ae27bcee50247a9a2753230c1352, type: 3}
 --- !u!114 &114736134254049876
 MonoBehaviour:
   m_ObjectHideFlags: 1

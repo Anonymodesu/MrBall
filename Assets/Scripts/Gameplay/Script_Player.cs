@@ -53,6 +53,10 @@ public class Script_Player : MonoBehaviour {
     Level currentLevel; //'const'
 	Achievement requirements; //'const'
 
+	private float collisionSoundThreshold = 1;
+	private float collisionSoundDamper = 10;
+
+	private Script_Checkpoint_Animation checkpointAnimation;
 
     // Use this for initialization
     void Start () {
@@ -86,7 +90,8 @@ public class Script_Player : MonoBehaviour {
 			Debug.Log("error parsing achievements");
 			requirements = new Achievement(0,0,0,0);
 		}
-		
+
+		checkpointAnimation = GameObject.Find("CheckpointNotification").GetComponent<Script_Checkpoint_Animation>();
     }
     
     // Update is called once per frame
@@ -160,6 +165,7 @@ public class Script_Player : MonoBehaviour {
 			
 			Destroy(other.gameObject);
             cubies++;
+            SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Cubie);
             
         } else if (isPhysical(tag)) {
         	switch(tag) {
@@ -172,6 +178,7 @@ public class Script_Player : MonoBehaviour {
                 break;
                 
                 case "Win":
+                SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Win);
                 win();
                 break;
         	}
@@ -196,6 +203,16 @@ public class Script_Player : MonoBehaviour {
 			processGravity(other.gameObject);
     	}
     }
+
+    //play a collision sound is the collision is strong enough
+    void OnCollisionEnter(Collision collision) {
+    	float hitStrength = collision.impulse.magnitude;
+
+		if(hitStrength > collisionSoundThreshold) {
+			float volume = hitStrength / collisionSoundDamper;
+			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Collision, volume);
+		}
+	}
 
 	private void processCollider() { //adjust hitbox of player depending on velocity.
 	
@@ -228,8 +245,13 @@ public class Script_Player : MonoBehaviour {
     }
 	
 	private void setCheckpoint(GameObject checkPoint, Vector3 gravity) {
-		startPos = checkPoint;
-		startGravityDirection = gravity.normalized;
+		//check if a new checkpoint has been reached
+		if(checkPoint != startPos || gravity != startGravityDirection) {
+			startPos = checkPoint;
+			startGravityDirection = gravity.normalized;
+			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Checkpoint);
+			StartCoroutine(checkpointAnimation.animate());
+		}
 	}
 	
 	private void die() {

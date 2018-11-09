@@ -60,17 +60,20 @@ public class Script_Player_Jump : MonoBehaviour {
 			
 			if(super && onGround) { //yellow panel is being contacted
 				rb.AddForce(-Physics.gravity.normalized * jumpStrength * superJumpMultiplier, ForceMode.Impulse);
+				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.YellowJump);
 				specialJump = true;
 			} 
 			
 			if(perpend) { 	//perpendicular panel is being contacted
 				rb.AddForce(normalVector * perpendicularJumpStrength, ForceMode.Impulse);
+				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.OrangeJump);
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
 			}
             
 			if(!specialJump && onGround) { //jump normally
 				rb.AddForce(-Physics.gravity.normalized * jumpStrength, ForceMode.Impulse);
+				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.NormalJump);
 			}
         }
     }

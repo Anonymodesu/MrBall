@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,16 +7,18 @@ using UnityEngine.SceneManagement;
 //also called by GameManager
 public class SoundManager {
 
+	public enum SoundFX : int {Roll = 0, Collision = 1, YellowJump = 2, OrangeJump = 3, NormalJump = 4, Checkpoint = 5, Cubie = 6,
+								Win = 7}
+
 	private GameObject container; //provides a gameobject for audiosources to be attached to
 	private AudioSource bgMusic;
-	private AudioSource rollSound;
-	private AudioSource jumpSound;
-	private AudioSource superJumpSound;
-		
-	private string currentScene;
-	private Rigidbody rb;
+	private AudioSource soundFX;
 	
 	private static SoundManager instance = null;
+
+	private MusicFiles soundFiles = null;
+
+	private float[] soundFXVolume;
 	
 	public static SoundManager getInstance() {
 		if(instance == null) {
@@ -36,54 +39,42 @@ public class SoundManager {
 	
 	private SoundManager() { //called by LevelManager.OnEnable() to make sure bgMusic is initialised
 		container = new GameObject();
-		Object.DontDestroyOnLoad(container);
+		UnityEngine.Object.DontDestroyOnLoad(container);
 		bgMusic = container.AddComponent<AudioSource>();
+		soundFX = container.AddComponent<AudioSource>();
+
+		//array length = total number of enum values defined
+		soundFXVolume = new float[Enum.GetNames(typeof(SoundFX)).Length];
+		soundFXVolume[(int) SoundFX.Collision] = 0.4f;
+		soundFXVolume[(int) SoundFX.NormalJump] = 1f;
+		soundFXVolume[(int) SoundFX.YellowJump] = 1f;
+		soundFXVolume[(int) SoundFX.OrangeJump] = 0.4f;
+		soundFXVolume[(int) SoundFX.Checkpoint] = 1f;
+		soundFXVolume[(int) SoundFX.Cubie] = 0.5f;
+		soundFXVolume[(int) SoundFX.Win] = 0.5f;
 	}
 	
-	/* resets bg music to match the current level
-	private void reset() {
-		Scene scene = SceneManager.GetActiveScene();
-		currentScene = scene.name;
-		AudioClip currentBGM = bgMusic.clip;
-		AudioClip nextBGM = bgMusic.clip; //to get rid of the "use of unassigned variable" warning
+	private MusicFiles getSoundFiles() {
+		if(soundFiles == null) { //new set of soundfiles for each scene
+			soundFiles = GameObject.Find("Resources").GetComponent<MusicFiles>();
+		} 
 
-		if(currentScene == "Scene_Menu") { //returning to the menu from a stage does not change the music
-			
-			if(bgMusic.clip == null) {
-				nextBGM = music0;
-			}
-			
-		} else {
-			int stage = LevelManager.getLevel(currentScene).stage;
-		
-			switch(stage) { //background music is dependent on the stage
-				case 0: nextBGM = music0; break;
-				case 1: nextBGM = music1; break;
-				case 2: nextBGM = music2; break;
-				case 3: nextBGM = music3; break;
-				case 4: nextBGM = music4; break;
-				case 5: nextBGM = music5; break;
-				case 6: nextBGM = music6; break;
-			}
-		}
-		
-		if(nextBGM != currentBGM) { //when the bgm is the same, continue playing
-			bgMusic.clip = nextBGM;
-			bgMusic.volume = 0.8f;
-			bgMusic.loop = true;
-			bgMusic.Play();
-		}
-		
-		
-	}*/
+		return soundFiles;
+	}
 	
 	public void setMusic(int stage) {
-		AudioClip nextBGM = null;
-		MusicFiles musicFiles = GameObject.Find("Resources").GetComponent<MusicFiles>();
-		
-		bgMusic.clip = musicFiles.music[stage];
-		bgMusic.volume = 0.8f;
+		bgMusic.clip = getSoundFiles().music[stage];
+		bgMusic.volume = 0.5f;
 		bgMusic.loop = true;
 		bgMusic.Play();
+	}
+
+	//use default assigned volume
+	public void playSoundFX(SoundFX sound) {
+		playSoundFX(sound, soundFXVolume[(int) sound]);
+	}
+
+	public void playSoundFX(SoundFX sound, float volume) {
+		soundFX.PlayOneShot(getSoundFiles().soundFX[(int) sound], volume);
 	}
 }

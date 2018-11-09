@@ -26,10 +26,10 @@ public class Script_Player_Move : MonoBehaviour {
 	private const float maxSuperSpeed = 100;
     private const float brakeStrength = 20;
 	private const float maxTorque = 60; //maximum rotational speed
-    Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
+    private Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
 	
-	Script_Game_Camera cameraScript; 
-	Rigidbody rb;
+	private Script_Game_Camera cameraScript; 
+	private Rigidbody rb;
 
 	
 

@@ -4,14 +4,17 @@ using UnityEngine;
 using System.Text;
 using System.IO;
 using System;
-
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class AchievementManager {
 
 	public const int numFields = 4; //achievements: (cubies,deaths,time,points)
 	public const int numSubstages = 5;
-    public const int numStages = 6;
+    public const int numStages = 5;
 	public const int numLevels = numStages * numSubstages;
+
+	private Achievement[] requirements;
+	private Dictionary<string, Achievement[]> playerAchievements;
 
 	private static AchievementManager instance = null;
 
@@ -22,145 +25,102 @@ public class AchievementManager {
 		
 		return instance;
 	}
+
+	private AchievementManager() {
+		requirements = null;
+		playerAchievements = new Dictionary<string, Achievement[]>();
+	}
 	
 	//return the requirements for getting achievements for a particular level
 	public Achievement getRequirement(Level level) { //null return value means leveldata.txt is missing or invalid
-		string[] lines;
-		string directory = Application.streamingAssetsPath + "/leveldata.txt";
-		
-		if(File.Exists(directory)) {
-			lines =  System.IO.File.ReadAllLines(directory);
-
-		} else {
-			return null;
+		if(requirements == null) {
+			parseRequirements();
 		}
-
-		int index = numSubstages * level.stage + level.substage; //stage starts indexing from 0; substage starts indexing from 1
-		
-		if(index >= numLevels) {
-			Debug.Log("incorrect number of lines in leveldata.txt");
-			return null;
-		}
-				
-		//achievements.txt is in the format cubies/time/points
-		Achievement achievement = new Achievement(0,0,0,0);
-		
-		if(parseAchievement(lines[index], achievement)) { //parse achievement and save value in achievement
-			   
-			return achievement;
-               
-        } else { //invalid field(s)
-			Debug.Log("invalid field at line " + index + " in leveldata.txt");
-            return null;
-        }
-
+					
+		return requirements[numSubstages * level.stage + level.substage];
 	}
 	
 	//each player has their own file storing their best achievements for each level
 	public void saveAchievement(string playerName, Achievement current, Level level) {
-		string[] lines;
-		string directory = getPathName(player);
-		
-		if(File.Exists(directory)) {
-			lines = System.IO.File.ReadAllLines(directory);
 
-		} else { //no player data yet
-			Debug.Log(playerName + " does not exist. creating new player data file");
-			resetAchievements(playerName);
-			lines =  System.IO.File.ReadAllLines(directory);
-		}
-		
-		if(lines.Length != numLevels) {
-			Debug.Log("incorrect number of lines in data file for " + playerName + ". resetting file");
-			resetAchievements(playerName);
-			lines =  System.IO.File.ReadAllLines(directory);
-		}
-		
+		Achievement[] achievements = getAchievements(playerName);
 		int index = level.stage * numSubstages + level.substage; 
-		
-		//write to player's data file; each line in the format: cubies deaths time points
-		if(lines[index] != "") { //player has played this level already
 
-			Achievement record = new Achievement(0,0,0,0);
-				
-			if(parseAchievement(lines[index], record)) { //save recorded achievement into record
-					   
-			   //update new records if applicable
-				record.cubies = Math.Max(record.cubies, current.cubies);
-				record.deaths = Math.Min(record.deaths, current.deaths);	
-				record.time = Math.Min(record.time, current.time);
-				record.points = Math.Max(record.points, current.points);
-					
-				lines[index] = record.cubies + " " + record.deaths + " " + record.time + " " + record.points; 
-				System.IO.File.WriteAllLines(directory, lines); //write updated achievements to txt file
-					
-			} else {
-				Debug.Log("incorrect format of fields at " + index + ". resetting player data for " + playerName);
-				resetAchievements(playerName);
-			}
-			
-		} else { //current entry is empty; player has not played this level
-			lines[index] = current.cubies + " " + current.deaths + " " + current.time + " " + current.points; 
-			System.IO.File.WriteAllLines(directory, lines); //write updated achievements to txt file
-		}
-		
+		//player has not completed this level yet
+		if(achievements[index] == null) {
+			achievements[index] = current;
 
-	}
-	
-	private void resetAchievements(string playerName) {
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < numStages; i++) {
-			
-			for(int j = 0; j < numSubstages; j++) {
-				sb.Append("\n");
-			}
-			
+		} else { //retrieve the best records among the two
+			achievements[index] = Achievement.Max(achievements[index], current);
 		}
-		
-		System.IO.File.WriteAllText(Application.streamingAssetsPath + "/" + playerName + "_data.txt", sb.ToString());
+
+		//save to file system
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(getPathName(playerName));
+		bf.Serialize(file, achievements);
+		file.Close();
+
 	}
 	
 	public Achievement[] getAchievements(string playerName) {
-		string[] lines = null;
-		string directory = getPathName(player);
-		
+
+		//if the player data has not been read for that player yet
+		if(!playerAchievements.ContainsKey(playerName)) {
+			
+			//player has played some levels before
+			if(File.Exists(getPathName(playerName))) {
+
+				BinaryFormatter bf = new BinaryFormatter();
+				FileStream file = File.Open(getPathName(playerName), FileMode.Open);
+				playerAchievements.Add(playerName, (Achievement[]) bf.Deserialize(file));
+				file.Close();
+
+			//new player
+			} else {
+				playerAchievements.Add(playerName, new Achievement[numLevels]);
+				Debug.Log("creating new player data file for " + playerName);
+			}
+
+		} 
+
+		return playerAchievements[playerName];
+	}
+
+	//returns true if successful
+	private bool parseRequirements() {
+		string[] lines;
+		string directory = Application.streamingAssetsPath + "/leveldata.txt";
+		requirements = new Achievement[numLevels];
+
 		if(File.Exists(directory)) {
 			lines =  System.IO.File.ReadAllLines(directory);
-
 		} else {
-			Debug.Log(playerName + "does not exist yet. resetting player achievements");
-			resetAchievements(playerName);
-			lines = System.IO.File.ReadAllLines(directory);
+			Debug.Log("missing leveldata.txt");
+			return false;
 		}
-		
-		if(lines.Length != numLevels) {
-			Debug.Log("incorrect number of lines in data file for " + playerName + ". resetting file");
-			resetAchievements(playerName);
-			lines = System.IO.File.ReadAllLines(directory);
+
+		if(lines.Length < requirements.Length) {
+			Debug.Log("incorrect number of lines in leveldata.txt");
+			return false;
 		}
-		
-		Achievement[] achievements = new Achievement[numLevels];
-		for(int i = 0; i < numLevels; i++) {
+
+		for(int i = 0; i < requirements.Length; i++) {
+			//leveldata.txt is in the format cubies/deaths/time/points
+			requirements[i] = new Achievement(0,0,0,0);
 			
-			Achievement current = new Achievement(0,0,0,0);
-			
-			if(lines[i] == "") { //empty record
-				achievements[i] = null;
-				
-			} else if(parseAchievement(lines[i], current)) { //saved record
-				achievements[i] = current;
-				
-			} else { //invalid record
-				Debug.Log("invalid achievement at line " + i + " for player " + playerName);
-				achievements[i] = null;
-			}
+			if(parseRequirement(lines[i], requirements[i])) { //returns true if parsing is successful
+				   		               
+	        } else { //invalid field(s)
+				Debug.Log("invalid field at line " + i + " in leveldata.txt");
+	        }
 		}
-		
-		return achievements;
+
+		return true;
 	}
-	
+
+
 	//parse a single achievement, received as plaintext; saves parsed values in achievement; returns true iff successful
-	private bool parseAchievement(string line, Achievement achievement) {
+	private bool parseRequirement(string line, Achievement achievement) {
 		string[] fields = line.Split(new char[] {' '});
 		
 		if(fields.Length != numFields) {
@@ -173,10 +133,10 @@ public class AchievementManager {
 				   Int32.TryParse(fields[2], out achievement.time) &&
 				   Int32.TryParse(fields[3], out achievement.points);
 		}
-		
 	}
 
-	private static string getPathName(string player) {
-		return Application.streamingAssetsPath + "/" + playerName + ".dat"
+
+	private static string getPathName(string playerName) {
+		return Application.streamingAssetsPath + "/" + playerName + ".dat";
 	}
 }

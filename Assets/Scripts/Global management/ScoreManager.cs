@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 //this class handles file I/O for data retrieval from txt files, as well as storing global constants
 //acts like a Factory design pattern for information
 public class ScoreManager {
 		
-	
+	private static readonly string pathName = Application.streamingAssetsPath + "/highscores.money";
+
     public const int numHighScoresPerSubstage = 5;
     public const int numHighScores = GameManager.numLevels * numHighScoresPerSubstage;
     public const int numFields = 4; //high scores: (name,cubies,deaths,time)
@@ -34,79 +36,17 @@ public class ScoreManager {
     
     //reads high score file 
     private void parseHighScores() {
-		string[] lines;
-
-		try {
-			lines =  System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/highscores.txt");
-
-		} catch(FileNotFoundException) {
-			Debug.Log("file not found; resetting scores");
-			resetScores();
-			lines = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/highscores.txt");
-		}
-			        
-        //parse the file for validity
-        if(lines.Length != numHighScores) { //check number of lines
-            Debug.Log("file has incorrect number of lines. resetting scores");
-            resetScores();
-            parseHighScores();//reread highscores.txt
+        if(File.Exists(pathName)) {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(pathName, FileMode.Open);
+            highScores = (HighScore[]) bf.Deserialize(file);
+            file.Close();
 
         } else {
-			highScores = new HighScore[numHighScores];
-                        
-            for(int i = 0; i < numHighScores; i++) {
-                
-                string current = lines[i];
-                
-                if(current.Equals("")) { //empty record
-                    highScores[i] = null;
-                    continue;
-                    
-                } else {
-                    string[] elements = current.Split(new char[] {','});
-                    
-                    if(elements.Length != numFields) { //incorrect number of fields
-                        Debug.Log("invalid entry on line " + i.ToString() + ". resetting scores");
-                        resetScores();
-                        parseHighScores();//reread highscores.txt
-                        break;
-                        
-                    } else { //parse a particular entry
-                        string name = elements[0];
-                        int cubies;
-                        int deaths;
-                        int time;
-                        
-                        if(Int32.TryParse(elements[1], out cubies) && //parse each field in the entry
-                           Int32.TryParse(elements[2], out deaths) && 
-                           Int32.TryParse(elements[3], out time)) {
-                            
-                            highScores[i] = new HighScore(name, cubies, deaths, time);
-                            
-                        } else { //invalid field(s)
-                            Debug.Log("invalid entry on line " + i.ToString() + ". resetting scores");
-                            resetScores();
-                            parseHighScores();//reread highscores.txt
-                            break;
-                        }
-                    }
-                }
-            }
+            highScores = new HighScore[numHighScores];
+            Debug.Log("creating new high scores file");
         }
-    }
-    
-    private void resetScores() { //generate an empty high scores record
-        StringBuilder emptyScores = new StringBuilder();
 
-        for(int i = 0; i < GameManager.numStages; i++) {
-            for(int j = 0; j < GameManager.numSubstages; j++) {
-                for(int k = 0; k < ScoreManager.numHighScoresPerSubstage; k++) {
-                    emptyScores.Append(/*"jackson," + i + "," + (j+100) + "," + k + */"\n"); //GET RID OF THESE LATER
-                }
-            }
-        }
-        
-        System.IO.File.WriteAllText(Application.streamingAssetsPath + "/highscores.txt", emptyScores.ToString());
     }
     
     //update high scores list with the new score; return true iff there is a new high score
@@ -151,20 +91,12 @@ public class ScoreManager {
 	}
 	
 	public void saveHighScores() { //save the stored set of high scores onto disk
-		StringBuilder sb = new StringBuilder();
-        foreach(HighScore score in highScores) {
-            if(score != null) {
-                sb.Append(score.Name()).Append(',')
-					.Append(score.Cubies()).Append(',')
-                    .Append(score.Deaths()).Append(',')
-                    .Append(score.Time());
-					
-				//Debug.Log(score.display());
-            }
-            sb.Append('\n');
-        }
-            
-        System.IO.File.WriteAllText(Application.streamingAssetsPath + "/highscores.txt", sb.ToString()); //save high scores to txt file
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(pathName);
+
+        bf.Serialize(file, highScores);
+        file.Close();
 	}
 	
 	

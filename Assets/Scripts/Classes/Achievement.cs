@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+[Serializable]
 public class Achievement { //used for both storing requirements for a stage's achievements as well as player records
 
 	public int cubies;

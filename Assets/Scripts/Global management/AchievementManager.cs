@@ -26,11 +26,12 @@ public class AchievementManager {
 	//return the requirements for getting achievements for a particular level
 	public Achievement getRequirement(Level level) { //null return value means leveldata.txt is missing or invalid
 		string[] lines;
+		string directory = Application.streamingAssetsPath + "/leveldata.txt";
 		
-		try {
-			lines =  System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/leveldata.txt");
+		if(File.Exists(directory)) {
+			lines =  System.IO.File.ReadAllLines(directory);
 
-		} catch(FileNotFoundException) {
+		} else {
 			return null;
 		}
 
@@ -58,11 +59,12 @@ public class AchievementManager {
 	//each player has their own file storing their best achievements for each level
 	public void saveAchievement(string playerName, Achievement current, Level level) {
 		string[] lines;
-		string directory = Application.streamingAssetsPath + "/" + playerName + "_data.txt";
+		string directory = getPathName(player);
 		
-		try {
+		if(File.Exists(directory)) {
 			lines = System.IO.File.ReadAllLines(directory);
-		} catch(FileNotFoundException) { //no player data yet
+
+		} else { //no player data yet
 			Debug.Log(playerName + " does not exist. creating new player data file");
 			resetAchievements(playerName);
 			lines =  System.IO.File.ReadAllLines(directory);
@@ -119,13 +121,13 @@ public class AchievementManager {
 	}
 	
 	public Achievement[] getAchievements(string playerName) {
-		string[] lines;
-		string directory = Application.streamingAssetsPath + "/" + playerName + "_data.txt";
+		string[] lines = null;
+		string directory = getPathName(player);
 		
-		try {
+		if(File.Exists(directory)) {
 			lines =  System.IO.File.ReadAllLines(directory);
 
-		} catch(FileNotFoundException) {
+		} else {
 			Debug.Log(playerName + "does not exist yet. resetting player achievements");
 			resetAchievements(playerName);
 			lines = System.IO.File.ReadAllLines(directory);
@@ -172,5 +174,9 @@ public class AchievementManager {
 				   Int32.TryParse(fields[3], out achievement.points);
 		}
 		
+	}
+
+	private static string getPathName(string player) {
+		return Application.streamingAssetsPath + "/" + playerName + ".dat"
 	}
 }

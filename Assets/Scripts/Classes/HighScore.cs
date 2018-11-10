@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[Serializable]
 public class HighScore {
 
-    string name;
-    int cubies;
-    int deaths;
-    int time;
+    private string name;
+    private int cubies;
+    private int deaths;
+    private int time;
     
     public const int deathPoints = -10;
     public const int cubiePoints = 100;

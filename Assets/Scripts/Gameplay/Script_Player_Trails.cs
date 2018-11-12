@@ -11,6 +11,7 @@ public class Script_Player_Trails : MonoBehaviour {
 	private TrailRenderer mainTrail; //child of the player
 	private TrailRenderer[] secondaryTrails; //do not have parents
 	private Vector3[] secondaryPositions;
+	private float previousSecondarySpin; //keeps track of how much the secondary trails have spun
 
 	private const float threshold = 5;
 	private const float width = 1;
@@ -22,7 +23,7 @@ public class Script_Player_Trails : MonoBehaviour {
 	private const float secondaryTime = 0.3f;
 	private const int numSecondaryTrails = 4;
 	private const float spawnDelay = 0.3f;
-	private const float secondarySpinSpeed = 3;
+	private const float secondarySpinSpeed = 0.03f;
 
 
 	// Use this for initialization
@@ -51,6 +52,8 @@ public class Script_Player_Trails : MonoBehaviour {
 			secondaryTrails[i] = Instantiate(trail).GetComponent<TrailRenderer>();
 			secondaryTrails[i].emitting = false;
 		}
+
+		previousSecondarySpin = 0;
 	}
 	
 	// Toggle trail visibility when above/below velocity thresholds
@@ -90,15 +93,17 @@ public class Script_Player_Trails : MonoBehaviour {
 		//the rotation that will make the emission plane perpendicular to velocity
 		Quaternion velocityRotation = Quaternion.FromToRotation(Vector3.forward, rb.velocity);
 
-		//how much the ball is spinning around its velocity vector
-		Vector3 spin = Vector3.Project(rb.angularVelocity, rb.velocity);
+		//magnitude of angle of spin since the last frame
+		//scaled by current velocity and how much the ball is spinning around its velocity vector
+		float spin = Vector3.Project(rb.angularVelocity, rb.velocity).magnitude * rb.velocity.magnitude * secondarySpinSpeed;
 
-		//rpm is scaled on spin and velocity
-		Quaternion spinRotation = Quaternion.AngleAxis(spin.magnitude * rb.velocity.magnitude * secondarySpinSpeed, rb.velocity);
+		Quaternion spinRotation = Quaternion.AngleAxis(spin + previousSecondarySpin, rb.velocity);
 
 		for(int i = 0; i < numSecondaryTrails; i++) {
 			secondaryTrails[i].transform.position = transform.position + spinRotation * velocityRotation * secondaryPositions[i];
 		}
+
+		previousSecondarySpin = (previousSecondarySpin + spin) % 360f;
 	}
 
 	//sets the spawn offset of the secondary trails

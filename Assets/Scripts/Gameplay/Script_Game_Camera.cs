@@ -57,6 +57,8 @@ public class Script_Game_Camera : Script_Camera {
 		
 		transform.position = player.transform.position //transform.forward is always normalized
 							+ (yAxis * 0.7f - transform.forward * 2) * positionOffset; //position the camera behind the ball 
+
+		Debug.Log(Quaternion.LookRotation(-transform.forward).eulerAngles);
 		
     }
 	

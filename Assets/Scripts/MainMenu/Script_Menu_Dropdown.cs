@@ -9,7 +9,7 @@ public class Script_Menu_Dropdown : MonoBehaviour {
     public GameObject buttonPrefab;
 
     private GameObject[] stageButtons;    
-    private const int startingHeight = 64;
+    private const int startingHeight = -64;
     private const int separationHeight = 30;
     
 
@@ -26,11 +26,10 @@ public class Script_Menu_Dropdown : MonoBehaviour {
         
         //instantiate buttons
         for(int i = 0; i < GameManager.numSubstages; i++) {
-            stageButtons[i] = Instantiate(buttonPrefab, this.transform.parent); //share the same parent
+            stageButtons[i] = Instantiate(buttonPrefab, GameObject.Find("LevelSelectButtons").transform); //share the same parent
             
             //modify position
             RectTransform trans = stageButtons[i].GetComponent<RectTransform>();
-            trans.anchoredPosition = new Vector2(trans.anchoredPosition.x, startingHeight - separationHeight * i);
             
             //modify text
             changeText(i);

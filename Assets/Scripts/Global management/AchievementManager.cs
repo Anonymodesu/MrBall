@@ -10,7 +10,7 @@ public class AchievementManager {
 
 	public const int numFields = 4; //achievements: (cubies,deaths,time,points)
 	public const int numSubstages = 5;
-    public const int numStages = 5;
+    public const int numStages = 6;
 	public const int numLevels = numStages * numSubstages;
 
 	private Achievement[] requirements;
@@ -62,6 +62,7 @@ public class AchievementManager {
 
 	}
 	
+	//retrieves all the achievements for a player
 	public Achievement[] getAchievements(string playerName) {
 
 		//if the player data has not been read for that player yet
@@ -84,6 +85,11 @@ public class AchievementManager {
 		} 
 
 		return playerAchievements[playerName];
+	}
+
+	//retrieves an achievement for a level for a player
+	public Achievement getAchievement(string playerName, Level level) {
+		return getAchievements(playerName)[level.stage * numSubstages + level.substage];
 	}
 
 	//returns true if successful

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,15 +7,18 @@ using UnityEngine.EventSystems;
 
 
 public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
-	
-	private static Achievement[] achievements;
-	private static Text achievementsText;
+
+	private Text cubiesText, deathsText, timeText, scoreText;
 
 	// Use this for initialization
 	void Start () {
 		base.init();
 		GetComponent<Button>().onClick.AddListener(delegate {StartLevel(); });
-		achievementsText = GameObject.Find("AchievementsText").GetComponent<Text>();
+
+		cubiesText = GameObject.Find("CubiesText").GetComponent<Text>();
+		deathsText = GameObject.Find("DeathsText").GetComponent<Text>();
+		timeText = GameObject.Find("TimeText").GetComponent<Text>();
+		scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
 	}
 
 	
@@ -25,7 +27,8 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		
 		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
 		
-		Achievement current = achievements[level.stage * GameManager.numSubstages + level.substage]; //substages start indexing from 1
+		Achievement current = AchievementManager.getInstance().getAchievement(PlayerPrefs.GetString("name", "New Player"), level);
+		Achievement required = AchievementManager.getInstance().getRequirement(level);
 		
 		string cubies;
 		string deaths;
@@ -33,32 +36,33 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		string score;
 		
 		if(current == null) { //player has not completed this level
-			cubies = " -";
-			deaths = " -";
-			time = " -";
-			score = " -";
-									  
+
+			cubiesText.text = "-/\n " + required.cubies;
+			deathsText.text = "-/\n " + required.deaths;
+			timeText.text = "-/\n " + required.time;
+			scoreText.text = "-/\n " + required.points;
+
+			cubiesText.fontStyle = FontStyle.Normal;
+			deathsText.fontStyle = FontStyle.Normal;
+			timeText.fontStyle = FontStyle.Normal;
+			scoreText.fontStyle = FontStyle.Normal;
+
 		} else { //player has completed this level
-			cubies = current.cubies.ToString();
-			deaths = current.deaths.ToString();
-			time = current.time.ToString();
-			score = current.points.ToString();
+
+			cubiesText.text = current.cubies + "/\n " + required.cubies;
+			deathsText.text = current.deaths + "/\n " + required.deaths;
+			timeText.text = current.time + "/\n " + required.time;
+			scoreText.text = current.points + "/\n " + required.points;
+
+			//check if any of the achievements have been reached
+			cubiesText.fontStyle = (current.cubies == required.cubies) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			deathsText.fontStyle = (current.deaths <= required.deaths) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			timeText.fontStyle = (current.time <= required.time) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			scoreText.fontStyle = (current.points >= required.points) ? FontStyle.BoldAndItalic : FontStyle.Normal;
 		}
 		
-		//show the current player's records so far
-		StringBuilder sb = new StringBuilder();
-		achievementsText.text = sb.Append("Records:\n")
-								  .Append("\nCubies:").Append(cubies)
-								  .Append("\nDeaths:").Append(deaths)
-								  .Append("\nTime:").Append(time)
-								  .Append("\nScore:").Append(score).ToString();
-		
-		
     }
-	
-	public static void setAchievements(Achievement[] achievements) {
-		Script_Menu_Stage_Select_Button.achievements = achievements;
-	}
+
 	
 	public void StartLevel() { //only for buttons in level select menu
         string level = GetComponentInChildren<Text>().text; //the button text corresponds to the level

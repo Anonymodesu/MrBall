@@ -113,12 +113,12 @@ He hopes that you enjoy playing around with them.
 
 
 
-The number of checkpoints in a level is usually a good indicator of its length.
+You can usually use the number of checkpoints in a level to estimate its difficulty.
 Usually.
 
 
 
-Good luck.
+Perhaps using the death limit achievement is a better indicator for difficulty.
 
 
 

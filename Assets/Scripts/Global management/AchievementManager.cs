@@ -9,9 +9,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class AchievementManager {
 
 	public const int numFields = 4; //achievements: (cubies,deaths,time,points)
-	public const int numSubstages = 5;
-    public const int numStages = 6;
-	public const int numLevels = numStages * numSubstages;
 
 	private Achievement[] requirements;
 	private Dictionary<string, Achievement[]> playerAchievements;
@@ -37,14 +34,14 @@ public class AchievementManager {
 			parseRequirements();
 		}
 					
-		return requirements[numSubstages * level.stage + level.substage];
+		return requirements[Level.numSubstages * level.stage + level.substage];
 	}
 	
 	//each player has their own file storing their best achievements for each level
 	public void saveAchievement(string playerName, Achievement current, Level level) {
 
 		Achievement[] achievements = getAchievements(playerName);
-		int index = level.stage * numSubstages + level.substage; 
+		int index = level.stage * Level.numSubstages + level.substage; 
 
 		//player has not completed this level yet
 		if(achievements[index] == null) {
@@ -78,7 +75,7 @@ public class AchievementManager {
 
 			//new player
 			} else {
-				playerAchievements.Add(playerName, new Achievement[numLevels]);
+				playerAchievements.Add(playerName, new Achievement[Level.numLevels]);
 				Debug.Log("creating new player data file for " + playerName);
 			}
 
@@ -89,14 +86,14 @@ public class AchievementManager {
 
 	//retrieves an achievement for a level for a player
 	public Achievement getAchievement(string playerName, Level level) {
-		return getAchievements(playerName)[level.stage * numSubstages + level.substage];
+		return getAchievements(playerName)[level.stage * Level.numSubstages + level.substage];
 	}
 
 	//returns true if successful
 	private bool parseRequirements() {
 		string[] lines;
 		string directory = Application.streamingAssetsPath + "/leveldata.txt";
-		requirements = new Achievement[numLevels];
+		requirements = new Achievement[Level.numLevels];
 
 		if(File.Exists(directory)) {
 			lines =  System.IO.File.ReadAllLines(directory);

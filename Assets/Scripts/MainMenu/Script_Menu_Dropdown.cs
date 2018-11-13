@@ -15,21 +15,18 @@ public class Script_Menu_Dropdown : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		stageButtons = new GameObject[GameManager.numStages];
+		stageButtons = new GameObject[Level.numStages];
 
         //prepare stages
         List<String> stages = new List<String>();
-        for(int i = 0; i < GameManager.numStages; i++) {
+        for(int i = 0; i < Level.numStages; i++) {
             stages.Add("Stage " + i);
         }
         this.GetComponent<Dropdown>().AddOptions(stages);
         
         //instantiate buttons
-        for(int i = 0; i < GameManager.numSubstages; i++) {
+        for(int i = 0; i < Level.numSubstages; i++) {
             stageButtons[i] = Instantiate(buttonPrefab, GameObject.Find("LevelSelectButtons").transform); //share the same parent
-            
-            //modify position
-            RectTransform trans = stageButtons[i].GetComponent<RectTransform>();
             
             //modify text
             changeText(i);
@@ -47,7 +44,7 @@ public class Script_Menu_Dropdown : MonoBehaviour {
     }
     
     public void switchStages() {
-        for(int i = 0; i < GameManager.numSubstages; i++) {
+        for(int i = 0; i < Level.numSubstages; i++) {
             changeText(i);
         }
     }

@@ -5,9 +5,11 @@ using UnityEngine.EventSystems;
 
 //script that all buttons in the main menu inherit from
 public class Script_Menu_Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-	GameObject cubie;
-    Transform cubieTransform;
-    Transform canvasTransform;
+	private GameObject cubie;
+    private Transform cubieTransform;
+    private Transform canvasTransform;
+
+    private const float cubieSize = 0.1f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,17 +31,17 @@ public class Script_Menu_Button : MonoBehaviour, IPointerEnterHandler, IPointerE
 		cubie = GameObject.Find("Cubie");
         cubieTransform = cubie.GetComponent<Transform>();
         canvasTransform = GetComponentInParent<RectTransform>();
+        cubieTransform.localScale = cubieSize * Vector3.one;
 	}
 	
 	public virtual void OnPointerEnter(PointerEventData eventData) {
-        cubieTransform.position = transform.position + canvasTransform.rotation * Vector3.left * 10;
-        cubieTransform.localScale = new Vector3(1.5f,1.5f,1.5f);
+        cubieTransform.position = transform.position + transform.rotation * Vector3.right * 0.5f;
+        cubieTransform.gameObject.SetActive(true);
     }
 	
 	public void OnPointerExit(PointerEventData eventData) {		
 		if(cubieTransform != null) {
-            cubieTransform.position = transform.position + canvasTransform.rotation * Vector3.left * 10;
-            cubieTransform.localScale = Vector3.zero;
+            cubieTransform.gameObject.SetActive(false);
         } else {
             Debug.Log("Fix bug in Script_MainMenu_Button in MouseLeave(). ");
         }

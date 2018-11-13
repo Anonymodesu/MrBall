@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 
-	private Text cubiesText, deathsText, timeText, scoreText;
+	private Text cubiesText, deathsText, timeText, scoreText, levelText;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +19,7 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		deathsText = GameObject.Find("DeathsText").GetComponent<Text>();
 		timeText = GameObject.Find("TimeText").GetComponent<Text>();
 		scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+		levelText = GameObject.Find("LevelName").GetComponent<Text>();
 	}
 
 	
@@ -26,14 +27,10 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		base.OnPointerEnter(eventData); //move the cubie next to the button next to the button
 		
 		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
+		levelText.text = GameManager.getInstance().getLevelName(level);
 		
 		Achievement current = AchievementManager.getInstance().getAchievement(PlayerPrefs.GetString("name", "New Player"), level);
 		Achievement required = AchievementManager.getInstance().getRequirement(level);
-		
-		string cubies;
-		string deaths;
-		string time;
-		string score;
 		
 		if(current == null) { //player has not completed this level
 

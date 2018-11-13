@@ -13,8 +13,8 @@ public class Script_Menu_High_Scores : MonoBehaviour {
     void Start () {
 		//Debug.Log(Application.dataPath);        
         List<String> stages = new List<String>();
-        for(int i = 0; i < GameManager.numStages; i++) {
-            for(int j = 0; j < GameManager.numSubstages; j++) {
+        for(int i = 0; i < Level.numStages; i++) {
+            for(int j = 0; j < Level.numSubstages; j++) {
                 stages.Add("Stage " + i + "-" + j);
             }
         }

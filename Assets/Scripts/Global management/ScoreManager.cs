@@ -13,7 +13,7 @@ public class ScoreManager {
 	private static readonly string pathName = Application.streamingAssetsPath + "/highscores.money";
 
     public const int numHighScoresPerSubstage = 5;
-    public const int numHighScores = GameManager.numLevels * numHighScoresPerSubstage;
+    public const int numHighScores = Level.numLevels * numHighScoresPerSubstage;
     public const int numFields = 4; //high scores: (name,cubies,deaths,time)
     
 	private HighScore[] highScores;
@@ -53,7 +53,7 @@ public class ScoreManager {
     public bool setHighScore(Level level, HighScore current) {
         List<HighScore> list = new List<HighScore>();
         //index corresponding to the first highscore in the particular stage/substage
-        int startIndex = level.stage * GameManager.numSubstages * numHighScoresPerSubstage + level.substage * numHighScoresPerSubstage;
+        int startIndex = level.stage * Level.numSubstages * numHighScoresPerSubstage + level.substage * numHighScoresPerSubstage;
         
         //consider only the high scores corresponding to the current stage
         for(int i = 0; i < numHighScoresPerSubstage; i++) {
@@ -78,7 +78,7 @@ public class ScoreManager {
 	//returns the set of high scores corresponding to the level
 	public HighScore[] getHighScores(Level level) {
 		HighScore[] levelScores = new HighScore[numHighScoresPerSubstage];
-		int startIndex = level.stage * GameManager.numSubstages * numHighScoresPerSubstage + level.substage * numHighScoresPerSubstage;
+		int startIndex = level.stage * Level.numSubstages * numHighScoresPerSubstage + level.substage * numHighScoresPerSubstage;
 		for(int i = 0; i < numHighScoresPerSubstage; i++) {
 			levelScores[i] = highScores[i + startIndex];
 		}

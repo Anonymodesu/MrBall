@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,11 +10,11 @@ using UnityEngine.SceneManagement;
 public class GameManager { //a singleton
 	
 		
-	public const int numSubstages = 5;
-    public const int numStages = 6;
-	public const int numLevels = numStages * numSubstages;
+	private const int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
 	
 	private Level currentLevel = null; //stores the level that was just loaded
+	private Dictionary<Level, string> levelDescriptions;
+	private Dictionary<Level, string> levelNames;
 	
 	private static GameManager instance = null;
 	
@@ -35,42 +36,15 @@ public class GameManager { //a singleton
 		changedScene(SceneManager.GetActiveScene(), LoadSceneMode.Single); //modify to correct level parameters
 		
 		SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
+
+		parseLevelData();
+		//Level.testLevel();
 	}
 	
 	~GameManager() {
 		SceneManager.sceneLoaded -= changedScene;
 	}
 	
-/*
-	void OnEnable () { //OnEnable is guaranteed to be called before any Start() is called; to ensure that no references to 2nd game managers are made
-		//also destroys secondary achievement, sound and score managers
-	
-		if(numInstances == 0) {
-			numInstances++;
-			DontDestroyOnLoad(this.gameObject); //object is preserved across stages
-			
-			soundScript = gameObject.GetComponent<SoundManager>();
-			soundScript.init();
-			soundScript.setMusic(0);
-			currentLevel = new Level(0,0); //pretend that the first level was loaded
-			SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
-			
-		} else if (numInstances == 1) {
-			Destroy(this.gameObject); //only have 1 gameObject
-			
-		} else {
-			Debug.Log("more than 1 game manager!"); //should never happen
-		}
-		
-		
-						//Debug.Log(this.gameObject.GetInstanceID());
-
-	}
-	
-	void OnDisable() {
-		SceneManager.sceneLoaded -= changedScene;
-	}
-*/
 	void changedScene(Scene scene, LoadSceneMode mode) {
 		 //destroys the materials created in TextureManager; whenever a material is modified, a clone of it is made
 		//already called when the scene changes
@@ -117,32 +91,65 @@ public class GameManager { //a singleton
 	
 	//returns the flavour text displayed at the beginning of each level
 	public string getLevelDescription(Level level) {
-		
-		int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
-		string[] lines = null;
-		
+		if(levelDescriptions == null) {
+			return "missing description for " + level.ToString();
+		} else {
+			return levelDescriptions[level];
+		}
+	}
+
+	public string getLevelName(Level level) {
+		if(levelNames == null) {
+			return "missing level name for " + level.ToString();
+		} else {
+			return levelNames[level];
+		}
+	}
+
+	private void parseLevelData() {
+		string[] levelDescriptions = null;
+		string[] levelNames = null;
+
+		//housekeeping
 		try {
-			lines = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/leveldescrip.txt");
-			
+			levelDescriptions = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/leveldescrip.txt");
 		} catch(FileNotFoundException) {
 			Debug.Log("level descriptions not found");
 		}
-		
-		if(lines == null) {
-			return "";
-			
-		} else {
-			string ret = "";
-			int startIndex = level.stage * numSubstages * linesPerLevel + level.substage * linesPerLevel;
-				
-			for(int i = 0; i < linesPerLevel; i++) {
-				ret += lines[startIndex + i] + "\n";
-			}
-			
-			return ret;
+
+		try {
+			levelNames = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/levelnames.txt");
+		} catch(FileNotFoundException) {
+			Debug.Log("level names not found");
 		}
 		
+		if(levelDescriptions == null || levelNames == null //missing files
+			|| levelDescriptions.Length < linesPerLevel * Level.numLevels //insufficient data
+			|| levelNames.Length < Level.numLevels) {
+			return;
+		}
+		
+		//begin parsing
+		this.levelDescriptions = new Dictionary<Level, string>();
+		this.levelNames = new Dictionary<Level, string>();
+		StringBuilder sb = new StringBuilder();
+
+		for(int stage = 0; stage < Level.numStages; stage++) {
+
+			for(int substage = 0; substage < Level.numSubstages; substage++) {
+
+				Level level = new Level(stage, substage);
+				int index = stage * Level.numSubstages + substage;
+
+				for(int i = 0; i < linesPerLevel; i++) {
+					sb.Append(levelDescriptions[linesPerLevel * index + i]).Append("\n");
+				}
+
+				this.levelDescriptions.Add(level, sb.ToString());
+				this.levelNames.Add(level, levelNames[index]);
+
+				sb.Length = 0; //clear stringbuilder in preparation for next set of level descriptions
+			}
+		}
 	}
-	
-	
 }

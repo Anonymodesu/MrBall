@@ -146,7 +146,7 @@ public class Script_Player : MonoBehaviour {
 	public void nextLevel() {
 		Level nextLevel;
 		
-		if(currentLevel.substage == GameManager.numSubstages - 1) { //this is last level of the stage
+		if(currentLevel.substage == Level.numSubstages - 1) { //this is last level of the stage
 			nextLevel = new Level(currentLevel.stage + 1, 0);
 			
 		} else { //there are further levels in this stage

@@ -45,7 +45,8 @@ public class Script_Game_Menu : MonoBehaviour {
 		crossHair.transform.localScale = Vector3.zero;
 		
 		currentLevel = GameManager.getInstance().getLevel();
-		menuText.text = GameManager.getInstance().getLevelDescription(currentLevel);
+		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\n\n"
+						+ GameManager.getInstance().getLevelDescription(currentLevel);
 	}
 	
 	/*
@@ -85,7 +86,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		startButton.transform.localScale = Vector3.zero;
 		endButton.transform.localScale = Vector3.one;
 		restartButton.transform.localScale = Vector3.one;
-		menuText.text = "Stage " + currentLevel.stage + "-" + currentLevel.substage + "\nPaused";
+		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\nPaused";
 	}
 	
 	//when the level is completed, display final achievements and high scores; highscores will be null if there are no new high scores

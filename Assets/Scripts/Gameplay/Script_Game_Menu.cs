@@ -39,10 +39,10 @@ public class Script_Game_Menu : MonoBehaviour {
 		nextButton.onClick.AddListener(delegate {playerScript.nextLevel(); });
 		restartButton.onClick.AddListener(delegate {playerScript.restartGame(); });
 		
-		endButton.transform.localScale = Vector3.zero;
-		restartButton.transform.localScale = Vector3.zero;
-		nextButton.transform.localScale = Vector3.zero;
-		crossHair.transform.localScale = Vector3.zero;
+		endButton.gameObject.SetActive(false);
+		restartButton.gameObject.SetActive(false);
+		nextButton.gameObject.SetActive(false);
+		crossHair.gameObject.SetActive(false);
 		
 		currentLevel = GameManager.getInstance().getLevel();
 		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\n\n"
@@ -58,10 +58,10 @@ public class Script_Game_Menu : MonoBehaviour {
 	
 	public void displayProgress(int cubies, float time, int deaths, Achievement requirements) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("Cubies:").Append(cubies).Append('/').Append(requirements.cubies)
-		  .Append("\nTime:").Append(time.ToString("F2",CultureInfo.InvariantCulture)).Append('/').Append(requirements.time.ToString("F2",CultureInfo.InvariantCulture))
-		  .Append("\nDeaths:").Append(deaths).Append('/').Append(requirements.deaths)
-		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,(int)time)).Append('/').Append(requirements.points);
+		sb.Append("Cubies:").Append(cubies).Append('/').Append(requirements.Cubies)
+		  .Append("\nTime:").Append(time.ToString("0.00")).Append('/').Append(requirements.TimeString)
+		  .Append("\nDeaths:").Append(deaths).Append('/').Append(requirements.Deaths)
+		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,time)).Append('/').Append(requirements.Points);
 
 		scoringText.text = sb.ToString();
 	}
@@ -71,28 +71,27 @@ public class Script_Game_Menu : MonoBehaviour {
 	}
 	
 	public void showPauseMenu() {
-		background.transform.localScale = Vector3.one;
-		crossHair.transform.localScale = Vector3.zero;
+		background.gameObject.SetActive(true);
+		crossHair.gameObject.SetActive(false);
 	}
 	
 	public void hidePauseMenu() {
-		background.transform.localScale = Vector3.zero;
-		crossHair.transform.localScale = Vector3.one;
+		background.gameObject.SetActive(false);
+		crossHair.gameObject.SetActive(true);
 	}
 	
 	public void startGame() {
-		background.GetComponent<Transform>().localScale = Vector3.zero;
-		startButton.GetComponent<Button>().interactable = false; //otherwise pressing space activates pause
-		startButton.transform.localScale = Vector3.zero;
-		endButton.transform.localScale = Vector3.one;
-		restartButton.transform.localScale = Vector3.one;
+		background.gameObject.SetActive(false);
+		startButton.gameObject.SetActive(false); //otherwise pressing space activates pause
+		endButton.gameObject.SetActive(true);
+		restartButton.gameObject.SetActive(true);
 		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\nPaused";
 	}
 	
 	//when the level is completed, display final achievements and high scores; highscores will be null if there are no new high scores
 	public void displayScoreAchievements(int cubies, int deaths, float time, Achievement requirements, HighScore[] highscores) {
 		
-		nextButton.transform.localScale = Vector3.one; 
+		nextButton.gameObject.SetActive(true); 
 		menuText.text = "You win!\n";
 		
 		if(highscores != null) { //if highscores is null, then the current session did not introduce a new high score
@@ -107,34 +106,34 @@ public class Script_Game_Menu : MonoBehaviour {
 		int separation = 30;
 		Text cubiesText = Instantiate(achievementText, background.rectTransform);
 		cubiesText.rectTransform.anchoredPosition -= Vector2.up * separation * 0;
-		cubiesText.text = "Cubies: " + cubies + "/" + requirements.cubies;
+		cubiesText.text = "Cubies: " + cubies + "/" + requirements.Cubies;
 		
-		if(cubies == requirements.cubies) {
+		if(cubies == requirements.Cubies) {
 			cubiesText.fontStyle = FontStyle.Bold;
 		}
 		
 		Text timeText = Instantiate(achievementText, background.rectTransform);
 		timeText.rectTransform.anchoredPosition -= Vector2.up * separation * 1;
-		timeText.text = "Time: " + time.ToString("F2",CultureInfo.InvariantCulture) + "/" + requirements.time.ToString("F2",CultureInfo.InvariantCulture);
+		timeText.text = "Time: " + time.ToString("0.00") + "/" + requirements.TimeString;
 		
-		if((int)time < requirements.time) {
+		if(time < requirements.Time) {
 			timeText.fontStyle = FontStyle.Bold;
 		}
 
 		Text deathsText = Instantiate(achievementText, background.rectTransform);
-		deathsText.text = "Deaths: " + deaths + "/" + requirements.deaths;
+		deathsText.text = "Deaths: " + deaths + "/" + requirements.Deaths;
 		deathsText.rectTransform.anchoredPosition -= Vector2.up * separation * 2;
 		
-		if(deaths <= requirements.deaths) {
+		if(deaths <= requirements.Deaths) {
 			deathsText.fontStyle = FontStyle.Bold;
 		}
 
 		Text pointsText = Instantiate(achievementText, background.rectTransform);
 		pointsText.rectTransform.anchoredPosition -= Vector2.up * separation * 3;
-		int points = HighScore.calculateScore(cubies,deaths,(int)time);
-		pointsText.text = "Points: " + points + "/" + requirements.points;
+		int points = HighScore.calculateScore(cubies,deaths,time);
+		pointsText.text = "Points: " + points + "/" + requirements.Points;
 		
-		if(points >=  requirements.points) {
+		if(points >=  requirements.Points) {
 			pointsText.fontStyle = FontStyle.Bold;
 		}
 	}

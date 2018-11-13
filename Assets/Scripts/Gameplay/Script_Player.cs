@@ -272,7 +272,7 @@ public class Script_Player : MonoBehaviour {
 	//when the level ends, process the final score and any acquired achievements
     private void processScoreAchievements() {
 	
-		HighScore currentHighScore = new HighScore(PlayerPrefs.GetString("name", "New Player"), cubies, deaths, (int) getTime());
+		HighScore currentHighScore = new HighScore(PlayerPrefs.GetString("name", "New Player"), cubies, deaths, getTime());
 			 
 		//returns true if theres a new highscore
 		if(ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore)) {
@@ -283,7 +283,7 @@ public class Script_Player : MonoBehaviour {
 			GUIScript.displayScoreAchievements(cubies, deaths, getTime(), requirements, null);
 		}
 		
-		Achievement current = new Achievement(cubies,deaths,(int)getTime(), HighScore.calculateScore(cubies,deaths,(int)getTime()));
+		Achievement current = new Achievement(cubies,deaths, getTime(), HighScore.calculateScore(cubies,deaths, getTime()));
 		AchievementManager.getInstance().saveAchievement(PlayerPrefs.GetString("name", "New Player"), current, currentLevel); //save records to player data txt
 		
     }

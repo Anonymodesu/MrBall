@@ -11,7 +11,7 @@ public class Script_Player_Jump : MonoBehaviour {
     private const float jumpStrength = 4;
     private const int jumpCooldown = 5;
     private int jumpStep;
-    private const float superJumpMultiplier = 3;
+    private const float superJumpStrength = 12;
 	private const float perpendicularJumpStrength = 12;
 	private const float jumpAngle = -0.1f; //used to stop wall jumping
 	
@@ -59,12 +59,16 @@ public class Script_Player_Jump : MonoBehaviour {
 
 			
 			if(super && onGround) { //yellow panel is being contacted
-				rb.AddForce(-Physics.gravity.normalized * jumpStrength * superJumpMultiplier, ForceMode.Impulse);
+				Vector3 jumpDirection = -Physics.gravity.normalized;
+				cancelVelocity(jumpDirection);
+				rb.AddForce(jumpDirection * superJumpStrength, ForceMode.Impulse);
 				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.YellowJump);
 				specialJump = true;
-			} 
+			}
 			
-			if(perpend) { 	//perpendicular panel is being contacted
+			//you can 'jump' on perpendicular panels without a ground
+			if(perpend) {
+				cancelVelocity(normalVector);
 				rb.AddForce(normalVector * perpendicularJumpStrength, ForceMode.Impulse);
 				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.OrangeJump);
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
@@ -72,10 +76,21 @@ public class Script_Player_Jump : MonoBehaviour {
 			}
             
 			if(!specialJump && onGround) { //jump normally
-				rb.AddForce(-Physics.gravity.normalized * jumpStrength, ForceMode.Impulse);
+				Vector3 jumpDirection = -Physics.gravity.normalized;
+				cancelVelocity(jumpDirection);
+				rb.AddForce(jumpDirection * jumpStrength, ForceMode.Impulse);
 				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.NormalJump);
 			}
+
         }
+    }
+
+    //cancels out velocities that oppose the jump direction
+    //needed when the trigger collider has contacted but the physical collider hasnt yet
+    private void cancelVelocity(Vector3 jumpDirection) {
+    	if(Vector3.Dot(rb.velocity, jumpDirection) < 0) {
+			rb.velocity = Vector3.ProjectOnPlane(rb.velocity, jumpDirection);
+		}
     }
 	
 }

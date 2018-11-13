@@ -108,12 +108,12 @@ public class AchievementManager {
 		}
 
 		for(int i = 0; i < requirements.Length; i++) {
-			//leveldata.txt is in the format cubies/deaths/time/points
-			requirements[i] = new Achievement(0,0,0,0);
+
+			requirements[i] = parseRequirement(lines[i]);
 			
-			if(parseRequirement(lines[i], requirements[i])) { //returns true if parsing is successful
-				   		               
-	        } else { //invalid field(s)
+			if(requirements[i] == null) { //null if parsing is unsuccessful
+
+	        	requirements[i] = new Achievement(0,0,0,0);
 				Debug.Log("invalid field at line " + i + " in leveldata.txt");
 	        }
 		}
@@ -122,19 +122,31 @@ public class AchievementManager {
 	}
 
 
-	//parse a single achievement, received as plaintext; saves parsed values in achievement; returns true iff successful
-	private bool parseRequirement(string line, Achievement achievement) {
+	//parse a single achievement, received as plaintext; returns null if unsuccessful
+	private Achievement parseRequirement(string line) {
 		string[] fields = line.Split(new char[] {' '});
 		
 		if(fields.Length != numFields) {
-			return false;
+			return null;
 			
 		} else {
+
+			int cubies = 0;
+			int deaths = 0;
+			float time = 0;
+			int points = 0;
 			
-			return Int32.TryParse(fields[0], out achievement.cubies) && //parse each field in the entry
-				   Int32.TryParse(fields[1], out achievement.deaths) && 
-				   Int32.TryParse(fields[2], out achievement.time) &&
-				   Int32.TryParse(fields[3], out achievement.points);
+			//leveldata.txt is in the format cubies/deaths/time/points
+			bool success = Int32.TryParse(fields[0], out cubies) && //parse each field in the entry
+						   Int32.TryParse(fields[1], out deaths) && 
+						   Single.TryParse(fields[2], out time) &&
+						   Int32.TryParse(fields[3], out points);
+
+			if(success) {
+				return new Achievement(cubies, deaths, time, points);
+			} else {
+				return null;
+			}
 		}
 	}
 

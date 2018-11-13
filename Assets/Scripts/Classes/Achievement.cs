@@ -6,12 +6,32 @@ using System;
 [Serializable]
 public class Achievement { //used for both storing requirements for a stage's achievements as well as player records
 
-	public int cubies;
-	public int deaths;
-	public int time;
-	public int points;
+	private int cubies;
+	private int deaths;
+	private float time;
+	private int points;
+
+	public int Cubies {
+		get { return cubies; }
+	}
+
+	public int Deaths {
+		get { return deaths; }
+	}
+
+    public string TimeString {
+        get { return time.ToString("0.00"); }
+    }
+
+    public float Time {
+        get { return time; }
+    }
+
+    public int Points {
+		get { return points; }
+	}
 	
-	public Achievement(int cubies, int deaths, int time, int points) {
+	public Achievement(int cubies, int deaths, float time, int points) {
 		this.cubies = cubies;
 		this.deaths = deaths;
 		this.time = time;

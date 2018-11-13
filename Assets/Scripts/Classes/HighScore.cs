@@ -9,12 +9,12 @@ public class HighScore {
     private string name;
     private int cubies;
     private int deaths;
-    private int time;
+    private float time;
     
     public const int deathPoints = -10;
     public const int cubiePoints = 100;
     
-    public HighScore(string name, int cubies, int deaths, int time) {
+    public HighScore(string name, int cubies, int deaths, float time) {
         this.name = name;
         this.cubies = cubies;
         this.deaths = deaths;
@@ -22,16 +22,16 @@ public class HighScore {
     }
     
     public string display() {
-        return name + "\t\t" + cubies + "\t\t" + deaths + "\t\t" + time + "\t\t" + calculateScore(cubies,deaths,time) + "\n"; 
+        return name + "\t\t" + cubies + "\t\t" + deaths + "\t\t" + time.ToString("0.00") + "\t\t" + calculateScore(cubies,deaths,time) + "\n"; 
     }
     
     public string Name() { return name; }
     public int Cubies() { return cubies; }
     public int Deaths() { return deaths; }
-    public int Time() { return time; }
+    public float Time() { return time; }
 
-    public static int calculateScore(int cubies, int deaths, int time) {
-        return 1000 + cubies * cubiePoints + deaths * deathPoints - time;
+    public static int calculateScore(int cubies, int deaths, float time) {
+        return 1000 + cubies * cubiePoints + deaths * deathPoints - (int)time;
     }
     
     public int calculateScore() {

@@ -34,10 +34,10 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		
 		if(current == null) { //player has not completed this level
 
-			cubiesText.text = "-/\n " + required.cubies;
-			deathsText.text = "-/\n " + required.deaths;
-			timeText.text = "-/\n " + required.time;
-			scoreText.text = "-/\n " + required.points;
+			cubiesText.text = "-/\n" + required.Cubies;
+			deathsText.text = "-/\n" + required.Deaths;
+			timeText.text = "-/\n" + required.TimeString;
+			scoreText.text = "-/\n" + required.Points;
 
 			cubiesText.fontStyle = FontStyle.Normal;
 			deathsText.fontStyle = FontStyle.Normal;
@@ -46,16 +46,16 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 
 		} else { //player has completed this level
 
-			cubiesText.text = current.cubies + "/\n " + required.cubies;
-			deathsText.text = current.deaths + "/\n " + required.deaths;
-			timeText.text = current.time + "/\n " + required.time;
-			scoreText.text = current.points + "/\n " + required.points;
+			cubiesText.text = current.Cubies + "/\n" + required.Cubies;
+			deathsText.text = current.Deaths + "/\n" + required.Deaths;
+			timeText.text = current.TimeString + "/\n" + required.TimeString;
+			scoreText.text = current.Points + "/\n" + required.Points;
 
 			//check if any of the achievements have been reached
-			cubiesText.fontStyle = (current.cubies == required.cubies) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			deathsText.fontStyle = (current.deaths <= required.deaths) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			timeText.fontStyle = (current.time <= required.time) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			scoreText.fontStyle = (current.points >= required.points) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			cubiesText.fontStyle = (current.Cubies == required.Cubies) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			deathsText.fontStyle = (current.Deaths <= required.Deaths) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			timeText.fontStyle = (current.Time <= required.Time) ? FontStyle.BoldAndItalic : FontStyle.Normal;
+			scoreText.fontStyle = (current.Points >= required.Points) ? FontStyle.BoldAndItalic : FontStyle.Normal;
 		}
 		
     }

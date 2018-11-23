@@ -99,7 +99,7 @@ public class Script_Player_Move : MonoBehaviour {
 				rb.AddForce(force);
 			}
 
-			//Debug.Log(velocityRatio + " " + rb.velocity.magnitude + "/" + maxSpeed);
+			Debug.Log(velocityRatio + " " + rb.velocity.magnitude + "/" + maxSpeed);
         }
         
         

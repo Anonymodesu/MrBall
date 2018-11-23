@@ -64,7 +64,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1
+  near clip plane: 0.1
   far clip plane: 100
   field of view: 60
   orthographic: 0
@@ -110,14 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d6230d45dcd91449a5bdf5b8a641dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skyBox0: {fileID: 2100000, guid: 7400269f7d341bc41b1f21adeccb2a5f, type: 2}
-  skyBox1: {fileID: 2100000, guid: e9705e00f62f62849b89fc9fd55aa0e3, type: 2}
-  skyBox2: {fileID: 2100000, guid: 93d43b027dc267444af7412b8e607dbd, type: 2}
-  skyBox3: {fileID: 2100000, guid: 13fde35df00f2384598d84d32a7bacd8, type: 2}
-  skyBox4: {fileID: 2100000, guid: d07d2172e76d3fa429e80a14d2ae3616, type: 2}
-  skyBox5: {fileID: 2100000, guid: 4aa30c3a4a7a34bbd9256623e194cf78, type: 2}
-  skyBox6: {fileID: 2100000, guid: 2eeba5a34e2f1440797d2b0056f3356c, type: 2}
-  skyBox7: {fileID: 2100000, guid: ff330f6226d1d44838ee63a8824f8def, type: 2}
 --- !u!124 &124808766707149394
 Behaviour:
   m_ObjectHideFlags: 1

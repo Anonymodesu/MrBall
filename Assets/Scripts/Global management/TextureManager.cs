@@ -8,6 +8,8 @@ using UnityEngine;
 public class TextureManager {
 	
 	private static TextureManager instance = null;
+
+	private Dictionary<Vector3, Mesh> meshes;
 	
 	public static TextureManager getInstance() {
 		if(instance == null) {
@@ -22,6 +24,7 @@ public class TextureManager {
 		GameObject playingField = GameObject.Find("Rollercoaster");
 
 		if(playingField != null) { //null when the scene is the main menu
+			meshes = new Dictionary<Vector3, Mesh>();
 			applyTexture(playingField.transform, stage);
 		} else {
 			//Debug.Log("attempting to retile menu");
@@ -134,7 +137,7 @@ public class TextureManager {
 			Materials materials = GameObject.Find("Resources").GetComponent<Materials>();
 			renderer.sharedMaterial.EnableKeyword("_NORMALMAP"); //used to ensure that normal maps are included in the build
 			renderer.sharedMaterial.SetTexture("_MainTex", materials.rampTextures[stage]);
-			renderer.sharedMaterial.SetTexture("_DetailAlbedoMap", materials.rampTextures[stage]);
+			//renderer.sharedMaterial.SetTexture("_DetailAlbedoMap", materials.rampTextures[stage]);
 			renderer.sharedMaterial.SetTexture("_BumpMap", materials.rampNormalMaps[stage]);
 			
 		}

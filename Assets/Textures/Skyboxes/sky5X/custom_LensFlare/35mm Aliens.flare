@@ -3,10 +3,10 @@
 --- !u!121 &12100000
 Flare:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 35mm Aliens
-  m_FlareTexture: {fileID: 2800000, guid: f1a9b1445381911478ecbd82671f23aa, type: 3}
+  m_FlareTexture: {fileID: 2800000, guid: e4fd1cdecdf7fe04994c460b6b5cf073, type: 3}
   m_TextureLayout: 1
   m_Elements:
   - m_ImageIndex: 0
@@ -177,7 +177,7 @@ Flare:
     m_Rotate: 0
     m_Zoom: 1
     m_Fade: 1
-  m_UseFog: 1
+  m_UseFog: 0
 --- !u!1002 &12100001
 EditorExtensionImpl:
   serializedVersion: 6

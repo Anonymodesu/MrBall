@@ -5,9 +5,8 @@ using UnityEngine;
 public class Script_Game_Camera : Script_Camera {
     float mouseSensitivity;
     GameObject player;
-    float positionOffset;
 	Vector3 rotation; // vector representing an Euler rotation in the standard basis; 
-	
+
 	Vector3 xAxis;
 	Vector3 yAxis;
 	Vector3 zAxis; //the current coordinate system being used, relevant when gravity changes
@@ -15,13 +14,22 @@ public class Script_Game_Camera : Script_Camera {
 	//upper half rotation is from 0 at the middle down to -90 at the top
 	private const float upperLimit = -89; 
 	private const float lowerLimit = 89;
-	//lower half rotation is from 0 at middle down to 90 at the bottom	
+	//lower half rotation is from 0 at middle down to 90 at the bottom
+
+	private const float baseFOV = 65;
+
+	//determines distance from camera to the ball
+	float currentOffset;
+	const float baseOffset = 1;
+	
+	//moving quickly warps the camera; increasing this value decreases warp delay
+	private const float warpSpeed = 0.1f;
 
     // Use this for initialization
     void Start () {
         mouseSensitivity = 2;
         player = GameObject.FindWithTag("Player");
-        positionOffset = 1;
+        currentOffset = baseOffset;
 		rotation = Vector3.zero;
 		updateAxes();
         transform.position = GameObject.Find("Ramp_Start").GetComponent<Transform>().position + Vector3.up;
@@ -33,9 +41,15 @@ public class Script_Game_Camera : Script_Camera {
 		//Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
 		//Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
 		//Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
-		
 
-			//deltatime is still required to freeze camera during pause
+    	updateRotation();
+    	updatePosition();
+	
+		//Debug.Log(Quaternion.LookRotation(-transform.forward).eulerAngles);	
+    }
+
+    private void updateRotation() {
+		//deltatime is still required to freeze camera during pause
 		rotation.x -= mouseSensitivity*Input.GetAxis("Mouse Y") * Time.deltaTime * 60;
 		rotation.y += mouseSensitivity*Input.GetAxis("Mouse X") * Time.deltaTime * 60; 
 		rotation.z = 0;
@@ -54,10 +68,21 @@ public class Script_Game_Camera : Script_Camera {
 		
 		Vector3 temp = Quaternion.AngleAxis(rotation.y, yAxis) * Quaternion.AngleAxis(rotation.x, xAxis) * zAxis;
 		transform.rotation = Quaternion.LookRotation(temp, yAxis);
-		
+    }
+
+    private void updatePosition() {
+    	//FOV widens as velocity increases
+    	float ballSpeed = Vector3.Dot(player.GetComponent<Rigidbody>().velocity, transform.forward);
+		float prevFOV = GetComponent<Camera>().fieldOfView;
+		float nextFOV = baseFOV - ballSpeed;
+		GetComponent<Camera>().fieldOfView = Mathf.Lerp(prevFOV, nextFOV, warpSpeed * Time.deltaTime * 60);
+
+		float nextOffset = baseOffset / (1 - ballSpeed * 0.01f);//camera gets closer as speed increases
+		currentOffset = Mathf.Lerp(currentOffset, nextOffset, warpSpeed * Time.deltaTime * 60);
+
 		transform.position = player.transform.position //transform.forward is always normalized
-							+ (yAxis * 0.7f - transform.forward * 2) * positionOffset; //position the camera behind the ball 
-		
+							+ (yAxis * 0.7f - transform.forward * 2) //position the camera behind the ball 
+							* currentOffset;
     }
 	
 	public void updateAxes() { //called when a change in gravity is registered by Script_Player

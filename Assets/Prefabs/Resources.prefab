@@ -89,6 +89,14 @@ MonoBehaviour:
   skyBox5: {fileID: 2100000, guid: 4aa30c3a4a7a34bbd9256623e194cf78, type: 2}
   skyBox6: {fileID: 2100000, guid: 2eeba5a34e2f1440797d2b0056f3356c, type: 2}
   skyBox7: {fileID: 2100000, guid: ff330f6226d1d44838ee63a8824f8def, type: 2}
+  flare0: {fileID: 12100000, guid: eb7f2fdf6cf18496a8300de97efb5eac, type: 2}
+  flare1: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
+  flare2: {fileID: 12100000, guid: 8541d94808d5849d8bfa480259334205, type: 2}
+  flare3: {fileID: 12100000, guid: f3cd23d6d3e3d490cb471c69069c97a1, type: 2}
+  flare4: {fileID: 12100000, guid: 3ca3d4e332e9641439d689a9005a1813, type: 2}
+  flare5: {fileID: 12100000, guid: e59f068002a7b47858274b3c71e10ea7, type: 2}
+  flare6: {fileID: 12100000, guid: 1b8cbb37f206944c7bc235686d0cb229, type: 2}
+  flare7: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
 --- !u!114 &114736134254049876
 MonoBehaviour:
   m_ObjectHideFlags: 1

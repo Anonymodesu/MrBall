@@ -80,7 +80,7 @@ public class Script_Player : MonoBehaviour {
         
         pauseable = false;
         
-        startPos = GameObject.Find("Ramp_Checkpoint");
+        startPos = GameObject.Find("Ramp_Start");
 		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up;
         reset();
 				

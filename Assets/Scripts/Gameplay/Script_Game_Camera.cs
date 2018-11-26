@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Script_Game_Camera : Script_Camera {
-    float mouseSensitivity;
-    GameObject player;
-	Vector3 rotation; // vector representing an Euler rotation in the standard basis; 
+    private float mouseSensitivity;
+    private GameObject player;
+	private Vector3 rotation; // vector representing an Euler rotation in the standard basis; 
 
-	Vector3 xAxis;
-	Vector3 yAxis;
-	Vector3 zAxis; //the current coordinate system being used, relevant when gravity changes
-		
+	private Vector3 xAxis;
+	private Vector3 yAxis;
+	private Vector3 zAxis; //the current coordinate system being used, relevant when gravity changes
+	private const float gravityChangeSpeed = 0.1f; //how quickly the camera adjusts to new gravities
+
 	//upper half rotation is from 0 at the middle down to -90 at the top
 	private const float upperLimit = -89; 
 	private const float lowerLimit = 89;
 	//lower half rotation is from 0 at middle down to 90 at the bottom
-
-	private const float baseFOV = 65;
 
 	//determines distance from camera to the ball
 	float currentOffset;
@@ -24,6 +23,8 @@ public class Script_Game_Camera : Script_Camera {
 	
 	//moving quickly warps the camera; increasing this value decreases warp delay
 	private const float warpSpeed = 0.1f;
+	private const float baseFOV = 65; //fov at 0 velocity
+
 
     // Use this for initialization
     void Start () {
@@ -37,14 +38,15 @@ public class Script_Game_Camera : Script_Camera {
     
     // Update is called once per frame
     void LateUpdate () {
-		
-		//Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
-		//Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
-		//Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
 
+		Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
+		Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
+		Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
+
+		updateAxes();
     	updateRotation();
     	updatePosition();
-	
+    	
 		//Debug.Log(Quaternion.LookRotation(-transform.forward).eulerAngles);	
     }
 
@@ -85,33 +87,39 @@ public class Script_Game_Camera : Script_Camera {
 							* currentOffset;
     }
 	
-	public void updateAxes() { //called when a change in gravity is registered by Script_Player
+	public void updateAxes() {
 
-		yAxis = -Physics.gravity.normalized;
+		Vector3 targetYAxis = -Physics.gravity.normalized;
+
+		if(yAxis == targetYAxis) { //no change in axes registered
+			return;
+
+		} else if (Vector3.Angle(yAxis, targetYAxis) < 1) {
+			yAxis = targetYAxis;
+
+		} else { //shift the yAxis towards the gravity vector a little
+			Quaternion rotation = Quaternion.FromToRotation(yAxis, targetYAxis);
+			rotation = Quaternion.Lerp(Quaternion.identity, rotation, gravityChangeSpeed * Time.deltaTime * 60);
+			yAxis = rotation * yAxis;
+		}
+
 		xAxis = Vector3.Cross(yAxis, transform.forward).normalized;
-		
-		while(xAxis.Equals(Vector3.zero)) { //almost never happens
-			xAxis = Vector3.Cross(yAxis, Random.insideUnitSphere).normalized;
+		if(xAxis.Equals(Vector3.zero)) {
+			Debug.Log(transform.forward);
 		}
 		zAxis = Vector3.Cross(xAxis, yAxis).normalized;
 
-		/* makes the camera face what the camera was previously facing
-		float xRotation = Vector3.SignedAngle(zAxis, transform.forward, xAxis);
-		float yRotation = Vector3.SignedAngle(zAxis, transform.forward, yAxis);
-		rotation = new Vector3(xRotation, yRotation, 0);
-		*/
-
-		rotation = Vector3.zero;
+		rotation = new Vector3(rotation.x, 0, 0);
 	}
 	
 	// returns the projection of the camera's current forward facing direction onto the x-z plane in the current coordinate basis
 	public Vector3 forwardVector() {
-		return Vector3.ProjectOnPlane(transform.forward, yAxis);
+		return Vector3.ProjectOnPlane(transform.forward, Physics.gravity);
 	}
 	
 	// returns the projection of camera's current right facing direction onto the x-z plane in the current coordinate basis
 	public Vector3 rightVector() {
-		return Vector3.ProjectOnPlane(transform.right, yAxis);
+		return Vector3.ProjectOnPlane(transform.right, Physics.gravity);
 	}
 	
 	

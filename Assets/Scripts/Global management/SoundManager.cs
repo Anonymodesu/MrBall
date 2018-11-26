@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class SoundManager {
 
 	public enum SoundFX : int {Roll = 0, Collision = 1, YellowJump = 2, OrangeJump = 3, NormalJump = 4, Checkpoint = 5, Cubie = 6,
-								Win = 7}
+								Win = 7, Gravity = 8}
 
 	private GameObject container; //provides a gameobject for audiosources to be attached to
 	private AudioSource bgMusic;
@@ -52,6 +52,7 @@ public class SoundManager {
 		soundFXVolume[(int) SoundFX.Checkpoint] = 1f;
 		soundFXVolume[(int) SoundFX.Cubie] = 0.5f;
 		soundFXVolume[(int) SoundFX.Win] = 0.5f;
+		soundFXVolume[(int) SoundFX.Gravity] = 1f;
 	}
 	
 	private MusicFiles getSoundFiles() {

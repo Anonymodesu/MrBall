@@ -25,7 +25,6 @@ public class Script_Player : MonoBehaviour {
     private List<GameObject> contacts; //holds the current ramps in contact with mr.ball
     
 	//scripts
-	private Script_Game_Camera cameraScript; 
 	private Script_Player_Move movementScript;
 	private Script_Player_Jump jumpScript;
 	private Script_OutOfBounds outOfBoundsScript;
@@ -41,7 +40,7 @@ public class Script_Player : MonoBehaviour {
 	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint
 	private const float gravityStrength = 9.8f;
 	private Vector3 defaultGravityDirection = Vector3.down; //stores gravity loaded at the beginning of each level
-	private float gravityEpsilon = 0.01f; //minimum change in gravity to change the coordinate axes
+	private float gravityEpsilon = 10; //minimum change in gravity to change the coordinate axes
 
 	//UI variables
     private Script_Game_Menu GUIScript;
@@ -63,7 +62,6 @@ public class Script_Player : MonoBehaviour {
         contacts = new List<GameObject>();
         
         Cursor.visible = true; 
-		cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<Script_Game_Camera>();
 		movementScript = GetComponent<Script_Player_Move>();
 		jumpScript = GetComponent<Script_Player_Jump>();
 		outOfBoundsScript = GetComponent<Script_OutOfBounds>();
@@ -139,7 +137,7 @@ public class Script_Player : MonoBehaviour {
     }
 	
 	public void restartGame() {
-		Physics.gravity = defaultGravityDirection * gravityStrength; 
+		Physics.gravity = defaultGravityDirection * gravityStrength;
 		SceneManager.LoadSceneAsync(currentLevel.ToString());
 	}
 	
@@ -227,11 +225,12 @@ public class Script_Player : MonoBehaviour {
 	//change the gravity to the vector opposing the normal of the surface
 	private void processGravity(GameObject surface) {
 		Vector3 normal = findNormalVector(surface, this.gameObject);
-		
-		if((Physics.gravity.normalized + normal.normalized).magnitude > gravityEpsilon) { //change in gravity is significant enough
-			Physics.gravity = -normal.normalized * gravityStrength;
-			cameraScript.updateAxes(); //elicit a change in camera perspective
+
+		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
+			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Gravity);
 		}
+
+		Physics.gravity = -normal.normalized * gravityStrength;
 	}
 	
     private void reset() {
@@ -240,7 +239,6 @@ public class Script_Player : MonoBehaviour {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 		
-		cameraScript.updateAxes();
         movementScript.resetInput();
     }
 	

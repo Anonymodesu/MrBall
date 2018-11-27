@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33040976524554892}
   - component: {fileID: 135465756489999652}
   - component: {fileID: 23335337681978298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere_Bouncy
   m_TagString: Bouncy
   m_Icon: {fileID: 0}

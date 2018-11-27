@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33176487124773080}
   - component: {fileID: 65113263874175092}
   - component: {fileID: 23150571657409880}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Perpendicular
   m_TagString: Perpendicular
   m_Icon: {fileID: 0}

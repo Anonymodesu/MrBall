@@ -25,6 +25,10 @@ public class Script_Game_Camera : Script_Camera {
 	private const float warpSpeed = 0.1f;
 	private const float baseFOV = 65; //fov at 0 velocity
 
+	//variables for hiding ramps
+	private const int rampLayerMask = 1 << 8;
+	private Dictionary<GameObject, GameObject> hiddenRamps;
+	private const float transparency = 0.5f;
 
     // Use this for initialization
     void Start () {
@@ -33,12 +37,15 @@ public class Script_Game_Camera : Script_Camera {
         currentOffset = baseOffset;
 		rotation = Vector3.zero;
         transform.position = GameObject.Find("Ramp_Start").GetComponent<Transform>().position + Vector3.up;
+
         yAxis = Vector3.up;
         xAxis = Vector3.right;
         zAxis = Vector3.forward;
+
+        hiddenRamps = new Dictionary<GameObject, GameObject>();
     }
     
-    // Update is called once per frame
+    // Follow camera
     void LateUpdate () {
 
 		Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
@@ -48,8 +55,50 @@ public class Script_Game_Camera : Script_Camera {
 		updateAxes();
     	updateRotation();
     	updatePosition();
+
+    	processCollider();
     	
 		//Debug.Log(Quaternion.LookRotation(-transform.forward).eulerAngles);	
+    }
+
+    //there is a ramp obstructing view
+    void OnTriggerEnter(Collider other) {
+    	GameObject ramp = other.gameObject;
+
+		//create temporary transparent ramp
+		GameObject transparentRamp = Instantiate(ramp, ramp.transform.parent);
+
+		//so that it is ignored by everything; only its renderer is needed
+		transparentRamp.GetComponent<Collider>().enabled = false; 
+
+		//make it transparent
+		//see https://answers.unity.com/questions/1004666/change-material-rendering-mode-in-runtime.html
+		Material mat = transparentRamp.GetComponent<Renderer>().material;
+		mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        mat.SetInt("_ZWrite", 0);
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.DisableKeyword("_ALPHABLEND_ON");
+        mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        mat.renderQueue = 3000;
+		mat.SetColor("_Color", new Color(mat.color.r, mat.color.g, mat.color.b, transparency));
+
+		//hide original ramp
+		hiddenRamps.Add(ramp, transparentRamp);
+		ramp.GetComponent<Renderer>().enabled = false; //make it invisible	
+    }
+
+    //the ramp is no longer obstructing view
+    void OnTriggerExit(Collider other) {
+    	GameObject ramp = other.gameObject;
+    	GameObject transparentRamp = hiddenRamps[ramp];
+    	hiddenRamps.Remove(ramp);
+
+    	//destroy the temporary ramp
+    	Destroy(transparentRamp.GetComponent<Renderer>().material);
+    	Destroy(transparentRamp);
+
+    	ramp.GetComponent<Renderer>().enabled = true;
     }
 
     private void updateRotation() {
@@ -120,6 +169,14 @@ public class Script_Game_Camera : Script_Camera {
 
 		rotation = new Vector3(rotation.x, 0, 0);
 	}
+
+	//ensures that the collider always spans the length between the camera and the ball
+    private void processCollider() {
+		BoxCollider collider = GetComponent<BoxCollider>();
+		collider.center = transform.InverseTransformPoint((transform.position + player.transform.position) / 2);
+		collider.size = new Vector3(collider.size.x, collider.size.y, 0.9f * (player.transform.position - transform.position).magnitude);
+    }
+
 	
 	// returns the projection of the camera's current forward facing direction onto the x-z plane in the current coordinate basis
 	public Vector3 forwardVector() {

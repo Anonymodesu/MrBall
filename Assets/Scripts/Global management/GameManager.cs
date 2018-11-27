@@ -70,7 +70,7 @@ public class GameManager { //a singleton
 		}
 		
 		currentCamera.setLighting(currentLevel.stage);
-		//TextureManager.getInstance().applyTextures(currentLevel.stage);
+		TextureManager.getInstance().applyTextures(currentLevel.stage);
 
 	}
 	

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33131539923926690}
   - component: {fileID: 65770569880946840}
   - component: {fileID: 23031149467022654}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Fast (1)
   m_TagString: Fast
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33770779379948460}
   - component: {fileID: 65490577542506746}
   - component: {fileID: 23122866970005230}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Fast
   m_TagString: Fast
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4377439788003574}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Fast_Guarded
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 33615845487300004}
   - component: {fileID: 65041831743177142}
   - component: {fileID: 23618694604266022}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Fast
   m_TagString: Fast
   m_Icon: {fileID: 0}

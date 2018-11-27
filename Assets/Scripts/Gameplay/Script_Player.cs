@@ -79,7 +79,7 @@ public class Script_Player : MonoBehaviour {
         pauseable = false;
         
         startPos = GameObject.Find("Ramp_Start");
-		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
+		startGravityDirection = -startPos.transform.up;// // -startPos.transform.up; defaultGravityDirection
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();

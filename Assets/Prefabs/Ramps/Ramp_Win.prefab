@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33734160046122398}
   - component: {fileID: 65686953979595300}
   - component: {fileID: 23350710058708330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Win
   m_TagString: Win
   m_Icon: {fileID: 0}

@@ -6,6 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(TextureManager))]
 public class TextureHelper : Editor {
 
+/*
 	public override void OnInspectorGUI() {
 		DrawDefaultInspector();
 		TextureManager targetScript = (TextureManager) target;
@@ -13,4 +14,5 @@ public class TextureHelper : Editor {
 			targetScript.applyTextures();
 		}
 	}
+	*/
 }

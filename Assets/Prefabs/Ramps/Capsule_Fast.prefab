@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33497036934612654}
   - component: {fileID: 136111389026896224}
   - component: {fileID: 23951001036336892}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule_Fast
   m_TagString: Fast
   m_Icon: {fileID: 0}

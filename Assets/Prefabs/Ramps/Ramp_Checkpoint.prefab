@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33243456580022334}
   - component: {fileID: 65571794171234376}
   - component: {fileID: 23875531034654466}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Checkpoint
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}

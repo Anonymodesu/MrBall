@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4644810471155676}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Guarded
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 33892316915684370}
   - component: {fileID: 65349649054458110}
   - component: {fileID: 23560245709294254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Flat
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 33065804083802358}
   - component: {fileID: 65272365806212624}
   - component: {fileID: 23841891396889448}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Flat (3)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 33769897395025756}
   - component: {fileID: 65596977624100114}
   - component: {fileID: 23007030882589956}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ramp_Flat (2)
   m_TagString: Ground
   m_Icon: {fileID: 0}

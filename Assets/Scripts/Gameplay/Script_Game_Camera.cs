@@ -32,8 +32,10 @@ public class Script_Game_Camera : Script_Camera {
         player = GameObject.FindWithTag("Player");
         currentOffset = baseOffset;
 		rotation = Vector3.zero;
-		updateAxes();
         transform.position = GameObject.Find("Ramp_Start").GetComponent<Transform>().position + Vector3.up;
+        yAxis = Vector3.up;
+        xAxis = Vector3.right;
+        zAxis = Vector3.forward;
     }
     
     // Update is called once per frame
@@ -87,7 +89,7 @@ public class Script_Game_Camera : Script_Camera {
 							* currentOffset;
     }
 	
-	public void updateAxes() {
+	private void updateAxes() {
 
 		Vector3 targetYAxis = -Physics.gravity.normalized;
 
@@ -104,9 +106,16 @@ public class Script_Game_Camera : Script_Camera {
 		}
 
 		xAxis = Vector3.Cross(yAxis, transform.forward).normalized;
-		if(xAxis.Equals(Vector3.zero)) {
-			Debug.Log(transform.forward);
+		while(xAxis.Equals(Vector3.zero)) {
+			xAxis = Vector3.Cross(yAxis, Random.insideUnitSphere);
+			Debug.Log("xAxis is 0");
+
+			if(yAxis.Equals(Vector3.zero)) { //to avoid infinite loops
+				Debug.Log("yAxis is 0");
+				break;
+			}
 		}
+
 		zAxis = Vector3.Cross(xAxis, yAxis).normalized;
 
 		rotation = new Vector3(rotation.x, 0, 0);

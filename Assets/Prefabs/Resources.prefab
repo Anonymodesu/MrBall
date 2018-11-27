@@ -54,13 +54,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music:
-  - {fileID: 8300000, guid: 581bcc5fc858c7f47a8db292b904f2c6, type: 3}
   - {fileID: 8300000, guid: 09d62a76d6946c94f9846fc17a72e85c, type: 3}
+  - {fileID: 8300000, guid: f4198cbfc252f8f479e8959bcf3b097e, type: 3}
   - {fileID: 8300000, guid: cae33bec15bb42a4aaa234537a77bdbc, type: 3}
   - {fileID: 8300000, guid: dcbb07eb5d34b894b8105887ef8ab721, type: 3}
   - {fileID: 8300000, guid: 191f7f275c804c942aefb3451c12eab6, type: 3}
-  - {fileID: 8300000, guid: 091b90a2464163f41a9e439cbd709d68, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 3688ef0079fb4bc4781b74c83f47617f, type: 3}
+  - {fileID: 8300000, guid: 3688ef0079fb4bc4781b74c83f47617f, type: 3}
   soundFX:
   - {fileID: 0}
   - {fileID: 8300000, guid: 65c347858ca426f46ac5611b8625ef6d, type: 3}
@@ -96,7 +96,7 @@ MonoBehaviour:
   flare3: {fileID: 12100000, guid: f3cd23d6d3e3d490cb471c69069c97a1, type: 2}
   flare4: {fileID: 12100000, guid: 3ca3d4e332e9641439d689a9005a1813, type: 2}
   flare5: {fileID: 12100000, guid: e59f068002a7b47858274b3c71e10ea7, type: 2}
-  flare6: {fileID: 12100000, guid: 1b8cbb37f206944c7bc235686d0cb229, type: 2}
+  flare6: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
   flare7: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
 --- !u!114 &114736134254049876
 MonoBehaviour:

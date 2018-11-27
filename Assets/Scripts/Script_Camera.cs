@@ -20,10 +20,10 @@ public class Script_Camera : MonoBehaviour {
 		switch(stage) {
 			case 0: stage0Settings(); break;
 			case 1: stage1Settings(); break;
-			case 2: stage2Settings(); break;
+			case 2: stage5Settings(); break;
 			case 3: stage3Settings(); break;
 			case 4: stage4Settings(); break;
-			case 5: stage5Settings(); break;
+			case 5: stage7Settings(); break;
 		}
 	}
 	

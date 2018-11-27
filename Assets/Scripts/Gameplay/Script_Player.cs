@@ -79,7 +79,7 @@ public class Script_Player : MonoBehaviour {
         pauseable = false;
         
         startPos = GameObject.Find("Ramp_Start");
-		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up;
+		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
@@ -132,16 +132,16 @@ public class Script_Player : MonoBehaviour {
 	
 	public void endGame() {
 		Physics.gravity = defaultGravityDirection * gravityStrength;
-		SceneManager.LoadSceneAsync("Scene_Menu");
-		Time.timeScale = 1;
+		SceneManager.LoadScene("Scene_Menu");
     }
 	
 	public void restartGame() {
 		Physics.gravity = defaultGravityDirection * gravityStrength;
-		SceneManager.LoadSceneAsync(currentLevel.ToString());
+		SceneManager.LoadScene(currentLevel.ToString());
 	}
 	
 	public void nextLevel() {
+		Physics.gravity = defaultGravityDirection * gravityStrength;
 		Level nextLevel;
 		
 		if(currentLevel.substage == Level.numSubstages - 1) { //this is last level of the stage

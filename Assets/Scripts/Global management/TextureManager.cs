@@ -135,7 +135,6 @@ public class TextureManager {
 			//apply material for the corresponding stage
 			Renderer renderer = obj.GetComponent<Renderer>();
 			Materials materials = GameObject.Find("Resources").GetComponent<Materials>();
-			renderer.sharedMaterial.EnableKeyword("_NORMALMAP"); //used to ensure that normal maps are included in the build
 			renderer.sharedMaterial.SetTexture("_MainTex", materials.rampTextures[stage]);
 			renderer.sharedMaterial.SetTexture("_DetailAlbedoMap", materials.rampTextures[stage]);
 			renderer.sharedMaterial.SetTexture("_BumpMap", materials.rampNormalMaps[stage]);

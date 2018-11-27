@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class TextureHelper : MonoBehaviour {
+[CustomEditor(typeof(TextureManager))]
+public class TextureHelper : Editor {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public override void OnInspectorGUI() {
+		DrawDefaultInspector();
+		TextureManager targetScript = (TextureManager) target;
+		if(GUILayout.Button("Tile textures Blyat")) {
+			targetScript.applyTextures();
+		}
 	}
 }

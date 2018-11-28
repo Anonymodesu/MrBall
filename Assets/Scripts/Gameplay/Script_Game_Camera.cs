@@ -48,9 +48,9 @@ public class Script_Game_Camera : Script_Camera {
     // Follow camera
     void LateUpdate () {
 
-		Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
-		Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
-		Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
+		//Debug.DrawLine(player.transform.position,player.transform.position+xAxis,Color.red);
+		//Debug.DrawLine(player.transform.position,player.transform.position+yAxis,Color.blue);
+		//Debug.DrawLine(player.transform.position,player.transform.position+zAxis,Color.black);
 
 		updateAxes();
     	updateRotation();

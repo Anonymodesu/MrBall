@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class GameManager { //a singleton
 	
-		
+
 	private const int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
 	
 	private Level currentLevel = null; //stores the level that was just loaded
 	private Dictionary<Level, string> levelDescriptions;
 	private Dictionary<Level, string> levelNames;
-	
+
+	public enum QuickSaveState : int {NewGame = 0, LoadSave = 1}
+	private Quicksave quickSave; //the quicksave of the current player
+
 	private static GameManager instance = null;
 	
 	public static GameManager getInstance() {
@@ -38,6 +41,8 @@ public class GameManager { //a singleton
 		SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
 
 		parseLevelData();
+
+		quickSave = null;
 		//Level.testLevel();
 	}
 	
@@ -152,4 +157,58 @@ public class GameManager { //a singleton
 			}
 		}
 	}
+
+	//returns null if the quicksave does not exist for this player
+	public Quicksave getQuickSave(string player) {
+
+		//save hasn't been loaded yet or the last loaded quick save belongs to another player
+		if(quickSave == null || quickSave.player != player) { 
+			quickSave = readQuickSave(player);
+		}
+		
+		return quickSave;
+	}
+
+	private Quicksave readQuickSave(string player) {
+		string path = getQuickSavePath(player);
+
+		if(File.Exists(path)) {
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(path, FileMode.Open);
+			Quicksave save = (Quicksave) bf.Deserialize(file);
+			file.Close();
+			return save;
+
+		} else {
+			return null;
+		}
+	}
+
+	public void storeQuickSave(string player, Quicksave save) {
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(getQuickSavePath(player));
+		bf.Serialize(file, save);
+		file.Close();
+
+		quickSave = save;
+	}
+
+	public void deleteQuickSave(string player) {
+		string path = getQuickSavePath(player);
+		if(File.Exists(path)) {
+			File.Delete(path);	
+		}
+
+		if(File.Exists(path + ".meta")) {
+			File.Delete(path + ".meta");	
+		}
+
+		quickSave = null;
+	}
+
+	private static string getQuickSavePath(string player) {
+		return Application.streamingAssetsPath + "/" + player + ".save";
+	}
+
+
 }

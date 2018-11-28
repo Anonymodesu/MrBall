@@ -8,10 +8,14 @@ using UnityEngine.EventSystems;
 
 public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 
-	private Text cubiesText, deathsText, timeText, scoreText, levelText;
+	protected Text cubiesText, deathsText, timeText, scoreText, levelText;
+
+	protected Image levelImage; //the UI container for the image
+	protected Level level;
+	protected LevelImages levelImages; //a list storing all level images
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		base.init();
 		GetComponent<Button>().onClick.AddListener(delegate {StartLevel(); });
 
@@ -20,11 +24,13 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		timeText = GameObject.Find("TimeText").GetComponent<Text>();
 		scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
 		levelText = GameObject.Find("LevelName").GetComponent<Text>();
+
+		levelImage = GameObject.Find("LevelImage").GetComponent<Image>();
+		levelImages = GameObject.Find("LevelImages").GetComponent<LevelImages>();
 	}
 
 	
 	public override void OnPointerEnter(PointerEventData eventData) {
-		base.OnPointerEnter(eventData); //move the cubie next to the button next to the button
 		
 		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
 		levelText.text = GameManager.getInstance().getLevelName(level);
@@ -32,7 +38,14 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		Achievement current = AchievementManager.getInstance().getAchievement(PlayerPrefs.GetString("name", "New Player"), level);
 		Achievement required = AchievementManager.getInstance().getRequirement(level);
 		
-		if(current == null) { //player has not completed this level
+		displayRecords(current, required);
+		
+		levelImage.sprite = levelImages.levelImages[level.stage * Level.numSubstages + level.substage];
+    }
+
+
+    protected void displayRecords(Achievement current, Achievement required) {
+    	if(current == null) { //player has not completed this level
 
 			cubiesText.text = "-/\n" + required.Cubies;
 			deathsText.text = "-/\n" + required.Deaths;
@@ -57,12 +70,13 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 			timeText.fontStyle = (current.Time <= required.Time) ? FontStyle.BoldAndItalic : FontStyle.Normal;
 			scoreText.fontStyle = (current.Points >= required.Points) ? FontStyle.BoldAndItalic : FontStyle.Normal;
 		}
-		
     }
-
 	
-	public void StartLevel() { //only for buttons in level select menu
-        string level = GetComponentInChildren<Text>().text; //the button text corresponds to the level
-        AsyncOperation loader = SceneManager.LoadSceneAsync("Scene_" + level);
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public virtual void StartLevel() { //only for buttons in level select menu
+        AsyncOperation loader = SceneManager.LoadSceneAsync(level.ToString());
     }
 }

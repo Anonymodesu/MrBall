@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Level : IEquatable<Level> {
 
 	public const int numSubstages = 5;
     public const int numStages = 6;
 	public const int numLevels = numStages * numSubstages;
 
-	public readonly int stage;
-	public readonly int substage;
+	public int stage;
+	public int substage;
 		
 	public Level(int stage, int substage) {
 		this.stage = stage;

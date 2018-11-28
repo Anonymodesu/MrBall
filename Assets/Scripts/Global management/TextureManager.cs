@@ -9,6 +9,7 @@ public class TextureManager {
 	
 	private static TextureManager instance = null;
 
+	//caches cube meshes with the same scale
 	private Dictionary<Vector3, Mesh> meshes;
 	
 	public static TextureManager getInstance() {
@@ -81,56 +82,64 @@ public class TextureManager {
 	//only modify cube meshes' uv's, as sphere and capsule meshes rely on GPU Instancing
 	private void tileTexture(GameObject obj, int stage) {
 
-		//only the cube has a uv length of 24
-		if(obj.GetComponent<MeshFilter>().sharedMesh.uv.Length == 24) {
+		//only modify cube meshes
+		if(obj.GetComponent<BoxCollider>() != null) {
 
-			Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
-			float xScale = obj.transform.lossyScale.x / 2;
-			float yScale = obj.transform.lossyScale.y / 2;
-			float zScale = obj.transform.lossyScale.z / 2;
-					
-			//set each uv to the global scale of the object
-			//make sure the Texture's wrap mode is set to 'repeat'!
-			Vector2[] newUVs = new Vector2[mesh.uv.Length];
+			Vector3 scale = obj.transform.lossyScale;
 
-			//front face
-			newUVs[2] = new Vector2(0,yScale);
-			newUVs[3] = new Vector2(xScale, yScale);
-			newUVs[0] = new Vector2(0,0);
-			newUVs[1] = new Vector2(xScale,0);
-					
-			//back face
-			newUVs[6] = new Vector2(0,yScale);
-			newUVs[7] = new Vector2(xScale, yScale);
-			newUVs[10] = new Vector2(0,0);
-			newUVs[11] = new Vector2(xScale,0);
-					
-			//left face
-			newUVs[17] = new Vector2(0,zScale);
-			newUVs[16] = new Vector2(yScale, zScale);
-			newUVs[18] = new Vector2(0,0);
-			newUVs[19] = new Vector2(yScale,0);
-					
-			//right face
-			newUVs[23] = new Vector2(0,zScale);
-			newUVs[22] = new Vector2(yScale, zScale);
-			newUVs[20] = new Vector2(0,0);
-			newUVs[21] = new Vector2(yScale,0);
-					
-			//top face
-			newUVs[4] = new Vector2(0,zScale);
-			newUVs[5] = new Vector2(xScale, zScale);
-			newUVs[8] = new Vector2(0,0);
-			newUVs[9] = new Vector2(xScale,0);
-					
-			//bottom face
-			newUVs[15] = new Vector2(0,xScale);
-			newUVs[14] = new Vector2(zScale, xScale);
-			newUVs[12] = new Vector2(0,0);
-			newUVs[13] = new Vector2(zScale,0);
+			if(meshes.ContainsKey(scale)) {
+				obj.GetComponent<MeshFilter>().mesh = meshes[scale];
 
-			mesh.uv = newUVs;
+			} else {
+				Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
+				float xScale = scale.x / 2;
+				float yScale = scale.y / 2;
+				float zScale = scale.z / 2;
+						
+				//set each uv to the global scale of the object
+				//make sure the Texture's wrap mode is set to 'repeat'!
+				Vector2[] newUVs = new Vector2[mesh.uv.Length];
 
+				//front face
+				newUVs[2] = new Vector2(0,yScale);
+				newUVs[3] = new Vector2(xScale, yScale);
+				newUVs[0] = new Vector2(0,0);
+				newUVs[1] = new Vector2(xScale,0);
+						
+				//back face
+				newUVs[6] = new Vector2(0,yScale);
+				newUVs[7] = new Vector2(xScale, yScale);
+				newUVs[10] = new Vector2(0,0);
+				newUVs[11] = new Vector2(xScale,0);
+						
+				//left face
+				newUVs[17] = new Vector2(0,zScale);
+				newUVs[16] = new Vector2(yScale, zScale);
+				newUVs[18] = new Vector2(0,0);
+				newUVs[19] = new Vector2(yScale,0);
+						
+				//right face
+				newUVs[23] = new Vector2(0,zScale);
+				newUVs[22] = new Vector2(yScale, zScale);
+				newUVs[20] = new Vector2(0,0);
+				newUVs[21] = new Vector2(yScale,0);
+						
+				//top face
+				newUVs[4] = new Vector2(0,zScale);
+				newUVs[5] = new Vector2(xScale, zScale);
+				newUVs[8] = new Vector2(0,0);
+				newUVs[9] = new Vector2(xScale,0);
+						
+				//bottom face
+				newUVs[15] = new Vector2(0,xScale);
+				newUVs[14] = new Vector2(zScale, xScale);
+				newUVs[12] = new Vector2(0,0);
+				newUVs[13] = new Vector2(zScale,0);
+
+				mesh.uv = newUVs;
+				meshes.Add(scale, mesh);
+			}
+			
 			//apply material for the corresponding stage
 			Renderer renderer = obj.GetComponent<Renderer>();
 			Materials materials = GameObject.Find("Resources").GetComponent<Materials>();

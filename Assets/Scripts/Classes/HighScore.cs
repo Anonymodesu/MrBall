@@ -37,4 +37,5 @@ public class HighScore {
     public int calculateScore() {
         return HighScore.calculateScore(this.cubies,this.deaths,this.time);
     }
+
 }

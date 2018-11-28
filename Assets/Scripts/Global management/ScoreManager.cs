@@ -94,7 +94,6 @@ public class ScoreManager {
 
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(pathName);
-
         bf.Serialize(file, highScores);
         file.Close();
 	}

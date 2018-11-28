@@ -27,10 +27,9 @@ public class Script_Menu_Dropdown : MonoBehaviour {
         //instantiate buttons
         for(int i = 0; i < Level.numSubstages; i++) {
             stageButtons[i] = Instantiate(buttonPrefab, GameObject.Find("LevelSelectButtons").transform); //share the same parent
-            
-            //modify text
-            changeText(i);
         }
+
+        switchStages();
 	}
 	
 	/* Update is called once per frame
@@ -38,14 +37,11 @@ public class Script_Menu_Dropdown : MonoBehaviour {
 		
 	}*/
     
-    private void changeText(int substage) {
-        string text = "Stage " + this.GetComponent<Dropdown>().value.ToString() + "-" + substage;
-        stageButtons[substage].GetComponentInChildren<Text>().text = text;
-    }
-    
     public void switchStages() {
-        for(int i = 0; i < Level.numSubstages; i++) {
-            changeText(i);
+        int stage = GetComponent<Dropdown>().value;
+        for(int substage = 0; substage < Level.numSubstages; substage++) {
+            stageButtons[substage].GetComponent<Script_Menu_Stage_Select_Button>().setLevel(new Level(stage, substage));
+            stageButtons[substage].GetComponentInChildren<Text>().text = "Stage " + stage + "-" + substage;
         }
     }
 }

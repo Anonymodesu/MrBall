@@ -46,6 +46,7 @@ public class Script_Player : MonoBehaviour {
     private Script_Game_Menu GUIScript;
 
 	//scoring variables
+	private string player;
     private float startTime;
     int cubies;
     int deaths;
@@ -72,7 +73,8 @@ public class Script_Player : MonoBehaviour {
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();
         
         stopGame = true;
-        startTime = 0;
+        player = PlayerPrefs.GetString("name", "New Player");
+        startTime = Time.timeSinceLevelLoad;
         cubies = 0;
         deaths = 0;
         
@@ -90,6 +92,11 @@ public class Script_Player : MonoBehaviour {
 		}
 
 		checkpointAnimation = GameObject.Find("CheckpointNotification").GetComponent<Script_Checkpoint_Animation>();
+
+		//display panel was used as a start_pos to take screenshots of levels
+		GameObject.Find("displaypanel").SetActive(false);
+
+		loadQuickSave();
     }
     
     // Update is called once per frame
@@ -122,15 +129,72 @@ public class Script_Player : MonoBehaviour {
 		}
 	}
 
+	private void loadQuickSave() {
+		//load the quicksave in the case that the quick save button was clicked
+		if((GameManager.QuickSaveState) PlayerPrefs.GetInt("save", 0) == GameManager.QuickSaveState.LoadSave) {
+
+			PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.NewGame);
+
+			//load the quick save for the current player
+			Quicksave save = GameManager.getInstance().getQuickSave(player);
+
+			if(save != null) {
+				if(save.level.Equals(currentLevel)) {
+					transform.position = save.position;
+					rb.velocity = save.velocity;
+					rb.angularVelocity = save.angularVelocity;
+					startGravityDirection = save.startGravityDirection;
+					Physics.gravity = save.currentGravityDirection;
+					Physics.gravity *= gravityStrength;
+
+					//if the save.cubies[i] == false, then the cubie was collected
+					Transform cubies = GameObject.Find("Cubies").transform;
+					for(int i = 0; i < cubies.childCount; i++) {
+						if(save.cubies[i]) {
+							cubies.GetChild(i).gameObject.SetActive(true);
+						} else {
+							cubies.GetChild(i).gameObject.SetActive(false);
+							this.cubies++;
+						}
+					}
+
+					startPos = GameObject.Find(save.startPos);
+					startTime -= save.time;
+					deaths = save.deaths;
+
+				} else {
+					Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
+				}
+			}
+		}
+	}
+
+	private void storeQuickSave() {
+		List<bool> collectedCubies = new List<bool>();
+		Transform cubies = GameObject.Find("Cubies").transform;
+		for(int i = 0; i < cubies.childCount; i++) {
+			collectedCubies.Add(cubies.GetChild(i).gameObject.activeSelf);
+		}
+
+		Quicksave save = new Quicksave(player, currentLevel, transform.position, rb.velocity, rb.angularVelocity,
+										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
+										getTime(), deaths);
+
+		GameManager.getInstance().storeQuickSave(player, save);
+	}
+
 	public void startGame() {
         pauseable = true;
         pause();
-        startTime = Time.time;
         Cursor.visible = false;
 		GUIScript.startGame(); //hides the starting interface
     }
 	
 	public void endGame() {
+		if(!contacts.Contains(GameObject.Find("Ramp_Win"))) {
+			storeQuickSave(); //don't store the save when exiting from the winning screen
+		}
+
 		Physics.gravity = defaultGravityDirection * gravityStrength;
 		SceneManager.LoadScene("Scene_Menu");
     }
@@ -161,7 +225,7 @@ public class Script_Player : MonoBehaviour {
 			//sometimes a single cubie is collected twice; this might be because the collider rotates and hits the ball a second time before the cubie is destroyed
 			other.enabled = false;
 			
-			Destroy(other.gameObject);
+			other.gameObject.SetActive(false);
             cubies++;
             SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Cubie);
             
@@ -260,17 +324,18 @@ public class Script_Player : MonoBehaviour {
 	private void win() {
         pauseable = false;
         pause();
+        GameManager.getInstance().deleteQuickSave(player);
 		processScoreAchievements();
     }
 	
 	public float getTime() {
-		return (Time.time - startTime);
+		return (Time.timeSinceLevelLoad - startTime);
 	}
 		
 	//when the level ends, process the final score and any acquired achievements
     private void processScoreAchievements() {
 	
-		HighScore currentHighScore = new HighScore(PlayerPrefs.GetString("name", "New Player"), cubies, deaths, getTime());
+		HighScore currentHighScore = new HighScore(player, cubies, deaths, getTime());
 			 
 		//returns true if theres a new highscore
 		if(ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore)) {
@@ -282,7 +347,7 @@ public class Script_Player : MonoBehaviour {
 		}
 		
 		Achievement current = new Achievement(cubies,deaths, getTime(), HighScore.calculateScore(cubies,deaths, getTime()));
-		AchievementManager.getInstance().saveAchievement(PlayerPrefs.GetString("name", "New Player"), current, currentLevel); //save records to player data txt
+		AchievementManager.getInstance().saveAchievement(player, current, currentLevel); //save records to player data txt
 		
     }
 

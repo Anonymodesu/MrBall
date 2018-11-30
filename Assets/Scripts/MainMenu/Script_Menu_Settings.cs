@@ -127,29 +127,31 @@ public class Script_Menu_Settings : MonoBehaviour {
 
 		Debug.Log("deleting data for " + playerContainer.name);
 
-		//name of the gameobject corresponds to its representative player
-		if(playerContainer.name == nameInputField.text) {
-			switch(namesScrollRect.content.childCount) {
-				case 0: //should never happen
-					Debug.Log("deleting playerContainer for " + playerContainer.name + " when scroll rect has no children!");
-					break;
+		switch(namesScrollRect.content.childCount) {
+			case 0: //should never happen
+				Debug.Log("deleting playerContainer for " + playerContainer.name + " when scroll rect has no children!");
+				break;
 
-				case 1: //disallow deleting the last player record;
-					Debug.Log("can't delete last record!");
-					break;
+			case 1: //disallow deleting the last player record;
+				Debug.Log("can't delete last record!");
+				break;
 
-				default: //set current player to be the next child
+			default: //set current player to be the next child
+
+				//name of the gameobject corresponds to its representative player
+				if(playerContainer.name == nameInputField.text) {
 					int nextPlayerIndex = (playerContainer.transform.GetSiblingIndex() + 1) % namesScrollRect.content.childCount;
 					Transform nextPlayer = namesScrollRect.content.GetChild(nextPlayerIndex);
 					nameInputField.text = nextPlayer.name;
 					setOldPlayer(nextPlayer.Find("SelectButton").gameObject);
+				}
 
-					//delete everything blyat
-					AchievementManager.getInstance().deleteAchievement(playerContainer.name);
-					GameManager.getInstance().deleteQuickSave(playerContainer.name);
-					Destroy(playerContainer);
-					break;
-			}
+				//delete everything blyat
+				AchievementManager.getInstance().deleteAchievement(playerContainer.name);
+				GameManager.getInstance().deleteQuickSave(playerContainer.name);
+				Destroy(playerContainer);
+				break;
 		}
+	
 	}
 }

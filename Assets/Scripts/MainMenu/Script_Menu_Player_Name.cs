@@ -8,7 +8,6 @@ public class Script_Menu_Player_Name : MonoBehaviour {
 
     void Start() {
         this.GetComponent<InputField>().text = PlayerPrefs.GetString("name", "New Player");
-		Time.timeScale = 1;
     }
 
 	public void updateName() {

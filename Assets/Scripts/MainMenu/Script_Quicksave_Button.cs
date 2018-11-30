@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 		base.Start();
 	}
 	

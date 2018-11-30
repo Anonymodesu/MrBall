@@ -9,6 +9,8 @@ public class Materials : MonoBehaviour {
 	public List<Texture> rampTextures;
 	public List<Texture> rampNormalMaps;
 
+	public Material pokeBall;
+
 /*
 	public Material neutral_0;
 	public Material bouncy_0;

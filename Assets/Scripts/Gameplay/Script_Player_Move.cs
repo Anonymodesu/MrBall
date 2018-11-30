@@ -92,12 +92,17 @@ public class Script_Player_Move : MonoBehaviour {
 			velocityRatio = (float) Math.Pow(velocityRatio / maxSpeed, 2);
 			
 			Vector3 torque = torqueDirection.normalized * speed * velocityRatio * Time.deltaTime;
-			rb.AddTorque(torque);
-			
+
 			if(onGround) {
 				Vector3 force = 4 * movingDirection.normalized * speed * velocityRatio * Time.deltaTime;
 				rb.AddForce(force);
+				rb.AddTorque(torque);
+
+			} else { //spin at half the strength in the air
+				rb.AddTorque(torque / 2);
 			}
+
+
 
 			//Debug.Log(velocityRatio + " " + rb.velocity.magnitude + "/" + maxSpeed);
         }

@@ -97,6 +97,9 @@ public class Script_Player : MonoBehaviour {
 		GameObject.Find("displaypanel").SetActive(false);
 
 		loadQuickSave();
+		if(player == "pokemon") {
+			GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Materials>().pokeBall;
+		}
     }
     
     // Update is called once per frame
@@ -127,60 +130,6 @@ public class Script_Player : MonoBehaviour {
 			processCollider();
 			movementScript.processMovement(contacts);
 		}
-	}
-
-	private void loadQuickSave() {
-		//load the quicksave in the case that the quick save button was clicked
-		if((GameManager.QuickSaveState) PlayerPrefs.GetInt("save", 0) == GameManager.QuickSaveState.LoadSave) {
-
-			PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.NewGame);
-
-			//load the quick save for the current player
-			Quicksave save = GameManager.getInstance().getQuickSave(player);
-
-			if(save != null) {
-				if(save.level.Equals(currentLevel)) {
-					transform.position = save.position;
-					rb.velocity = save.velocity;
-					rb.angularVelocity = save.angularVelocity;
-					startGravityDirection = save.startGravityDirection;
-					Physics.gravity = save.currentGravityDirection;
-					Physics.gravity *= gravityStrength;
-
-					//if the save.cubies[i] == false, then the cubie was collected
-					Transform cubies = GameObject.Find("Cubies").transform;
-					for(int i = 0; i < cubies.childCount; i++) {
-						if(save.cubies[i]) {
-							cubies.GetChild(i).gameObject.SetActive(true);
-						} else {
-							cubies.GetChild(i).gameObject.SetActive(false);
-							this.cubies++;
-						}
-					}
-
-					startPos = GameObject.Find(save.startPos);
-					startTime -= save.time;
-					deaths = save.deaths;
-
-				} else {
-					Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
-				}
-			}
-		}
-	}
-
-	private void storeQuickSave() {
-		List<bool> collectedCubies = new List<bool>();
-		Transform cubies = GameObject.Find("Cubies").transform;
-		for(int i = 0; i < cubies.childCount; i++) {
-			collectedCubies.Add(cubies.GetChild(i).gameObject.activeSelf);
-		}
-
-		Quicksave save = new Quicksave(player, currentLevel, transform.position, rb.velocity, rb.angularVelocity,
-										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
-										getTime(), deaths);
-
-		GameManager.getInstance().storeQuickSave(player, save);
 	}
 
 	public void startGame() {
@@ -367,6 +316,60 @@ public class Script_Player : MonoBehaviour {
         }
         
     }
+
+    private void loadQuickSave() {
+		//load the quicksave in the case that the quick save button was clicked
+		if((GameManager.QuickSaveState) PlayerPrefs.GetInt("save", 0) == GameManager.QuickSaveState.LoadSave) {
+
+			PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.NewGame);
+
+			//load the quick save for the current player
+			Quicksave save = GameManager.getInstance().getQuickSave(player);
+
+			if(save != null) {
+				if(save.level.Equals(currentLevel)) {
+					transform.position = save.position;
+					rb.velocity = save.velocity;
+					rb.angularVelocity = save.angularVelocity;
+					startGravityDirection = save.startGravityDirection;
+					Physics.gravity = save.currentGravityDirection;
+					Physics.gravity *= gravityStrength;
+
+					//if the save.cubies[i] == false, then the cubie was collected
+					Transform cubies = GameObject.Find("Cubies").transform;
+					for(int i = 0; i < cubies.childCount; i++) {
+						if(save.cubies[i]) {
+							cubies.GetChild(i).gameObject.SetActive(true);
+						} else {
+							cubies.GetChild(i).gameObject.SetActive(false);
+							this.cubies++;
+						}
+					}
+
+					startPos = GameObject.Find(save.startPos);
+					startTime -= save.time;
+					deaths = save.deaths;
+
+				} else {
+					Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
+				}
+			}
+		}
+	}
+
+	private void storeQuickSave() {
+		List<bool> collectedCubies = new List<bool>();
+		Transform cubies = GameObject.Find("Cubies").transform;
+		for(int i = 0; i < cubies.childCount; i++) {
+			collectedCubies.Add(cubies.GetChild(i).gameObject.activeSelf);
+		}
+
+		Quicksave save = new Quicksave(player, currentLevel, transform.position, rb.velocity, rb.angularVelocity,
+										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
+										getTime(), deaths);
+
+		GameManager.getInstance().storeQuickSave(player, save);
+	}
 
     public static bool isPhysical(string surface) {        
         return surface == "Fast" || 

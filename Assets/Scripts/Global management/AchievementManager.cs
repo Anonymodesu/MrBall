@@ -89,6 +89,21 @@ public class AchievementManager {
 		return getAchievements(playerName)[level.stage * Level.numSubstages + level.substage];
 	}
 
+	//deletes the achievement records of a player; returns whether deletion was successful
+	public void deleteAchievement(string player) {
+		string path = getPathName(player);
+
+		if(File.Exists(path)) {
+			File.Delete(path);
+		}
+
+		if(File.Exists(path + ".meta")) {
+			File.Delete(path + ".meta");	
+		}
+
+		playerAchievements.Remove(player);
+	}
+
 	//returns true if successful
 	private bool parseRequirements() {
 		string[] lines;
@@ -154,4 +169,5 @@ public class AchievementManager {
 	private static string getPathName(string playerName) {
 		return Application.streamingAssetsPath + "/" + playerName + ".dat";
 	}
+
 }

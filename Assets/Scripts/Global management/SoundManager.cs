@@ -19,7 +19,35 @@ public class SoundManager {
 	private MusicFiles soundFiles = null;
 
 	private float[] soundFXVolume;
+
+	public float SFXVolume {
+		get {
+			return soundFX.volume;
+		}
+
+		set {
+			if(value < 0 || value > 1) {
+				Debug.Log("sound volume is out of bounds");
+			}
+
+			soundFX.volume = value;
+		}
+	}
 	
+	public float MusicVolume {
+		get {
+			return bgMusic.volume;
+		}
+
+		set {
+			if(value < 0 || value > 1) {
+				Debug.Log("music volume is out of bounds");
+			}
+
+			bgMusic.volume = value;
+		}
+	}
+
 	public static SoundManager getInstance() {
 		if(instance == null) {
 			instance = new SoundManager();
@@ -27,15 +55,6 @@ public class SoundManager {
 		
 		return instance;
 	}
-	/*
-	void Awake () {
-		
-		rollSound = gameObject.AddComponent<AudioSource>();
-		jumpSound = gameObject.AddComponent<AudioSource>();
-		superJumpSound = gameObject.AddComponent<AudioSource>();
-		
-	}
-	*/
 	
 	private SoundManager() { //called by LevelManager.OnEnable() to make sure bgMusic is initialised
 		container = new GameObject();

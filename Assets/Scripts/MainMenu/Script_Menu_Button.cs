@@ -6,10 +6,6 @@ using UnityEngine.EventSystems;
 //script that all buttons in the main menu inherit from
 public class Script_Menu_Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
-    private Transform canvasTransform;
-
-    private const float cubieSize = 0.1f;
-
 	// Use this for initialization
 	void Start () {
 		init();
@@ -27,7 +23,6 @@ public class Script_Menu_Button : MonoBehaviour, IPointerEnterHandler, IPointerE
 	*/
 	
 	public void init() {
-        canvasTransform = GetComponentInParent<RectTransform>();
 	}
 	
 	public virtual void OnPointerEnter(PointerEventData eventData) {

@@ -32,7 +32,7 @@ public class Script_Game_Camera : Script_Camera {
 
     // Use this for initialization
     void Start () {
-        mouseSensitivity = 2;
+        mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", Script_Menu_Settings.defaultCameraSensitivity);
         player = GameObject.FindWithTag("Player");
         currentOffset = baseOffset;
 		rotation = Vector3.zero;

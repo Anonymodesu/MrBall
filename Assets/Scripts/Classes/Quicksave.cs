@@ -7,18 +7,18 @@ using System;
 [Serializable]
 public class Quicksave {
 
-	public string player;
-	public Level level;
-	public SerializableVector3 position;
-	public SerializableVector3 velocity;
-	public SerializableVector3 angularVelocity;
-	public SerializableVector3 startGravityDirection;
-	public SerializableVector3 currentGravityDirection;
+	public readonly string player;
+	public readonly Level level;
+	public readonly SerializableVector3 position;
+	public readonly SerializableVector3 velocity;
+	public readonly SerializableVector3 angularVelocity;
+	public readonly SerializableVector3 startGravityDirection;
+	public readonly SerializableVector3 currentGravityDirection;
 	//public SerializableVector3 cameraRotation;
-	public List<bool> cubies; //true if the corresponding child in cubies still exists (i.e. has not been collected)
-	public string startPos;
-	public float time;
-	public int deaths;
+	public readonly List<bool> cubies; //true if the corresponding child in cubies still exists (i.e. has not been collected)
+	public readonly string startPos;
+	public readonly float time;
+	public readonly int deaths;
 
 	public Quicksave(string player, Level level, Vector3 position, Vector3 velocity, Vector3 angularVelocity,
 					Vector3 startGravityDirection, Vector3 currentGravityDirection, List<bool> cubies,

@@ -10,8 +10,8 @@ public class Level : IEquatable<Level> {
     public const int numStages = 6;
 	public const int numLevels = numStages * numSubstages;
 
-	public int stage;
-	public int substage;
+	public readonly int stage;
+	public readonly int substage;
 		
 	public Level(int stage, int substage) {
 		this.stage = stage;

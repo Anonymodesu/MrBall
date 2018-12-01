@@ -12,9 +12,17 @@ public class Script_Camera : MonoBehaviour {
 	void Awake () {
 		directionalLight = GameObject.Find("Directional Light").GetComponent<Light>();
 		skyboxes = GameObject.Find("Resources").GetComponent<Skyboxes>();
+
+		//load shadow settings; 1 indicates shadows are on
+		if(SettingsManager.DisplayShadows) {
+			directionalLight.shadows = LightShadows.Soft;
+		} else {
+			directionalLight.shadows = LightShadows.None;
+		}
 	}
 	
-	//set the directional light lighting and skybox; these settings do not affect ambient/environment lighting; you gotta change this directly in editor
+	//set the directional light lighting and skybox; these settings do not affect ambient/environment lighting-
+	//you gotta change this directly in editor
 	public void setLighting(int stage) { 
 				
 		switch(stage) {

@@ -35,7 +35,7 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
 		levelText.text = GameManager.getInstance().getLevelName(level);
 		
-		Achievement current = AchievementManager.getInstance().getAchievement(PlayerPrefs.GetString("name", "New Player"), level);
+		Achievement current = AchievementManager.getInstance().getAchievement(SettingsManager.CurrentPlayer, level);
 		Achievement required = AchievementManager.getInstance().getRequirement(level);
 		
 		displayRecords(current, required);

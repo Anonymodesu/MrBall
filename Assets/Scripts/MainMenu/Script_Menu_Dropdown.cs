@@ -29,6 +29,8 @@ public class Script_Menu_Dropdown : MonoBehaviour {
             stageButtons[i] = Instantiate(buttonPrefab, GameObject.Find("LevelSelectButtons").transform); //share the same parent
         }
 
+        //when called in the menu, getLevel() returns the last played level
+        GetComponent<Dropdown>().value = GameManager.getInstance().getLevel().stage;
         switchStages();
 	}
 	

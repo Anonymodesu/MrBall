@@ -12,7 +12,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 	
 	public override void OnPointerEnter(PointerEventData eventData) {
 
-		Quicksave save = GameManager.getInstance().getQuickSave(PlayerPrefs.GetString("name", "New Player"));
+		Quicksave save = GameManager.getInstance().getQuickSave(SettingsManager.CurrentPlayer);
 		if(save != null) {
 			level = save.level;
 			levelText.text = GameManager.getInstance().getLevelName(level);

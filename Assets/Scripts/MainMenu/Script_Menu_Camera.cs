@@ -19,7 +19,7 @@ public class Script_Menu_Camera : Script_Camera {
 
         transform.position = Random.insideUnitSphere * 0.5f;
         transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 180);
-        StartCoroutine(switchMenus(GameObject.Find("Menu").transform));
+        StartCoroutine(switchMenus(GameObject.Find("Level Select").transform));
 	}
     
     //switches view from current menu to dest menu

@@ -18,8 +18,10 @@ public class Script_Game_Camera : Script_Camera {
 	//lower half rotation is from 0 at middle down to 90 at the bottom
 
 	//determines distance from camera to the ball
-	float currentOffset;
-	const float baseOffset = 1;
+	private float currentOffset; //overall distance
+	private const float baseOffset = 1;
+	private float yDistance;
+	private float zDistance;
 	
 	//moving quickly warps the camera; increasing this value decreases warp delay
 	private const float warpSpeed = 0.1f;
@@ -32,15 +34,19 @@ public class Script_Game_Camera : Script_Camera {
 
     // Use this for initialization
     void Start () {
-        mouseSensitivity = PlayerPrefs.GetFloat("sensitivity", Script_Menu_Settings.defaultCameraSensitivity);
+        mouseSensitivity = SettingsManager.CameraSensitivity;
         player = GameObject.FindWithTag("Player");
         currentOffset = baseOffset;
 		rotation = Vector3.zero;
-        transform.position = GameObject.Find("Ramp_Start").GetComponent<Transform>().position + Vector3.up;
+        //transform.position = GameObject.Find("Ramp_Start").GetComponent<Transform>().position + Vector3.up;
 
         yAxis = Vector3.up;
         xAxis = Vector3.right;
         zAxis = Vector3.forward;
+
+        //get camera positioning settings
+        zDistance = SettingsManager.ForwardDistance;
+        yDistance = SettingsManager.UpwardDistance;
 
         hiddenRamps = new Dictionary<GameObject, GameObject>();
     }
@@ -134,8 +140,9 @@ public class Script_Game_Camera : Script_Camera {
 		currentOffset = Mathf.Lerp(currentOffset, nextOffset, warpSpeed * Time.deltaTime * 60);
 
 		transform.position = player.transform.position //transform.forward is always normalized
-							+ (yAxis * 0.7f - transform.forward * 2) //position the camera behind the ball 
+							+ (yAxis * yDistance - transform.forward * zDistance) //position the camera behind the ball 
 							* currentOffset;
+		
     }
 	
 	private void updateAxes() {

@@ -28,6 +28,13 @@ public class Script_Player_Trails : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		//get trails settings
+		if(!SettingsManager.DisplayTrails) {
+			Destroy(this);
+			return;
+		}
+
 		TrailRenderer trailRenderer = trail.GetComponent<TrailRenderer>();
 		rb = GetComponent<Rigidbody>();
 

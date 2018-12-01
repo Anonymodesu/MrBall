@@ -47,6 +47,8 @@ public class Script_Game_Menu : MonoBehaviour {
 		currentLevel = GameManager.getInstance().getLevel();
 		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\n\n"
 						+ GameManager.getInstance().getLevelDescription(currentLevel);
+
+		crossHair.transform.localScale = SettingsManager.CrosshairSize * Vector3.one;
 	}
 	
 	/*
@@ -103,7 +105,7 @@ public class Script_Game_Menu : MonoBehaviour {
 			}
 		}
 		
-		int separation = 30;
+		int separation = 20;
 		Text cubiesText = Instantiate(achievementText, background.rectTransform);
 		cubiesText.rectTransform.anchoredPosition -= Vector2.up * separation * 0;
 		cubiesText.text = "Cubies: " + cubies + "/" + requirements.Cubies;

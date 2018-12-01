@@ -29,14 +29,23 @@ public class GameManager { //a singleton
 		return instance;
 	}
 	
-	private GameManager() {		
-		currentLevel = new Level(0,0); //pretend that the first level was just loaded
-		
+	private GameManager() {
+
+		//exiting to the main menu always generates a quicksave
+		Quicksave save = getQuickSave(SettingsManager.CurrentPlayer);
+		if(save == null) {
+			currentLevel = new Level(0,0); //pretend that the first level was just loaded
+		} else {
+			currentLevel = save.level;
+		}
+
+		changedScene(SceneManager.GetActiveScene(), LoadSceneMode.Single); //correct level parameters
+
+
 		// load initial values
 		SoundManager.getInstance().setMusic(currentLevel.stage);
 		GameObject.FindWithTag("MainCamera").GetComponent<Script_Camera>().setLighting(currentLevel.stage);
 		
-		changedScene(SceneManager.GetActiveScene(), LoadSceneMode.Single); //modify to correct level parameters
 		
 		SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
 
@@ -56,12 +65,10 @@ public class GameManager { //a singleton
 		//Resources.UnloadUnusedAssets();
 		
 		Level newLevel = null;		
-		Script_Camera currentCamera = GameObject.FindWithTag("MainCamera").GetComponent<Script_Camera>(); //polymorphism :0
 		
-		//note that SoundManager preserved across all scenes, while the camera script differs from scene to scene
+		//note that is SoundManager preserved across all scenes, while the camera script differs from scene to scene
 		
 		if(scene.name.Equals("Scene_Menu")) { //transitioned to the main menu
-			//do nothing
 			
 		} else { //transitioned to a level
 			newLevel = getLevel(scene.name); 
@@ -74,7 +81,7 @@ public class GameManager { //a singleton
 			currentLevel = newLevel;
 		}
 		
-		currentCamera.setLighting(currentLevel.stage);
+		Camera.main.GetComponent<Script_Camera>().setLighting(currentLevel.stage);
 		TextureManager.getInstance().applyTextures(currentLevel.stage);
 
 	}

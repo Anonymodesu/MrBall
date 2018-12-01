@@ -12,7 +12,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Script_Player_Move))]
 [RequireComponent(typeof(Script_OutOfBounds))]
 [RequireComponent(typeof(Script_Player_Jump))]
-[RequireComponent(typeof(Script_Player_Trails))]
 public class Script_Player : MonoBehaviour {
 	
 	//player collider variables
@@ -73,7 +72,7 @@ public class Script_Player : MonoBehaviour {
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();
         
         stopGame = true;
-        player = PlayerPrefs.GetString("name", "New Player");
+        player = SettingsManager.CurrentPlayer;
         startTime = Time.timeSinceLevelLoad;
         cubies = 0;
         deaths = 0;

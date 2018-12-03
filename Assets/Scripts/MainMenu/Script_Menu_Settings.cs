@@ -4,9 +4,16 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using System;
 
 public class Script_Menu_Settings : MonoBehaviour {
+
+	#pragma warning disable 0649
+
+	[SerializeField]
+	private Transform controlSettings;
+	[SerializeField]
+	private GameObject controlSettingField;
 
 	[SerializeField]
 	private Slider musicSlider, SFXSlider, cameraSensitivitySlider, crossHairSlider, 
@@ -25,12 +32,16 @@ public class Script_Menu_Settings : MonoBehaviour {
 
 	[SerializeField]
 	private Transform cameraPreviewOverlay;
-	private Transform crosshair;
 
+	#pragma warning restore 0649
+
+	//for the camera preview
+	private Transform crosshair; 
 	private Script_Menu_Camera cameraScript;
 
 	// Use this for initialization
 	void Start () {
+
 		cameraScript = Camera.main.GetComponent<Script_Menu_Camera>();
 		crosshair = cameraPreviewOverlay.Find("Crosshair");
 		initSettings();
@@ -50,6 +61,11 @@ public class Script_Menu_Settings : MonoBehaviour {
 		setMusicVolume();
 		setSFXVolume();
 
+		initPlayerNameSettings();
+		initControlSettings();
+	}
+
+	private void initPlayerNameSettings() {
 		//load player data from file system
 		string currentPlayer = SettingsManager.CurrentPlayer;
 		nameInputField.text = currentPlayer;
@@ -65,6 +81,48 @@ public class Script_Menu_Settings : MonoBehaviour {
 		setNewPlayer();
 	}
 
+	private void initControlSettings() {
+		int numCommands = InputManager.numCommands;
+
+		for(int i = 0; i < numCommands; i++) {
+			Command command = (Command) i;
+			GameObject field = Instantiate(controlSettingField, controlSettings);
+			Button button = field.GetComponentInChildren<Button>();
+			Text assignedKey = field.transform.Find("AssignedKey").GetComponent<Text>();
+
+			//button text displays command; neighbouring text shows assigned key
+			button.GetComponentInChildren<Text>().text = command.ToString();
+			assignedKey.text = InputManager.getInput().getMapping(command).ToString();
+
+			button.onClick.AddListener(delegate { StartCoroutine(assignCommandKey(command, assignedKey)); });
+		}
+	}
+
+	//allows user to bind a new key to a command
+	private IEnumerator assignCommandKey(Command command, Text assignedKey) {
+
+		KeyCode newKey = KeyCode.None;
+		Array allKeys = Enum.GetValues(typeof(KeyCode));
+		assignedKey.fontStyle = FontStyle.BoldAndItalic;
+
+		//wait for user to press a key
+		while(newKey == KeyCode.None) {
+			
+			foreach(KeyCode key in allKeys) {
+				if(Input.GetKeyDown(key)) {
+					newKey = key;					
+					break;
+				}
+			}
+			yield return null;
+		}
+
+		assignedKey.fontStyle = FontStyle.Normal;
+		assignedKey.text = newKey.ToString();
+		InputManager.getInput().setButton(command, newKey);
+	}
+
+	//does not mess with player name settings
 	public void restoreDefaults() {
 		musicSlider.value = SettingsManager.defaultMusicVolume;
 		SFXSlider.value = SettingsManager.defaultSFXVolume;
@@ -83,6 +141,17 @@ public class Script_Menu_Settings : MonoBehaviour {
 		setCrosshairSize();
 		setUpwardDistance();
 		setForwardDistance();
+
+		//restore control settings to their defaults
+		for(int i = 0; i < InputManager.numCommands; i++) {
+			Command command = (Command) i;
+			Transform field = controlSettings.GetChild(i);
+			Text assignedKey = field.Find("AssignedKey").GetComponent<Text>();
+
+			KeyCode defaultKey =  InputManager.getInput().DefaultKeys[i];
+			assignedKey.text = defaultKey.ToString();
+			InputManager.getInput().setButton(command, defaultKey);
+		}
 	}
 
 	public void setMusicVolume() {
@@ -209,19 +278,23 @@ public class Script_Menu_Settings : MonoBehaviour {
 	private IEnumerator previewCameraHelper() {
 		crosshair.localScale = crossHairSlider.value * Vector3.one;
 		Script_Game_Camera tempScript = cameraScript.gameObject.AddComponent<Script_Game_Camera>();
-		BoxCollider tempCollider = cameraScript.gameObject.AddComponent<BoxCollider>();
 		cameraPreviewOverlay.gameObject.SetActive(true);
-		tempCollider.enabled = false;
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		EventSystem.current.enabled = false;
+
+		//create a temporary child collider
+		BoxCollider tempCollider = GameObject.CreatePrimitive(PrimitiveType.Cube).GetComponent<BoxCollider>();
+		tempCollider.transform.SetParent(cameraScript.transform);
+		tempCollider.GetComponent<Renderer>().enabled = false;
+		tempCollider.enabled = false;
 
 		while(!Input.GetButtonDown("Cancel")) { //wait for cancel button to return to settings menu
 			yield return null;
 		}
 
 		Destroy(tempScript);
-		Destroy(tempCollider);
+		Destroy(tempCollider.gameObject);
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
 		cameraPreviewOverlay.gameObject.SetActive(false);

@@ -14,6 +14,8 @@ public class SettingsManager {
 	public const float defaultForwardDist = 2;
 	public const float defaultUpDist = 0.7f;
 
+
+
 	public static float MusicVolume {
 		get { return PlayerPrefs.GetFloat("musicVol", defaultMusicVolume); }
 		set { PlayerPrefs.SetFloat("musicVol", value); }

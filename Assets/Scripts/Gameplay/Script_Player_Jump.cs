@@ -25,7 +25,7 @@ public class Script_Player_Jump : MonoBehaviour {
             jumpStep--;
         }
 			
-        if((Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1")) && jumpStep == 0) { //jump command issued
+        if(InputManager.getInput().buttonDown(Command.Jump) && jumpStep == 0) { //jump command issued
             //only jump when jumpStep = 0; jump is off cooldown; prevents multiple contact surfaces causing AddForce to be called multiple times
 
             bool onGround = false; //ball cant jump if the only contact surface is a wall

@@ -70,8 +70,11 @@ public class Script_Player_Move : MonoBehaviour {
         	//braking force proportional to current velocity
         	if(onGround) {
         		rb.AddForce(-brakeStrength * rb.velocity * Time.deltaTime);
+        		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime);
+        	} else {
+        		//brake at half the strength
+        		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime / 2);
         	}
-			rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime);
 
         } else {
             Vector3 forwardDirection = cameraScript.forwardVector();
@@ -116,21 +119,21 @@ public class Script_Player_Move : MonoBehaviour {
         bool brake = false;
         
         //braking overrides all other movement instructions
-        if(Input.GetButton("Brake")) { 
+        if(InputManager.getInput().buttonDown(Command.Brake)) { 
             brake = true;
 
         } else { //released brake
 
         	//able to process other movement instructions
-			if(Input.GetButton("Forward")) {
+			if(InputManager.getInput().buttonDown(Command.Forward)) {
 				forward = 1;
-			} else if(Input.GetButton("Backward")) {
+			} else if(InputManager.getInput().buttonDown(Command.Backward)) {
 				forward = -1;
 			}
 
-			if(Input.GetButton("Right")) {
+			if(InputManager.getInput().buttonDown(Command.Right)) {
 				right = 1;
-			} else if(Input.GetButton("Left")) {
+			} else if(InputManager.getInput().buttonDown(Command.Left)) {
 				right = -1;
 			}
 		}

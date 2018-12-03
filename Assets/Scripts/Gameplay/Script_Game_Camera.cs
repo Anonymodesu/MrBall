@@ -109,8 +109,8 @@ public class Script_Game_Camera : Script_Camera {
 
     private void updateRotation() {
 		//deltatime is still required to freeze camera during pause
-		rotation.x -= mouseSensitivity*Input.GetAxis("Mouse Y") * Time.deltaTime * 60;
-		rotation.y += mouseSensitivity*Input.GetAxis("Mouse X") * Time.deltaTime * 60; 
+		rotation.x += mouseSensitivity*InputManager.getInput().yAxisMovement() * Time.deltaTime * 60;
+		rotation.y += mouseSensitivity*InputManager.getInput().xAxisMovement() * Time.deltaTime * 60; 
 		rotation.z = 0;
 		
 		//do not allow rotation past the limits
@@ -179,9 +179,11 @@ public class Script_Game_Camera : Script_Camera {
 
 	//ensures that the collider always spans the length between the camera and the ball
     private void processCollider() {
-		BoxCollider collider = GetComponent<BoxCollider>();
-		collider.center = transform.InverseTransformPoint((transform.position + player.transform.position) / 2);
-		collider.size = new Vector3(collider.size.x, collider.size.y, 0.9f * (player.transform.position - transform.position).magnitude);
+		Transform collider = GetComponentInChildren<BoxCollider>().transform;
+		collider.position = (transform.position + player.transform.position) / 2;
+		collider.rotation = Quaternion.LookRotation(player.transform.position - transform.position);
+		collider.localScale = new Vector3(collider.localScale.x, collider.localScale.y, 
+										0.9f * (player.transform.position - transform.position).magnitude);
     }
 
 	

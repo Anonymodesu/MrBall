@@ -117,7 +117,7 @@ public class Script_Player : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None; 
 		}
         
-        if(Input.GetButtonDown("Cancel") && pauseable) {
+        if(InputManager.getInput().buttonDown(Command.Pause) && pauseable) {
             pause();
         }
 

@@ -9,7 +9,7 @@ Yellow ramps make you jump much higher.
 
 
 Purple ramps induce extreme speed. Use with caution.
-Right-click to brake. Braking is your friend.
+You can right-click to brake.
 
 
 
@@ -53,7 +53,7 @@ Some are faster (and less obvious) than others.
 
 
 
-The crosshair in the centre of Mr. Ball's visuals can be used to navigate to hard-to-reach areas.
+The crosshair can be used to navigate to hard-to-reach areas.
 
 
 
@@ -123,8 +123,8 @@ There are several ways to approach this level.
 
 
 
-The sun emitted another burst of solar radiation!
-Be advised that the once docile ramps may exhibit spasmodic motions.
+The Sun emitted another burst of solar radiation!
+Be advised that the once docile ramps may exhibit uncontrollable motions.
 
 
 

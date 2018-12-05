@@ -6,10 +6,10 @@ using System;
 [Serializable]
 public class HighScore {
 
-    private string name;
-    private int cubies;
-    private int deaths;
-    private float time;
+    public readonly string name;
+    public readonly int cubies;
+    public readonly int deaths;
+    public readonly float time;
     
     public const int deathPoints = -10;
     public const int cubiePoints = 100;

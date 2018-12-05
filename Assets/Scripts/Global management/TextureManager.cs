@@ -92,9 +92,9 @@ public class TextureManager {
 
 			} else {
 				Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
-				float xScale = scale.x / 2;
-				float yScale = scale.y / 2;
-				float zScale = scale.z / 2;
+				float xScale = scale.x;
+				float yScale = scale.y;
+				float zScale = scale.z;
 						
 				//set each uv to the global scale of the object
 				//make sure the Texture's wrap mode is set to 'repeat'!
@@ -140,12 +140,15 @@ public class TextureManager {
 				meshes.Add(scale, mesh);
 			}
 			
+			
 			//apply material for the corresponding stage
 			Renderer renderer = obj.GetComponent<Renderer>();
 			Materials materials = GameObject.Find("Resources").GetComponent<Materials>();
+			//renderer.sharedMaterial.EnableKeyword("_NORMALMAP");
 			renderer.sharedMaterial.SetTexture("_MainTex", materials.rampTextures[stage]);
 			renderer.sharedMaterial.SetTexture("_DetailAlbedoMap", materials.rampTextures[stage]);
 			renderer.sharedMaterial.SetTexture("_BumpMap", materials.rampNormalMaps[stage]);
+			
 			
 		}
 

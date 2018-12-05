@@ -45,8 +45,8 @@ public class Script_Game_Menu : MonoBehaviour {
 		crossHair.gameObject.SetActive(false);
 		
 		currentLevel = GameManager.getInstance().getLevel();
-		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\n\n"
-						+ GameManager.getInstance().getLevelDescription(currentLevel);
+		menuText.text = LevelData.getInstance().getLevelName(currentLevel) + "\n\n"
+						+ LevelData.getInstance().getLevelDescription(currentLevel);
 
 		crossHair.transform.localScale = SettingsManager.CrosshairSize * Vector3.one;
 	}
@@ -87,7 +87,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		startButton.gameObject.SetActive(false); //otherwise pressing space activates pause
 		endButton.gameObject.SetActive(true);
 		restartButton.gameObject.SetActive(true);
-		menuText.text = GameManager.getInstance().getLevelName(currentLevel) + "\nPaused";
+		menuText.text = LevelData.getInstance().getLevelName(currentLevel) + "\nPaused";
 	}
 	
 	//when the level is completed, display final achievements and high scores; highscores will be null if there are no new high scores

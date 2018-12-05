@@ -24,7 +24,6 @@ public class Script_Camera : MonoBehaviour {
 	//set the directional light lighting and skybox; these settings do not affect ambient/environment lighting-
 	//you gotta change this directly in editor
 	public void setLighting(int stage) { 
-				
 		switch(stage) {
 			case 0: stage0Settings(); break;
 			case 1: stage1Settings(); break;
@@ -33,6 +32,7 @@ public class Script_Camera : MonoBehaviour {
 			case 4: stage4Settings(); break;
 			case 5: stage7Settings(); break;
 		}
+
 	}
 	
 	private void stage0Settings() {

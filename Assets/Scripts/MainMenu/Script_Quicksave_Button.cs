@@ -15,7 +15,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 		Quicksave save = GameManager.getInstance().getQuickSave(SettingsManager.CurrentPlayer);
 		if(save != null) {
 			level = save.level;
-			levelText.text = GameManager.getInstance().getLevelName(level);
+			levelText.text = LevelData.getInstance().getLevelName(level);
 			
 			int cubies = 0;
 			foreach(bool collected in save.cubies) {

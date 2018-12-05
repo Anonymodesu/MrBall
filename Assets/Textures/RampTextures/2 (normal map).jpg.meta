@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2c70b3b219b160a42b54faf8450a23a7
+guid: 3433489bbe4a0af4cba49bfdfda08782
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -18,7 +18,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 1
     externalNormalMap: 0
-    heightScale: 0.3
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   streamingMipmaps: 0

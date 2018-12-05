@@ -80,7 +80,7 @@ public class Script_Player : MonoBehaviour {
         pauseable = false;
         
         startPos = GameObject.Find("Ramp_Start");
-		startGravityDirection = -startPos.transform.up;// // -startPos.transform.up; defaultGravityDirection
+		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
@@ -175,7 +175,7 @@ public class Script_Player : MonoBehaviour {
 			
 			other.gameObject.SetActive(false);
             cubies++;
-            SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Cubie);
+            SoundManager.getInstance().playSoundFX(SoundFX.Cubie);
             
         } else if (isPhysical(tag)) {
         	switch(tag) {
@@ -188,7 +188,7 @@ public class Script_Player : MonoBehaviour {
                 break;
                 
                 case "Win":
-                SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Win);
+                SoundManager.getInstance().playSoundFX(SoundFX.Win);
                 win();
                 break;
         	}
@@ -220,7 +220,7 @@ public class Script_Player : MonoBehaviour {
 
 		if(hitStrength > collisionSoundThreshold) {
 			float volume = hitStrength / collisionSoundDamper;
-			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Collision, volume);
+			SoundManager.getInstance().playSoundFX(SoundFX.Collision, volume);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class Script_Player : MonoBehaviour {
 		Vector3 normal = findNormalVector(surface, this.gameObject);
 
 		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
-			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Gravity);
+			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
 		}
 
 		Physics.gravity = -normal.normalized * gravityStrength;
@@ -259,7 +259,7 @@ public class Script_Player : MonoBehaviour {
 		if(checkPoint != startPos || gravity != startGravityDirection) {
 			startPos = checkPoint;
 			startGravityDirection = gravity.normalized;
-			SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.Checkpoint);
+			SoundManager.getInstance().playSoundFX(SoundFX.Checkpoint);
 			StartCoroutine(checkpointAnimation.animate());
 		}
 	}

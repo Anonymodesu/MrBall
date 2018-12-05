@@ -110,19 +110,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rampTextures:
-  - {fileID: 2800000, guid: c4cc70fbe5812bd498887e82ff9fe5e5, type: 3}
-  - {fileID: 2800000, guid: b7e7c3d906d809c48a0dc019bd730fea, type: 3}
-  - {fileID: 2800000, guid: 6b7347901a728f547a23cb513ec2d700, type: 3}
-  - {fileID: 2800000, guid: 45cdf8af4f6742c4683d9e1e7240cdad, type: 3}
-  - {fileID: 2800000, guid: 2bb26f93fd6214349a5f1cc18f093a29, type: 3}
-  - {fileID: 2800000, guid: c4cc70fbe5812bd498887e82ff9fe5e5, type: 3}
-  - {fileID: 2800000, guid: c4cc70fbe5812bd498887e82ff9fe5e5, type: 3}
+  - {fileID: 2800000, guid: 0109cfb664501da46874432f4cf5b22a, type: 3}
+  - {fileID: 2800000, guid: 9ae12a29067d3d94da01a595d33c188b, type: 3}
+  - {fileID: 2800000, guid: 27112bdcf45099e469e05bb2013ded22, type: 3}
+  - {fileID: 2800000, guid: 3360a07f61aad2941bfd66d9e8579b3c, type: 3}
+  - {fileID: 2800000, guid: 613743ff341cef04887f26f0abb93810, type: 3}
+  - {fileID: 2800000, guid: 629bd471f494c1948a22248b30d26f03, type: 3}
+  - {fileID: 2800000, guid: cd4ef666e80696f42ad1220d47af4cae, type: 3}
   rampNormalMaps:
-  - {fileID: 2800000, guid: 545e45c1045723d46a726d844ba9429b, type: 3}
-  - {fileID: 2800000, guid: 618d9caf1d9ff4a4699b03ba83828d04, type: 3}
-  - {fileID: 2800000, guid: 2c70b3b219b160a42b54faf8450a23a7, type: 3}
-  - {fileID: 2800000, guid: ee8695dcbf3ac2244a7ecff97456af1f, type: 3}
-  - {fileID: 2800000, guid: 38d2b54845a59e24aa050244fc88f6c1, type: 3}
-  - {fileID: 2800000, guid: 545e45c1045723d46a726d844ba9429b, type: 3}
-  - {fileID: 2800000, guid: 545e45c1045723d46a726d844ba9429b, type: 3}
+  - {fileID: 2800000, guid: 4e61b643066f16c419acfba56fd6c0db, type: 3}
+  - {fileID: 2800000, guid: a0eb73163dffd09409f89e8dabeb133c, type: 3}
+  - {fileID: 2800000, guid: 3433489bbe4a0af4cba49bfdfda08782, type: 3}
+  - {fileID: 2800000, guid: e11c7017fab89604ea4c20ce8906613d, type: 3}
+  - {fileID: 2800000, guid: 684d94c4c5c21e444a9847a86fe5f16b, type: 3}
+  - {fileID: 2800000, guid: fbf7efc34cefea349a3a645e3a954c7c, type: 3}
+  - {fileID: 2800000, guid: b0c9031cf9c0a584887c185863e99033, type: 3}
   pokeBall: {fileID: 2100000, guid: 44f8846d7f8eb774d97ae9c11690c0fa, type: 2}

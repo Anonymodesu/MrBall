@@ -15,7 +15,6 @@ public class Script_Menu_Dropdown : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		stageButtons = new GameObject[Level.numStages];
 
         //prepare stages
         List<String> stages = new List<String>();
@@ -25,6 +24,7 @@ public class Script_Menu_Dropdown : MonoBehaviour {
         this.GetComponent<Dropdown>().AddOptions(stages);
         
         //instantiate buttons
+        stageButtons = new GameObject[Level.numSubstages];
         for(int i = 0; i < Level.numSubstages; i++) {
             stageButtons[i] = Instantiate(buttonPrefab, GameObject.Find("LevelSelectButtons").transform); //share the same parent
         }

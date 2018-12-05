@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum SoundFX : int {Roll = 0, Collision = 1, YellowJump = 2, OrangeJump = 3, NormalJump = 4, Checkpoint = 5, Cubie = 6,
+								Win = 7, Gravity = 8}
+
 //also called by GameManager
 public class SoundManager {
-
-	public enum SoundFX : int {Roll = 0, Collision = 1, YellowJump = 2, OrangeJump = 3, NormalJump = 4, Checkpoint = 5, Cubie = 6,
-								Win = 7, Gravity = 8}
 
 	private GameObject container; //provides a gameobject for audiosources to be attached to
 	private AudioSource bgMusic;
@@ -62,6 +62,9 @@ public class SoundManager {
 		bgMusic = container.AddComponent<AudioSource>();
 		soundFX = container.AddComponent<AudioSource>();
 
+		bgMusic.volume = SettingsManager.MusicVolume;
+		soundFX.volume = SettingsManager.SFXVolume;
+
 		//array length = total number of enum values defined
 		soundFXVolume = new float[Enum.GetNames(typeof(SoundFX)).Length];
 		soundFXVolume[(int) SoundFX.Collision] = 0.4f;
@@ -84,7 +87,6 @@ public class SoundManager {
 	
 	public void setMusic(int stage) {
 		bgMusic.clip = getSoundFiles().music[stage];
-		bgMusic.volume = 0.5f;
 		bgMusic.loop = true;
 		bgMusic.Play();
 	}

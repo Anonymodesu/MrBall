@@ -6,7 +6,7 @@ using System;
 public class KeyboardMouseInput : InputType<KeyCode> {
 	private KeyCode[] keyCodes; //maps commands to their assigned keys
 
-	private const string commandTag = "key";
+	private const string commandTag = "key"; //suffix added to playerprefs keys
 
 	public KeyCode[] DefaultKeys {
 		get { return defaultKeys; }

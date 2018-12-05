@@ -7,7 +7,12 @@ using UnityEngine.UI;
 
 public class Script_Menu_High_Scores : MonoBehaviour {
         
-    public Text display;
+    #pragma warning disable 0649
+
+    [SerializeField]
+    private Text playerText, cubiesText, deathsText, timeText, pointsText;
+
+    #pragma warning restore 0649
 
     // Use this for initialization
     void Start () {
@@ -20,23 +25,36 @@ public class Script_Menu_High_Scores : MonoBehaviour {
         }
         this.GetComponent<Dropdown>().AddOptions(stages);
         
+        //when called in the menu, getLevel() returns the last played level
+        GetComponent<Dropdown>().value = GameManager.getInstance().getLevel().GetHashCode();
+        Debug.Log(GetComponent<Dropdown>().value);
         switchStages();
     }
     
     
     
     public void switchStages() { //called in Start(), and the high score menu switch button
-        int stage = this.GetComponent<Dropdown>().value; //here, "stage" = currentStage * numSubstages + currentSubstage
-        string text = "Name\tCubies\tDeaths\tTime\tScore\n";
+        int levelIndex = this.GetComponent<Dropdown>().value; //here, levelIndex = currentStage * numSubstages + currentSubstage
 		HighScore[] highScores = ScoreManager.getInstance().getHighScores();
+
+        playerText.text = "Player\n";
+        cubiesText.text = "Cubies\n";
+        deathsText.text = "Deaths\n";
+        timeText.text = "Time \n";
+        pointsText.text = "Score\n";
         
-        int startIndex = stage * ScoreManager.numHighScoresPerSubstage;
+        int startIndex = levelIndex * ScoreManager.numHighScoresPerSubstage;
         for(int i = 0; i < ScoreManager.numHighScoresPerSubstage; i++) {
-            if(highScores[startIndex + i] != null) {
-                text += highScores[startIndex + i].display(); //run through each entry of the corresponding stage
+            HighScore currentHS = highScores[startIndex + i];
+
+            if(currentHS != null) {
+               playerText.text += currentHS.name + "\n";
+               cubiesText.text += currentHS.cubies + "\n";
+               deathsText.text += currentHS.deaths + "\n";
+               timeText.text += currentHS.time.ToString("0.00") + "\n";
+               pointsText.text += currentHS.calculateScore() + "\n";
             }
         }
         
-        display.text = text;
     }
 }

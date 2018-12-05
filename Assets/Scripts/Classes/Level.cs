@@ -6,8 +6,8 @@ using UnityEngine;
 [Serializable]
 public class Level : IEquatable<Level> {
 
-	public const int numSubstages = 5;
-    public const int numStages = 6;
+	public const int numSubstages = 10;
+    public const int numStages = 5;
 	public const int numLevels = numStages * numSubstages;
 
 	public readonly int stage;
@@ -32,7 +32,7 @@ public class Level : IEquatable<Level> {
 	}
 
 	public override int GetHashCode() {
-		return stage * numSubstages + numSubstages;
+		return stage * numSubstages + substage;
 	}
 
 	/*

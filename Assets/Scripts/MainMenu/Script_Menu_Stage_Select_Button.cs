@@ -33,7 +33,7 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 	public override void OnPointerEnter(PointerEventData eventData) {
 		
 		Level level = GameManager.getInstance().getLevel(GetComponentInChildren<Text>().text); //text in button corresponds to the level
-		levelText.text = GameManager.getInstance().getLevelName(level);
+		levelText.text = LevelData.getInstance().getLevelName(level);
 		
 		Achievement current = AchievementManager.getInstance().getAchievement(SettingsManager.CurrentPlayer, level);
 		Achievement required = AchievementManager.getInstance().getRequirement(level);

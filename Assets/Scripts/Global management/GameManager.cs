@@ -13,8 +13,6 @@ public class GameManager { //a singleton
 	private const int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
 	
 	private Level currentLevel = null; //stores the level that was just loaded
-	private Dictionary<Level, string> levelDescriptions;
-	private Dictionary<Level, string> levelNames;
 
 	public enum QuickSaveState : int {NewGame = 0, LoadSave = 1}
 	private Quicksave quickSave; //the quicksave of the current player
@@ -48,9 +46,6 @@ public class GameManager { //a singleton
 		
 		
 		SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
-
-		parseLevelData();
-
 		quickSave = null;
 		//Level.testLevel();
 	}
@@ -101,69 +96,6 @@ public class GameManager { //a singleton
 		return new Level(stage,subStage);
 	}
 	
-	//returns the flavour text displayed at the beginning of each level
-	public string getLevelDescription(Level level) {
-		if(levelDescriptions == null) {
-			return "missing description for " + level.ToString();
-		} else {
-			return levelDescriptions[level];
-		}
-	}
-
-	public string getLevelName(Level level) {
-		if(levelNames == null) {
-			return "missing level name for " + level.ToString();
-		} else {
-			return levelNames[level];
-		}
-	}
-
-	private void parseLevelData() {
-		string[] levelDescriptions = null;
-		string[] levelNames = null;
-
-		//housekeeping
-		try {
-			levelDescriptions = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/leveldescrip.txt");
-		} catch(FileNotFoundException) {
-			Debug.Log("level descriptions not found");
-		}
-
-		try {
-			levelNames = System.IO.File.ReadAllLines(Application.streamingAssetsPath + "/levelnames.txt");
-		} catch(FileNotFoundException) {
-			Debug.Log("level names not found");
-		}
-		
-		if(levelDescriptions == null || levelNames == null //missing files
-			|| levelDescriptions.Length < linesPerLevel * Level.numLevels //insufficient data
-			|| levelNames.Length < Level.numLevels) {
-			return;
-		}
-		
-		//begin parsing
-		this.levelDescriptions = new Dictionary<Level, string>();
-		this.levelNames = new Dictionary<Level, string>();
-		StringBuilder sb = new StringBuilder();
-
-		for(int stage = 0; stage < Level.numStages; stage++) {
-
-			for(int substage = 0; substage < Level.numSubstages; substage++) {
-
-				Level level = new Level(stage, substage);
-				int index = stage * Level.numSubstages + substage;
-
-				for(int i = 0; i < linesPerLevel; i++) {
-					sb.Append(levelDescriptions[linesPerLevel * index + i]).Append("\n");
-				}
-
-				this.levelDescriptions.Add(level, sb.ToString());
-				this.levelNames.Add(level, levelNames[index]);
-
-				sb.Length = 0; //clear stringbuilder in preparation for next set of level descriptions
-			}
-		}
-	}
 
 	//returns null if the quicksave does not exist for this player
 	public Quicksave getQuickSave(string player) {

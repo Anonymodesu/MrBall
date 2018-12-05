@@ -62,7 +62,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				Vector3 jumpDirection = -Physics.gravity.normalized;
 				cancelVelocity(jumpDirection);
 				rb.AddForce(jumpDirection * superJumpStrength, ForceMode.Impulse);
-				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.YellowJump);
+				SoundManager.getInstance().playSoundFX(SoundFX.YellowJump);
 				specialJump = true;
 			}
 			
@@ -70,7 +70,7 @@ public class Script_Player_Jump : MonoBehaviour {
 			if(perpend) {
 				cancelVelocity(normalVector);
 				rb.AddForce(normalVector * perpendicularJumpStrength, ForceMode.Impulse);
-				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.OrangeJump);
+				SoundManager.getInstance().playSoundFX(SoundFX.OrangeJump);
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
 			}
@@ -79,7 +79,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				Vector3 jumpDirection = -Physics.gravity.normalized;
 				cancelVelocity(jumpDirection);
 				rb.AddForce(jumpDirection * jumpStrength, ForceMode.Impulse);
-				SoundManager.getInstance().playSoundFX(SoundManager.SoundFX.NormalJump);
+				SoundManager.getInstance().playSoundFX(SoundFX.NormalJump);
 			}
 
         }

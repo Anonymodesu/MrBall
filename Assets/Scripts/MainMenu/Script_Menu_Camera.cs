@@ -1,33 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Script_Menu_Camera : Script_Camera {
 
-    private EventSystem eventSystem;
+	#pragma warning disable 0649
+
+    [SerializeField]
+    private List<GameObject> menus;
+
+    #pragma warning restore 0649
 
     //distance from the camera to a canvas
     private const float distance = 2;
     private const float rotationSpeed = 1;
+    private readonly Vector3 offset = Vector3.up * 0.2f;
 
 	// Use this for initialization
 	void Start () {
         Time.timeScale = 1;
         GameManager.getInstance();
-        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
         transform.position = Random.insideUnitSphere * 0.5f;
         transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 180);
-        StartCoroutine(switchMenus(GameObject.Find("Level Select").transform));
+        StartCoroutine(switchMenus(menus[0].transform));
 	}
     
     //switches view from current menu to dest menu
     public IEnumerator switchMenus(Transform dest) {
-       eventSystem.enabled = false; //prevent other buttons from being pressed
+       foreach(GameObject menu in menus) {
+       		menu.GetComponent<CanvasGroup>().interactable = false;
+       }
 
        Vector3 sourcePos = transform.position;
-       Vector3 targetPos = dest.position - distance * dest.forward;
+       Vector3 targetPos = dest.position - distance * dest.forward + offset;
        Quaternion sourceRot = transform.rotation;
        Quaternion targetRot = Quaternion.LookRotation(dest.forward);
 
@@ -43,6 +49,6 @@ public class Script_Menu_Camera : Script_Camera {
        transform.position = targetPos;
        transform.rotation = targetRot;
 
-       eventSystem.enabled = true;
+       dest.GetComponent<CanvasGroup>().interactable = true;
     }
 }

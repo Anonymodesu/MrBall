@@ -281,7 +281,6 @@ public class Script_Menu_Settings : MonoBehaviour {
 		cameraPreviewOverlay.gameObject.SetActive(true);
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
-		EventSystem.current.enabled = false;
 
 		//create a temporary child collider
 		BoxCollider tempCollider = GameObject.CreatePrimitive(PrimitiveType.Cube).GetComponent<BoxCollider>();
@@ -289,7 +288,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 		tempCollider.GetComponent<Renderer>().enabled = false;
 		tempCollider.enabled = false;
 
-		while(!Input.GetButtonDown("Cancel")) { //wait for cancel button to return to settings menu
+		while(!InputManager.getInput().buttonDown(Command.Pause)) { //wait for cancel button to return to settings menu
 			yield return null;
 		}
 

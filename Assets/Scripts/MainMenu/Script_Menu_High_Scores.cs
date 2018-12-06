@@ -27,7 +27,6 @@ public class Script_Menu_High_Scores : MonoBehaviour {
         
         //when called in the menu, getLevel() returns the last played level
         GetComponent<Dropdown>().value = GameManager.getInstance().getLevel().GetHashCode();
-        Debug.Log(GetComponent<Dropdown>().value);
         switchStages();
     }
     
@@ -37,11 +36,11 @@ public class Script_Menu_High_Scores : MonoBehaviour {
         int levelIndex = this.GetComponent<Dropdown>().value; //here, levelIndex = currentStage * numSubstages + currentSubstage
 		HighScore[] highScores = ScoreManager.getInstance().getHighScores();
 
-        playerText.text = "Player\n";
-        cubiesText.text = "Cubies\n";
-        deathsText.text = "Deaths\n";
-        timeText.text = "Time \n";
-        pointsText.text = "Score\n";
+        playerText.text = "";
+        cubiesText.text = "";
+        deathsText.text = "";
+        timeText.text = "";
+        pointsText.text = "";
         
         int startIndex = levelIndex * ScoreManager.numHighScoresPerSubstage;
         for(int i = 0; i < ScoreManager.numHighScoresPerSubstage; i++) {

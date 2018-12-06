@@ -31,6 +31,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 			levelImage.sprite = levelImages.levelImages[level.stage * Level.numSubstages + level.substage];
 
 		} else {
+			level = null;
 			levelImage.sprite = null;
 			cubiesText.text = "";
 			deathsText.text = "";
@@ -44,7 +45,10 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 
 
     public override void StartLevel() {
-    	PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.LoadSave); //tell program that a quicksave is being loaded
-        base.StartLevel();
+    	if(level != null) { // null if level does not exist
+    		PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.LoadSave); //tell program that a quicksave is being loaded
+        	base.StartLevel();
+    	}
+    	
     }
 }

@@ -14,7 +14,6 @@ public class GameManager { //a singleton
 	
 	private Level currentLevel = null; //stores the level that was just loaded
 
-	public enum QuickSaveState : int {NewGame = 0, LoadSave = 1}
 	private Quicksave quickSave; //the quicksave of the current player
 
 	private static GameManager instance = null;

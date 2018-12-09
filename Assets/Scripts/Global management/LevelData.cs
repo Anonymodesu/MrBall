@@ -43,30 +43,28 @@ Good luck.");
 
 
 		levelDescriptions.Add(new Level(1,0), 
-@"Are you ready for your first real level?
-Nice and easy.");
+@"Purple ramps induce extreme speed.
+Use with caution.");
 		levelDescriptions.Add(new Level(1,1), 
-@"Unless you're a very brave person, you should attempt these levels in order.");
-		levelDescriptions.Add(new Level(1,2), 
 @"Rest assured, each cubie has been proven collectable by calm and collected cubie collectors.");
-		levelDescriptions.Add(new Level(1,3), 
-@"How are you finding these levels?
-Send your thoughts and concerns to mr.flyingpants@gmail.com");
-		levelDescriptions.Add(new Level(1,4), 
-@"The 5th level of each stage ramps up the difficulty.
-...hehe, get it?");
-
-		levelDescriptions.Add(new Level(2,0), 
+		levelDescriptions.Add(new Level(1,2), 
 @"There may be multiple paths you can take to finish a level. 
 Some are faster (and less obvious) than others.");
-		levelDescriptions.Add(new Level(2,1), 
+		levelDescriptions.Add(new Level(1,3), 
+@"Unless you're a very brave person, you should attempt these levels in order.");
+		levelDescriptions.Add(new Level(1,4), 
 @"The crosshair can be used to navigate to hard-to-reach areas.");
-		levelDescriptions.Add(new Level(2,2), 
+		levelDescriptions.Add(new Level(1,5), 
 @"If Mr. Ball is in contact with many surfaces, he will take advantage of any special effects that they have to offer.");
-		levelDescriptions.Add(new Level(2,3), 
+		levelDescriptions.Add(new Level(1,6), 
+@"The Sun just unleashed a violent burst of radiation!	
+The once docile ramps have begun moving of their own will!");
+		levelDescriptions.Add(new Level(1,7), 
+@"Although other balls provide nice bonuses, good ol' Mr. Ball is sufficient to complete every level in the game.");
+		levelDescriptions.Add(new Level(1,8), 
 @"Having sufficient angular momentum is required to scale certain obstacles.
 Which means Mr. Ball should have a run-up before attempting the jumps in this level.");
-		levelDescriptions.Add(new Level(2,4), 
+		levelDescriptions.Add(new Level(1,9), 
 @"Mr. Ball was inspired by a very old game called 'Marble Blast Gold'.");
 
 		levelDescriptions.Add(new Level(3,0), 
@@ -74,7 +72,7 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(3,1), 
 @"If Mr.Ball is touching both yellow and orange ramps, both types of jump effects will be applied.");
 		levelDescriptions.Add(new Level(3,2), 
-@"The Sun just unleashed a violent burst of radiation!	
+@"The Sun just unleashed another a burst of radiation!	
 Some ramps have mutated, but functionally behave the same.");
 		levelDescriptions.Add(new Level(3,3), 
 @"Some people ask me how Mr. Ball rolls with such elegance. 
@@ -105,18 +103,18 @@ Usually.");
 		levelNames.Add(new Level(0,6), "Braking");
 		levelNames.Add(new Level(0,7), "Need for speed");
 		levelNames.Add(new Level(0,8), "Betrayal");
+		levelNames.Add(new Level(0,9), "Difficulty spike");
 
 		levelNames.Add(new Level(1,0), "Rolling thunder");
-		levelNames.Add(new Level(1,1), "The hole");
-		levelNames.Add(new Level(1,2), "Baby steps");
-		levelNames.Add(new Level(1,3), "???");
-		levelNames.Add(new Level(1,4), "Difficulty spike");
-
-		levelNames.Add(new Level(2,0), "Shortcuts");
-		levelNames.Add(new Level(2,1), "Take aim");
-		levelNames.Add(new Level(2,2), "Super jumping");
-		levelNames.Add(new Level(2,3), "Rollercoaster");
-		levelNames.Add(new Level(2,4), "Mr. Cube");
+		levelNames.Add(new Level(1,1), "Baby steps");
+		levelNames.Add(new Level(1,2), "Shortcuts");
+		levelNames.Add(new Level(1,3), "The hole");
+		levelNames.Add(new Level(1,4), "Take aim");
+		levelNames.Add(new Level(1,5), "Super jumping");
+		levelNames.Add(new Level(1,6), "Teenage Mutant Ninja Ramps");
+		levelNames.Add(new Level(1,7), "Super jumping 2");
+		levelNames.Add(new Level(1,8), "Rollercoaster");
+		levelNames.Add(new Level(1,9), "Mr. Cube");
 
 		levelNames.Add(new Level(3,0), "Perpendicular jumping");
 		levelNames.Add(new Level(3,1), "Ultra jumping");

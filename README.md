@@ -2,6 +2,33 @@
 
 An indie 3D puzzle platformer
 
+## Level Design
+
+All ramps should have the 'Rollercoaster' gameobject as the root parent so they are textured correctly and are considered when calculating bounds.
+
+### Quicksave Notes
+
+Adhere to the following, or quicksaves will not load data correctly.
+
+* Cubies should be parented by the 'Cubies' gameobject
+* All animated ramps and containers should be placed under the list 'AnimatedRamps' of the player gameobject
+* All checkpoints should have different names
+
+### Animating ramps
+
+Animated ramps are for independently animating single ramps. Animation containers are used to sync the animations of its children ramps.
+
+1. Drag the animated ramp or animation container prefab onto the scene.
+2. Add animatable ramps as children if using the animation container.
+3. Open the animation window.
+4. With the animation target selected, click 'Create New Clip'.
+5. Add the desired properties you wish to animate.
+6. Click 'Record'.
+7. Key in the animation by dragging the vertical white line around and modifying the desired properties at each particular frame.
+8. Preview the animation by clicking the play button.
+9. In 'Assets', make sure the animation clip has 'Loop Time' and 'Loop Pose' checked.
+10. Drag the animation clip to 'Animation Clip' under 'Script_Ramp_Animatable' of the animated ramp.
+
 ## Resources
 
 ### Graphics Optimisation

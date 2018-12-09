@@ -171,7 +171,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 	//creates a new player from the inputfield's text
 	public void setNewPlayer() {
 		string newPlayer = nameInputField.text;
-        if(!name.Equals("")) {
+        if(!newPlayer.Equals("")) {
 
             //search list of options for newPlayer
             GameObject playerButton = null;
@@ -200,7 +200,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 
 		string player = playerButton.GetComponentInChildren<Text>().text;
 		nameInputField.text = player;
-		playerButton.GetComponentInChildren<Text>().fontStyle = FontStyle.Bold;
+		playerButton.GetComponentInChildren<Text>().fontStyle = FontStyle.BoldAndItalic;
 
         SettingsManager.CurrentPlayer = player;
 	}

@@ -28,7 +28,8 @@ public class Script_Player : MonoBehaviour {
 	private Script_Player_Jump jumpScript;
 	private Script_OutOfBounds outOfBoundsScript;
 
-	//last encountered checkpoint
+	//last encountered checkpoint; change in editor to allow for testing
+	[SerializeField]
     private GameObject startPos;
 
     //pausing
@@ -57,6 +58,9 @@ public class Script_Player : MonoBehaviour {
 
 	private Script_Checkpoint_Animation checkpointAnimation;
 
+	[SerializeField]
+	public List<Script_Ramp_Animator> animatedRamps;
+
     // Use this for initialization
     void Start () {
         contacts = new List<GameObject>();
@@ -79,7 +83,9 @@ public class Script_Player : MonoBehaviour {
         
         pauseable = false;
         
-        startPos = GameObject.Find("Ramp_Start");
+        if(startPos == null) {
+        	startPos = GameObject.Find("Ramp_Start");
+        }
 		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
         reset();
 				
@@ -95,7 +101,9 @@ public class Script_Player : MonoBehaviour {
 		//display panel was used as a start_pos to take screenshots of levels
 		GameObject.Find("displaypanel").SetActive(false);
 
-		loadQuickSave();
+		if(SettingsManager.QuickSaveLoaded) {
+			loadQuickSave();
+		}
 		if(player == "pokemon") {
 			GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Materials>().pokeBall;
 		}
@@ -317,55 +325,71 @@ public class Script_Player : MonoBehaviour {
     }
 
     private void loadQuickSave() {
-		//load the quicksave in the case that the quick save button was clicked
-		if((GameManager.QuickSaveState) PlayerPrefs.GetInt("save", 0) == GameManager.QuickSaveState.LoadSave) {
 
-			PlayerPrefs.SetInt("save", (int) GameManager.QuickSaveState.NewGame);
+		SettingsManager.QuickSaveLoaded = false;
 
-			//load the quick save for the current player
-			Quicksave save = GameManager.getInstance().getQuickSave(player);
+		//load the quick save for the current player
+		Quicksave save = GameManager.getInstance().getQuickSave(player);
 
-			if(save != null) {
-				if(save.level.Equals(currentLevel)) {
-					transform.position = save.position;
-					rb.velocity = save.velocity;
-					rb.angularVelocity = save.angularVelocity;
-					startGravityDirection = save.startGravityDirection;
-					Physics.gravity = save.currentGravityDirection;
-					Physics.gravity *= gravityStrength;
+		if(save != null) {
+			if(save.level.Equals(currentLevel)) {
+				transform.position = save.position;
+				rb.velocity = save.velocity;
+				rb.angularVelocity = save.angularVelocity;
+				startGravityDirection = save.startGravityDirection;
+				Physics.gravity = save.currentGravityDirection;
+				Physics.gravity *= gravityStrength;
 
-					//if the save.cubies[i] == false, then the cubie was collected
-					Transform cubies = GameObject.Find("Cubies").transform;
-					for(int i = 0; i < cubies.childCount; i++) {
-						if(save.cubies[i]) {
-							cubies.GetChild(i).gameObject.SetActive(true);
-						} else {
-							cubies.GetChild(i).gameObject.SetActive(false);
-							this.cubies++;
-						}
+				//if the save.cubies[i] == false, then the cubie was collected
+				Transform cubies = GameObject.Find("Cubies").transform;
+				for(int i = 0; i < cubies.childCount; i++) {
+					if(save.cubies[i]) {
+						cubies.GetChild(i).gameObject.SetActive(true);
+					} else {
+						cubies.GetChild(i).gameObject.SetActive(false);
+						this.cubies++;
 					}
-
-					startPos = GameObject.Find(save.startPos);
-					startTime -= save.time;
-					deaths = save.deaths;
-
-				} else {
-					Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
 				}
+
+				startPos = GameObject.Find(save.startPos);
+				startTime -= save.time;
+				deaths = save.deaths;
+
+				for(int i = 0; i < save.rampAnimationTimes.Count; i++) {
+					animatedRamps[i].setNormalisedPlayTime(save.rampAnimationTimes[i]);
+				}
+
+				//check whether all ramps have been saved into the quick save
+				int numActiveRamps = FindObjectsOfType<Script_Ramp_Animator>().Length;
+				if(numActiveRamps != save.rampAnimationTimes.Count) {
+					Debug.Log("only saved " + numActiveRamps + "/" + save.rampAnimationTimes.Count + " ramps.");
+				}
+
+			} else {
+				Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
 			}
 		}
+		
 	}
 
 	private void storeQuickSave() {
+		//store whether each cubie has been collected
 		List<bool> collectedCubies = new List<bool>();
 		Transform cubies = GameObject.Find("Cubies").transform;
 		for(int i = 0; i < cubies.childCount; i++) {
 			collectedCubies.Add(cubies.GetChild(i).gameObject.activeSelf);
 		}
 
+		//store the current amount played per animated ramp
+		List<float> rampAnimationTimes = new List<float>();
+		foreach(Script_Ramp_Animator ramp in animatedRamps) {
+			float animationTime = ramp.getNormalisedPlayTime();
+			rampAnimationTimes.Add(animationTime);
+		}
+
 		Quicksave save = new Quicksave(player, currentLevel, transform.position, rb.velocity, rb.angularVelocity,
 										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
-										getTime(), deaths);
+										getTime(), deaths, rampAnimationTimes);
 
 		GameManager.getInstance().storeQuickSave(player, save);
 	}

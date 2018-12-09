@@ -11,7 +11,7 @@ public class SettingsManager {
 	public const int defaultShadowState = 1;
 	public const int defaultTrailsState = 1;
 	public const float defaultCrosshairSize = 1;
-	public const float defaultForwardDist = 2;
+	public const float defaultForwardDist = 2.5f;
 	public const float defaultUpDist = 0.7f;
 
 
@@ -37,12 +37,12 @@ public class SettingsManager {
 	}
 
 	public static bool DisplayShadows {
-		get { return (PlayerPrefs.GetInt("shadows", defaultShadowState) == 1) ? true : false; }
+		get { return PlayerPrefs.GetInt("shadows", defaultShadowState) == 1; }
 		set { PlayerPrefs.SetInt("shadows", value ? 1 : 0); }
 	}
 
 	public static bool DisplayTrails {
-		get { return (PlayerPrefs.GetInt("trails", defaultTrailsState) == 1) ? true : false; }
+		get { return PlayerPrefs.GetInt("trails", defaultTrailsState) == 1; }
 		set { PlayerPrefs.SetInt("trails", value ? 1 : 0); }
 	}
 
@@ -59,5 +59,10 @@ public class SettingsManager {
 	public static float UpwardDistance {
 		get { return PlayerPrefs.GetFloat("upDist", defaultUpDist); }
 		set { PlayerPrefs.SetFloat("upDist", value); }
+	}
+
+	public static bool QuickSaveLoaded {
+		get { return PlayerPrefs.GetInt("save") == 1; }
+		set { PlayerPrefs.SetInt("save", value ? 1 : 0); }
 	}
 }

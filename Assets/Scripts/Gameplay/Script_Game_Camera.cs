@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Script_Game_Camera : Script_Camera {
     private float mouseSensitivity;
@@ -28,7 +29,6 @@ public class Script_Game_Camera : Script_Camera {
 	private const float baseFOV = 65; //fov at 0 velocity
 
 	//variables for hiding ramps
-	private const int rampLayerMask = 1 << 8;
 	private Dictionary<GameObject, GameObject> hiddenRamps;
 	private const float transparency = 0.5f;
 
@@ -61,21 +61,27 @@ public class Script_Game_Camera : Script_Camera {
 		updateAxes();
     	updateRotation();
     	updatePosition();
-
-    	processCollider();
     	
 		//Debug.Log(Quaternion.LookRotation(-transform.forward).eulerAngles);	
     }
 
     //there is a ramp obstructing view
-    void OnTriggerEnter(Collider other) {
+    public void onRampEnter(Collider other) {
     	GameObject ramp = other.gameObject;
 
 		//create temporary transparent ramp
-		GameObject transparentRamp = Instantiate(ramp, ramp.transform.parent);
+		GameObject transparentRamp = Instantiate(ramp, ramp.transform, true);
 
 		//so that it is ignored by everything; only its renderer is needed
-		transparentRamp.GetComponent<Collider>().enabled = false; 
+		transparentRamp.GetComponent<Collider>().enabled = false;
+
+		//optimisation purposes
+		transparentRamp.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+
+		//when the original is an animated ramp
+		Destroy(transparentRamp.GetComponent<Script_Ramp_Animator>());
+		Destroy(transparentRamp.GetComponent<Animator>());
+		Destroy(transparentRamp.GetComponent<Rigidbody>());
 
 		//make it transparent
 		//see https://answers.unity.com/questions/1004666/change-material-rendering-mode-in-runtime.html
@@ -91,11 +97,11 @@ public class Script_Game_Camera : Script_Camera {
 
 		//hide original ramp
 		hiddenRamps.Add(ramp, transparentRamp);
-		ramp.GetComponent<Renderer>().enabled = false; //make it invisible	
+		ramp.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.ShadowsOnly;
     }
 
     //the ramp is no longer obstructing view
-    void OnTriggerExit(Collider other) {
+    public void onRampExit(Collider other) {
     	GameObject ramp = other.gameObject;
     	GameObject transparentRamp = hiddenRamps[ramp];
     	hiddenRamps.Remove(ramp);
@@ -104,7 +110,8 @@ public class Script_Game_Camera : Script_Camera {
     	Destroy(transparentRamp.GetComponent<Renderer>().material);
     	Destroy(transparentRamp);
 
-    	ramp.GetComponent<Renderer>().enabled = true;
+    	//make the original visible again
+    	ramp.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.On;
     }
 
     private void updateRotation() {
@@ -177,14 +184,7 @@ public class Script_Game_Camera : Script_Camera {
 		rotation = new Vector3(rotation.x, 0, 0);
 	}
 
-	//ensures that the collider always spans the length between the camera and the ball
-    private void processCollider() {
-		Transform collider = GetComponentInChildren<BoxCollider>().transform;
-		collider.position = (transform.position + player.transform.position) / 2;
-		collider.rotation = Quaternion.LookRotation(player.transform.position - transform.position);
-		collider.localScale = new Vector3(collider.localScale.x, collider.localScale.y, 
-										0.9f * (player.transform.position - transform.position).magnitude);
-    }
+	
 
 	
 	// returns the projection of the camera's current forward facing direction onto the x-z plane in the current coordinate basis

@@ -64,6 +64,10 @@ public class Script_Player_Jump : MonoBehaviour {
 				rb.AddForce(jumpDirection * superJumpStrength, ForceMode.Impulse);
 				SoundManager.getInstance().playSoundFX(SoundFX.YellowJump);
 				specialJump = true;
+
+				if(SettingsManager.DisplayTrails) {
+					GetComponent<Script_Player_Trails>().updateColours("Bouncy");
+				}
 			}
 			
 			//you can 'jump' on perpendicular panels without a ground
@@ -73,6 +77,10 @@ public class Script_Player_Jump : MonoBehaviour {
 				SoundManager.getInstance().playSoundFX(SoundFX.OrangeJump);
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
+
+				if(SettingsManager.DisplayTrails) {
+					GetComponent<Script_Player_Trails>().updateColours("Perpendicular");
+				}
 			}
             
 			if(!specialJump && onGround) { //jump normally

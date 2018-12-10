@@ -33,10 +33,11 @@ public class Script_Player_Trails : MonoBehaviour {
 	private const float secondarySpinSpeed = 0.03f;
 
 	private const float colourChangeSpeed = 0.1f; //how quickly colours change to special colours
-	private const float colourRevertSpeed = 0.01f; //how quickly colours revert back to white
+	private const float colourRevertSpeed = 0.005f; //how quickly colours revert back to white
 	private static readonly Color fastColour = new Color(255f/255, 0f/255, 255f/255, 1);
 	private static readonly Color perpendicularColour = new Color(255f/255, 0f/255, 0f/255, 1);
 	private static readonly Color bouncyColour = new Color(255/255, 255f/255, 0f/255, 1);
+	private static readonly Color boosterColour = new Color(0f/255, 0f/255, 255f/255, 1);
 
 
 	// Use this for initialization
@@ -151,6 +152,11 @@ public class Script_Player_Trails : MonoBehaviour {
 					StartCoroutine(setColour(perpendicularColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
+				case "Booster":
+					StartCoroutine(setColour(boosterColour, tag));
+					colourSpawnDelay = spawnDelay;
+					break;
+
 
 				default: //should never happen
 					Debug.Log("Script_Player_Trails received tag " + tag + " when updating colours");

@@ -27,7 +27,13 @@ public class Script_Ramp_Animator : MonoBehaviour {
 		animControl["blankAnimation"] = animationClip;
 		anim.runtimeAnimatorController = animControl;
 
-		setNormalisedPlayTime(timeOffset);
+		if(SettingsManager.QuickSaveLoaded) {
+			//settings are loaded by Script_Player
+
+		} else { //start playing on the normally assigned time
+			setNormalisedPlayTime(timeOffset);
+		}
+
 	}
 
 	public float getNormalisedPlayTime() {
@@ -35,6 +41,7 @@ public class Script_Ramp_Animator : MonoBehaviour {
 	}
 
 	public void setNormalisedPlayTime(float time) {
+
 		anim.Play(0, -1, time);
 	}
 

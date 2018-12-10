@@ -1790,12 +1790,12 @@ Prefab:
         type: 2}
       propertyPath: animatedRamps.Array.data[0]
       value: 
-      objectReference: {fileID: 1543234439}
+      objectReference: {fileID: 52019396}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[1]
       value: 
-      objectReference: {fileID: 1797879727}
+      objectReference: {fileID: 590169872}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[2]
@@ -1810,12 +1810,12 @@ Prefab:
         type: 2}
       propertyPath: animatedRamps.Array.data[4]
       value: 
-      objectReference: {fileID: 590169872}
+      objectReference: {fileID: 1543234439}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[5]
       value: 
-      objectReference: {fileID: 52019396}
+      objectReference: {fileID: 1797879727}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: startPos

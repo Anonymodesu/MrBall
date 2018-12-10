@@ -108,7 +108,7 @@ public class Script_Player : MonoBehaviour {
 			GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Materials>().pokeBall;
 		}
     }
-    
+
     // Update is called once per frame
     void Update () { //REPLACE WITH FIXED UPDATE?    
         if(!stopGame) {
@@ -131,6 +131,7 @@ public class Script_Player : MonoBehaviour {
 
 		movementScript.processNextInstruction(); //process user input regardless of pause state
     }
+
 	
 	void FixedUpdate() { //for physics interactions
 		if(!stopGame) {

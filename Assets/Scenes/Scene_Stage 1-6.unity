@@ -2150,12 +2150,17 @@ Prefab:
       objectReference: {fileID: 1783857688}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
+      propertyPath: animatedRamps.Array.data[9]
+      value: 
+      objectReference: {fileID: 1823301261}
+    - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
+        type: 2}
       propertyPath: startPos
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
-      propertyPath: animatedRamps.Array.data[9]
+      propertyPath: animatedRamps.Array.data[10]
       value: 
       objectReference: {fileID: 1823301261}
     m_RemovedComponents: []

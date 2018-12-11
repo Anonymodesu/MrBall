@@ -26,6 +26,7 @@ public class Script_Booster : MonoBehaviour {
 
 			other.GetComponent<Script_Player_Trails>().updateColours("Booster");
 
+			SoundManager.getInstance().playSoundFX(SoundFX.Booster);
 			StartCoroutine(spawnLightning(other.gameObject));
 		}
 	}

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum SoundFX : int {Roll = 0, Collision = 1, YellowJump = 2, OrangeJump = 3, NormalJump = 4, Checkpoint = 5, Cubie = 6,
-								Win = 7, Gravity = 8}
+								Win = 7, Gravity = 8, Booster = 9}
 
 //also called by GameManager
 public class SoundManager {
@@ -75,6 +75,7 @@ public class SoundManager {
 		soundFXVolume[(int) SoundFX.Cubie] = 0.5f;
 		soundFXVolume[(int) SoundFX.Win] = 0.5f;
 		soundFXVolume[(int) SoundFX.Gravity] = 0.8f;
+		soundFXVolume[(int) SoundFX.Booster] = 0.8f;
 	}
 	
 	private MusicFiles getSoundFiles() {

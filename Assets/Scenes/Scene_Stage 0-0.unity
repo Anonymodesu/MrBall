@@ -5167,22 +5167,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 17
       objectReference: {fileID: 0}
-    - target: {fileID: 4766446386337640, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766446386337640, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766446386337640, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4766446386337640, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
   m_IsPrefabAsset: 0
@@ -5513,6 +5497,10 @@ Prefab:
     - target: {fileID: 1430834330450446, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
       propertyPath: m_Name
       value: BoosterRing (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766446386337640, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200f891dfa89e8a4e8c05b8d040eab03, type: 2}

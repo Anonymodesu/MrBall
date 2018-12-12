@@ -39,7 +39,7 @@ You can right-click to brake.");
 Most of the time, anyway.");
 		levelDescriptions.Add(new Level(0,9), 
 @"The final level of each stage ramps up the difficulty.
-Good luck.");
+Feel free to skip these if you have too much trouble.");
 
 
 		levelDescriptions.Add(new Level(1,0), 
@@ -67,8 +67,15 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(1,9), 
 @"Mr. Ball was inspired by a very old game called 'Marble Blast Gold'.");
 
+		levelDescriptions.Add(new Level(2,0), 
+@"Antimatter rings jolt Mr. Ball in the direction that they are facing.");
+		levelDescriptions.Add(new Level(2,2), 
+@"Antimatter rings give Mr. Ball a push, in addition to his current velocity.");
+		levelDescriptions.Add(new Level(2,5), 
+@"Brace yourself.");
+
 		levelDescriptions.Add(new Level(3,0), 
-@"Orange ramps push Mr. Ball in the direction that they are facing when he jumps on them.");
+@"Orange ramps propel Mr. Ball in the direction that they are facing when he jumps on them.");
 		levelDescriptions.Add(new Level(3,1), 
 @"If Mr.Ball is touching both yellow and orange ramps, both types of jump effects will be applied.");
 		levelDescriptions.Add(new Level(3,2), 
@@ -115,6 +122,11 @@ Usually.");
 		levelNames.Add(new Level(1,7), "Super jumping 2");
 		levelNames.Add(new Level(1,8), "Rollercoaster");
 		levelNames.Add(new Level(1,9), "Mr. Cube");
+
+		levelNames.Add(new Level(2,0), "Falling, with style");
+		levelNames.Add(new Level(2,2), "Slice serve");
+		levelNames.Add(new Level(2,5), "Two-way street");
+
 
 		levelNames.Add(new Level(3,0), "Perpendicular jumping");
 		levelNames.Add(new Level(3,1), "Ultra jumping");

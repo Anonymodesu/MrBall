@@ -26,11 +26,15 @@ public class RadialInstantiate : ScriptableWizard {
 		GameObject parent = new GameObject("parent");
 
 		for(int i = 0; i < number; i++) {
+			Transform obj = ((GameObject) PrefabUtility.InstantiatePrefab(target)).transform;
+
 			float angle = Mathf.Deg2Rad * i * angleDelta;
 			Vector3 position = radius * (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)));
 			Quaternion rotation = Quaternion.LookRotation(-position);
 
-			Instantiate(target, position, rotation, parent.transform);
+			obj.position = position;
+			obj.rotation = rotation;
+			obj.parent = parent.transform;
 		}
 		
 	}

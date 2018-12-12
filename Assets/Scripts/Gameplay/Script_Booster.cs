@@ -16,16 +16,26 @@ public class Script_Booster : MonoBehaviour {
 	void Update() {
 		transform.Rotate(transform.forward, rotationSpeed * Time.deltaTime * 60, Space.World);
 	}
+
 	
 	//booster regions are configured to only collider with the player in Physics settings
 	void OnTriggerEnter(Collider other) {
 		if(other.isTrigger) { //only interact with the player's trigger collider
-			Rigidbody rb = other.GetComponent<Rigidbody>();
-			Vector3 dir = Mathf.Sign(Vector3.Dot(rb.velocity, transform.forward)) * transform.forward.normalized;
-			rb.AddForce(dir * boostStrength, ForceMode.Impulse);
 
+			//do physics stuff
+			Rigidbody playerRB = other.GetComponent<Rigidbody>();
+			Rigidbody ringRB = this.GetComponent<Rigidbody>();
+
+			Vector3 combinedVelocity = playerRB.velocity;
+			//if the ring moves toward the ball, the ball is pushed in the other direction
+			if(ringRB != null) {
+				combinedVelocity -= ringRB.velocity;
+			}
+			Vector3 dir = Mathf.Sign(Vector3.Dot(combinedVelocity, transform.forward)) * transform.forward.normalized;
+			playerRB.AddForce(dir * boostStrength, ForceMode.Impulse);
+
+			//do pretty aesthetic stuff
 			other.GetComponent<Script_Player_Trails>().updateColours("Booster");
-
 			SoundManager.getInstance().playSoundFX(SoundFX.Booster);
 			StartCoroutine(spawnLightning(other.gameObject));
 		}
@@ -35,7 +45,6 @@ public class Script_Booster : MonoBehaviour {
 		GameObject instance = Instantiate(lightningEffect);
 		
 		while(instance.activeSelf) {
-			Vector3 velocity = target.GetComponent<Rigidbody>().velocity;
 			instance.transform.position = target.transform.position;
 			yield return new WaitForFixedUpdate();
 		}

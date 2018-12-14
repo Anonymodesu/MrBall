@@ -69,6 +69,8 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 
 		levelDescriptions.Add(new Level(2,0), 
 @"Antimatter rings jolt Mr. Ball in the direction that they are facing.");
+		levelDescriptions.Add(new Level(2,1), 
+@"Although Mr. Ball can't change directions mid-air, he has limited manoeuvrability against walls.");
 		levelDescriptions.Add(new Level(2,2), 
 @"Antimatter rings give Mr. Ball a push, in addition to his current velocity.");
 		levelDescriptions.Add(new Level(2,5), 
@@ -124,8 +126,11 @@ Usually.");
 		levelNames.Add(new Level(1,9), "Mr. Cube");
 
 		levelNames.Add(new Level(2,0), "Falling, with style");
+		levelNames.Add(new Level(2,1), "Parkour");
 		levelNames.Add(new Level(2,2), "Slice serve");
 		levelNames.Add(new Level(2,5), "Two-way street");
+		levelNames.Add(new Level(2,7), "Adventure time");
+		levelNames.Add(new Level(2,8), "Every 10 seconds");
 
 
 		levelNames.Add(new Level(3,0), "Perpendicular jumping");

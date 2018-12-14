@@ -21,7 +21,7 @@ public class Script_Player : MonoBehaviour {
 	private const float maxSize = 1;
 	private const float maxSpeed = 22; //maxSpeed under most circumstances
 	private Rigidbody rb;
-    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball
+    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball's triggercollider
     
 	//scripts
 	private Script_Player_Move movementScript;
@@ -53,13 +53,20 @@ public class Script_Player : MonoBehaviour {
     Level currentLevel; //'const'
 	Achievement requirements; //'const'
 
-	private float collisionSoundThreshold = 1;
-	private float collisionSoundDamper = 10;
+
+	[SerializeField]
+	private GameObject rampImpactEffect;
+		private const float collisionImpactThreshold = 3.5f;
+	private const float collisionImpactDamper = 0.2f;
+	private const float collisionSoundThreshold = 1;
+	private const float collisionSoundDamper = 0.1f;
+
 
 	private Script_Checkpoint_Animation checkpointAnimation;
 
 	[SerializeField]
 	public List<Script_Ramp_Animator> animatedRamps;
+
 
     // Use this for initialization
     void Start () {
@@ -228,8 +235,15 @@ public class Script_Player : MonoBehaviour {
     	float hitStrength = collision.impulse.magnitude;
 
 		if(hitStrength > collisionSoundThreshold) {
-			float volume = hitStrength / collisionSoundDamper;
+			float volume = hitStrength * collisionSoundDamper;
 			SoundManager.getInstance().playSoundFX(SoundFX.Collision, volume);
+		}
+
+		if(hitStrength > collisionImpactThreshold) {
+			ContactPoint contactPoint = collision.contacts[0];
+			GameObject rampImpact = Instantiate(rampImpactEffect, contactPoint.point, 
+						Quaternion.LookRotation(contactPoint.normal, UnityEngine.Random.insideUnitSphere));
+			rampImpact.transform.localScale = hitStrength * collisionImpactDamper * Vector3.one;
 		}
 	}
 
@@ -245,7 +259,7 @@ public class Script_Player : MonoBehaviour {
 	
 	//change the gravity to the vector opposing the normal of the surface
 	private void processGravity(GameObject surface) {
-		Vector3 normal = findNormalVector(surface, this.gameObject);
+		Vector3 normal = findNormalVectorGravity(surface);
 
 		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
 			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
@@ -406,20 +420,40 @@ public class Script_Player : MonoBehaviour {
 			   surface == "Gravity";
     }
 
-    //returns the normal vector if a ray was sent from the ball to the target
-	public static Vector3 findNormalVector(GameObject target, GameObject source) {
-		
-		//ray originating from the ball, ending at the physical panel.
-		Ray ray = new Ray(source.transform.position, target.transform.position - source.transform.position);
-		RaycastHit[] hits = Physics.RaycastAll(ray, maxSize * 500);
-					
-		foreach(RaycastHit hit in hits) { //look for the game object that the ball is in contact with
-			if(hit.collider.gameObject == target) {
-				return hit.normal;
-			}
+
+    //this method assumes the player is a sphere collider
+	//returns the contact point of the collision between the player and a ramp
+    public Vector3 findContactPoint(GameObject ramp) {
+    	return ramp.GetComponent<Collider>().ClosestPoint(transform.position);
+    }
+
+	//this method assumes the player is a sphere collider
+    //returns the normal vector of the collision between the player and a ramp
+	public Vector3 findNormalVector(GameObject ramp) {
+
+		Ray ray = new Ray(transform.position, findContactPoint(ramp) - transform.position);
+		RaycastHit hit;
+
+		if(ramp.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity)) {
+			return hit.normal;
 		}
-		
-		Debug.Log("ray cast didnt encounter required collider"); //should never happen
-		return Vector3.zero;
+
+		//should never happen
+		Debug.Log("can't find ramp " + ramp.name + " in findNormalVector()");
+		return transform.position - findContactPoint(ramp);
+	}
+
+	//only used in processGravity()
+	private Vector3 findNormalVectorGravity(GameObject ramp) {
+		Ray ray = new Ray(transform.position, ramp.transform.position - transform.position);
+		RaycastHit hit;
+
+		if(ramp.GetComponent<Collider>().Raycast(ray, out hit, Mathf.Infinity)) {
+			return hit.normal;
+		}
+
+		//should never happen
+		Debug.Log("can't find ramp " + ramp.name + " in findNormalVectorGravity()");
+		return transform.position - findContactPoint(ramp);
 	}
 }

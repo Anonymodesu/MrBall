@@ -13,8 +13,8 @@ public class Script_Player_Jump : MonoBehaviour {
     private int jumpStep;
     private const float superJumpStrength = 12;
 	private const float perpendicularJumpStrength = 12;
-	private const float jumpAngle = -0.1f; //used to stop wall jumping
-	
+	private const float jumpAngle = 91; //used to stop wall jumping
+
 	// Use this for initialization
 	void Start () {		
 		rb = GetComponent<Rigidbody>();
@@ -39,7 +39,7 @@ public class Script_Player_Jump : MonoBehaviour {
                 
                 if(Script_Player.isPhysical(tag)) { //is a physically interactable surface
                     jumpStep = jumpCooldown; 
-					Vector3 normal = Script_Player.findNormalVector(obj, this.gameObject);
+					Vector3 normal = GetComponent<Script_Player>().findNormalVector(obj);
                           
                     if(tag == "Bouncy") {
                         super = true;
@@ -51,9 +51,11 @@ public class Script_Player_Jump : MonoBehaviour {
 					
 					//checks if the angle between gravity and the surface normal is more than 90 deg
 					//i.e. if the ball is on the ground (as opposed to against a wall)
-					if(Vector3.Dot(normal.normalized, Physics.gravity.normalized) < jumpAngle) {
+					if(Vector3.Angle(normal.normalized, Physics.gravity.normalized) > jumpAngle) {
 						onGround = true;
 					}
+
+					Debug.Log(Vector3.Angle(normal.normalized, Physics.gravity.normalized));
                 }
             }
 

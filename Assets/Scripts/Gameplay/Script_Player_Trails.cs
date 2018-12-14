@@ -7,6 +7,14 @@ public class Script_Player_Trails : MonoBehaviour {
 	[SerializeField]
 	private GameObject trail;
 
+	[SerializeField]
+	private GameObject glow;
+
+	private ParticleSystem playerGlow;
+	private Color glowColour;
+	private const float glowDisableThreshold = 0.2f;
+	private const int hiddenLayer = 10;
+
 	private Rigidbody rb;
 	private TrailRenderer mainTrail; //child of the player
 	private TrailRenderer[] secondaryTrails; //do not have parents
@@ -38,6 +46,8 @@ public class Script_Player_Trails : MonoBehaviour {
 	private static readonly Color perpendicularColour = new Color(255f/255, 0f/255, 0f/255, 1);
 	private static readonly Color bouncyColour = new Color(255/255, 255f/255, 0f/255, 1);
 	private static readonly Color boosterColour = new Color(0f/255, 0f/255, 255f/255, 1);
+	private static readonly Color trailBaseColour = Color.white;
+	private static readonly Color glowBaseColour = new Color(1,1,1,0);
 
 
 	// Use this for initialization
@@ -77,18 +87,22 @@ public class Script_Player_Trails : MonoBehaviour {
 
 		previousSecondarySpin = 0;
 
-		mainColour = Color.white;
+		mainColour = glowColour;
 		secondaryColours = new Color[numSecondaryTrails];
 		for(int i = 0 ; i < numSecondaryTrails; i++) {
-			secondaryColours[i] = Color.white;
+			secondaryColours[i] = trailBaseColour;
 		}
 		colourSpawnDelay = 0;
 		loadedColours = new HashSet<string>();
+
+		playerGlow = Instantiate(glow, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+		glowColour = glowBaseColour;
 	}
 	
 	// Toggle trail visibility when above/below velocity thresholds
 	void Update () {
 
+		//show/hide trails
 		if(rb.velocity.magnitude > threshold) {
 			mainTrail.emitting = true;
 		} else {
@@ -101,6 +115,16 @@ public class Script_Player_Trails : MonoBehaviour {
 		} else {
 			despawnSecondaryEmission();
 		}
+
+		//show/hide glow (game camera culls the hidden layer)
+		var main = playerGlow.main;
+		if(main.startColor.color.a < glowDisableThreshold) {
+			playerGlow.gameObject.layer = hiddenLayer;
+		} else {
+			playerGlow.gameObject.layer = 0;
+		}
+
+		//transition colours of the above
 		processColours();
 	}
 
@@ -174,6 +198,7 @@ public class Script_Player_Trails : MonoBehaviour {
 		//delay processing if another colour recently loaded
 		yield return new WaitForSeconds(colourSpawnDelay);
 
+		glowColour = colour;
 		mainColour = colour;
 
 		for(int i = 0; i < numSecondaryTrails; i++) {
@@ -189,7 +214,7 @@ public class Script_Player_Trails : MonoBehaviour {
 	private void processColours() {
 		float speed = Time.deltaTime * 60;
 
-		//modify actual trail colours
+		//modify actual trail and glow colours
 		mainTrail.startColor = Color.Lerp(mainTrail.startColor, mainColour, colourChangeSpeed * speed);
 		mainTrail.endColor = Color.Lerp(mainTrail.endColor, mainColour, colourChangeSpeed * speed);
 		for(int i = 0; i < numSecondaryTrails; i++) {
@@ -198,16 +223,16 @@ public class Script_Player_Trails : MonoBehaviour {
 			secondaryTrails[i].endColor = Color.Lerp(
 				secondaryTrails[i].endColor, secondaryColours[i], colourChangeSpeed * speed);
 		}
+		var main = playerGlow.main;
+		main.startColor = Color.Lerp(main.startColor.color, glowColour, colourChangeSpeed * speed);
 
-		//revert target trail colours back to white
-		mainColour = Color.Lerp(mainColour, Color.white, colourRevertSpeed * speed); 
+
+		//revert target trail and glow colours back to white
+		mainColour = Color.Lerp(mainColour, trailBaseColour, colourRevertSpeed * speed); 
 		for(int i = 0; i < numSecondaryTrails; i++) {
-			secondaryColours[i] = Color.Lerp(secondaryColours[i], Color.white, colourRevertSpeed * speed);
+			secondaryColours[i] = Color.Lerp(secondaryColours[i], trailBaseColour, colourRevertSpeed * speed);
 		}
-
-	}
-
-	private void setColour() {
+		glowColour = Color.Lerp(glowColour, glowBaseColour, colourRevertSpeed * speed);
 
 	}
 

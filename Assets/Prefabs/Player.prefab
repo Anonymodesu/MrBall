@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trail: {fileID: 1711402184190910, guid: 97f9fd72689e13647a6def2c2f8f5e76, type: 2}
+  glow: {fileID: 1363215143866102, guid: 56c82c90a6be5644aaee25e5af4ceba2, type: 2}
 --- !u!114 &114403485513356528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,6 +142,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerCollider: {fileID: 135501661417138096}
+  startPos: {fileID: 0}
+  rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
+    type: 2}
+  animatedRamps: []
 --- !u!114 &114687046866813450
 MonoBehaviour:
   m_ObjectHideFlags: 1

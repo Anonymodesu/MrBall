@@ -59,6 +59,8 @@ public class Script_Game_Menu : MonoBehaviour {
 	*/
 	
 	public void displayProgress(int cubies, float time, int deaths, Achievement requirements) {
+
+
 		StringBuilder sb = new StringBuilder();
 		sb.Append("Cubies:").Append(cubies).Append('/').Append(requirements.Cubies)
 		  .Append("\nTime:").Append(time.ToString("0.00")).Append('/').Append(requirements.TimeString)

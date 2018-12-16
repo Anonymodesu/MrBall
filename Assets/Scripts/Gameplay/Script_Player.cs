@@ -57,7 +57,7 @@ public class Script_Player : MonoBehaviour {
 	[SerializeField]
 	private GameObject rampImpactEffect;
 		private const float collisionImpactThreshold = 3.5f;
-	private const float collisionImpactDamper = 0.2f;
+	private const float collisionImpactDamper = 0.16f;
 	private const float collisionSoundThreshold = 1;
 	private const float collisionSoundDamper = 0.1f;
 
@@ -259,10 +259,11 @@ public class Script_Player : MonoBehaviour {
 	
 	//change the gravity to the vector opposing the normal of the surface
 	private void processGravity(GameObject surface) {
-		Vector3 normal = findNormalVectorGravity(surface);
+		Vector3 normal = findFakeNormalVector(surface);
 
 		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
 			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
+			GetComponent<Script_Player_Trails>().updateColours("Gravity");
 		}
 
 		Physics.gravity = -normal.normalized * gravityStrength;
@@ -443,8 +444,8 @@ public class Script_Player : MonoBehaviour {
 		return transform.position - findContactPoint(ramp);
 	}
 
-	//only used in processGravity()
-	private Vector3 findNormalVectorGravity(GameObject ramp) {
+	//used in processGravity and detecting wall jumps, since the above method does some weird stuf otherwise
+	public Vector3 findFakeNormalVector(GameObject ramp) {
 		Ray ray = new Ray(transform.position, ramp.transform.position - transform.position);
 		RaycastHit hit;
 

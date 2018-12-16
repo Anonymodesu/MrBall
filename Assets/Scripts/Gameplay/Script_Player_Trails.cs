@@ -55,7 +55,6 @@ public class Script_Player_Trails : MonoBehaviour {
 
 		//get trails settings
 		if(!SettingsManager.DisplayTrails) {
-			Destroy(this);
 			return;
 		}
 
@@ -101,6 +100,10 @@ public class Script_Player_Trails : MonoBehaviour {
 	
 	// Toggle trail visibility when above/below velocity thresholds
 	void Update () {
+
+		if(!SettingsManager.DisplayTrails) {
+			return;
+		}
 
 		//show/hide trails
 		if(rb.velocity.magnitude > threshold) {
@@ -162,6 +165,10 @@ public class Script_Player_Trails : MonoBehaviour {
 	}
 
 	public void updateColours(string tag) {
+		if(!SettingsManager.DisplayTrails) {
+			return;
+		}
+		
 		if(!loadedColours.Contains(tag)) {
 
 			switch(tag) {
@@ -176,7 +183,7 @@ public class Script_Player_Trails : MonoBehaviour {
 					StartCoroutine(setColour(perpendicularColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
-				case "Booster":
+				case "Booster": case "Gravity":
 					StartCoroutine(setColour(boosterColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;

@@ -70,11 +70,17 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(2,0), 
 @"Antimatter rings jolt Mr. Ball in the direction that they are facing.");
 		levelDescriptions.Add(new Level(2,1), 
-@"Although Mr. Ball can't change directions mid-air, he has limited manoeuvrability against walls.");
+@"Mr.Ball has enough grip to run along purple walls.");
 		levelDescriptions.Add(new Level(2,2), 
 @"Antimatter rings give Mr. Ball a push, in addition to his current velocity.");
+		levelDescriptions.Add(new Level(2,3), 
+@"On his days off, Mr.Ball enjoys bowling, frisbee and donuts.");
+		levelDescriptions.Add(new Level(2,4), 
+@"The directions which the antimatter rings push Mr. Ball depends");
 		levelDescriptions.Add(new Level(2,5), 
 @"Brace yourself.");
+		levelDescriptions.Add(new Level(2,6), 
+@"The centre of rotating ramps has the least movement."); 
 
 		levelDescriptions.Add(new Level(3,0), 
 @"Orange ramps propel Mr. Ball in the direction that they are facing when he jumps on them.");
@@ -128,7 +134,10 @@ Usually.");
 		levelNames.Add(new Level(2,0), "Falling, with style");
 		levelNames.Add(new Level(2,1), "Parkour");
 		levelNames.Add(new Level(2,2), "Slice serve");
+		levelNames.Add(new Level(2,3), "Timing");
+		levelNames.Add(new Level(2,4), "Wait for it...");
 		levelNames.Add(new Level(2,5), "Two-way street");
+		levelNames.Add(new Level(2,6), "Spinning");
 		levelNames.Add(new Level(2,7), "Adventure time");
 		levelNames.Add(new Level(2,8), "Every 10 seconds");
 

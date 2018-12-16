@@ -11,7 +11,9 @@ public class Script_Booster : MonoBehaviour {
 	private const float boostStrength = 12;
 	private const float rotationSpeed = 0.2f;
 
-
+	void Start() {
+		GetComponent<MeshRenderer>().enabled = false;
+	}
 
 	void Update() {
 		transform.Rotate(transform.forward, rotationSpeed * Time.deltaTime * 60, Space.World);

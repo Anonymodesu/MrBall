@@ -69,12 +69,12 @@ public class SoundManager {
 		soundFXVolume = new float[Enum.GetNames(typeof(SoundFX)).Length];
 		soundFXVolume[(int) SoundFX.Collision] = 0.4f;
 		soundFXVolume[(int) SoundFX.NormalJump] = 1f;
-		soundFXVolume[(int) SoundFX.YellowJump] = 0.8f;
-		soundFXVolume[(int) SoundFX.OrangeJump] = 0.7f;
+		soundFXVolume[(int) SoundFX.YellowJump] = 1f;
+		soundFXVolume[(int) SoundFX.OrangeJump] = 0.6f;
 		soundFXVolume[(int) SoundFX.Checkpoint] = 1f;
 		soundFXVolume[(int) SoundFX.Cubie] = 0.5f;
 		soundFXVolume[(int) SoundFX.Win] = 0.5f;
-		soundFXVolume[(int) SoundFX.Gravity] = 0.8f;
+		soundFXVolume[(int) SoundFX.Gravity] = 1f;
 		soundFXVolume[(int) SoundFX.Booster] = 0.8f;
 	}
 	

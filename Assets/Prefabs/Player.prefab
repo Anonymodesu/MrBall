@@ -168,6 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b44bbb77fe2af446a74d8fb4a1fd596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  perpendicularExplosion: {fileID: 1485922024783022, guid: f884e42ffeefd994ead1b693243c15af,
+    type: 2}
+  perpendicularTrail: {fileID: 1422218473251970, guid: 73ffb32291fe81b4289b705b3c563af2,
+    type: 2}
+  superExplosion: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
+    type: 2}
 --- !u!135 &135198749066153198
 SphereCollider:
   m_ObjectHideFlags: 1

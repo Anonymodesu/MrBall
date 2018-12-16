@@ -6,6 +6,11 @@ using UnityEngine;
 //contains jump functionality for the player
 public class Script_Player_Jump : MonoBehaviour {
 	
+	#pragma warning disable 0649
+	[SerializeField]
+	private GameObject perpendicularExplosion, perpendicularTrail, superExplosion;
+	#pragma warning restore 0649
+
 	private Rigidbody rb;
 	
     private const float jumpStrength = 4;
@@ -43,19 +48,21 @@ public class Script_Player_Jump : MonoBehaviour {
                           
                     if(tag == "Bouncy") {
                         super = true;
+                        //superExplosionFX(obj);
 						
                     } else if(tag == "Perpendicular") {
 						perpend = true;
 						normalVector += normal;
+						StartCoroutine(perpendicularFX(obj));
 					}
 					
 					//checks if the angle between gravity and the surface normal is more than 90 deg
 					//i.e. if the ball is on the ground (as opposed to against a wall)
-					if(Vector3.Angle(normal.normalized, Physics.gravity.normalized) > jumpAngle) {
+					Vector3 fakeNormal = GetComponent<Script_Player>().findFakeNormalVector(obj);
+					if(Vector3.Angle(fakeNormal, Physics.gravity.normalized) > jumpAngle) {
 						onGround = true;
 					}
 
-					Debug.Log(Vector3.Angle(normal.normalized, Physics.gravity.normalized));
                 }
             }
 
@@ -67,9 +74,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				SoundManager.getInstance().playSoundFX(SoundFX.YellowJump);
 				specialJump = true;
 
-				if(SettingsManager.DisplayTrails) {
-					GetComponent<Script_Player_Trails>().updateColours("Bouncy");
-				}
+				GetComponent<Script_Player_Trails>().updateColours("Bouncy");
 			}
 			
 			//you can 'jump' on perpendicular panels without a ground
@@ -80,9 +85,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
 
-				if(SettingsManager.DisplayTrails) {
-					GetComponent<Script_Player_Trails>().updateColours("Perpendicular");
-				}
+				GetComponent<Script_Player_Trails>().updateColours("Perpendicular");
 			}
             
 			if(!specialJump && onGround) { //jump normally
@@ -103,4 +106,28 @@ public class Script_Player_Jump : MonoBehaviour {
 		}
     }
 	
+    //generate cool special effects for orange ramps
+	private IEnumerator perpendicularFX(GameObject ramp) {
+		Vector3 explosionPos = GetComponent<Script_Player>().findContactPoint(ramp);
+		Quaternion explosionRot = Quaternion.LookRotation(GetComponent<Script_Player>().findNormalVector(ramp), 
+									Random.insideUnitSphere);
+		Instantiate(perpendicularExplosion, explosionPos, explosionRot);
+
+		GameObject trail = Instantiate(perpendicularTrail);
+		while(trail.activeSelf) {
+			trail.transform.position = transform.position;
+			yield return new WaitForFixedUpdate();
+		}
+
+		Destroy(trail);
+	}
+
+	 //generate cool special effects for yellow ramps
+	private void superExplosionFX(GameObject ramp) {
+		Quaternion explosionRot = Quaternion.LookRotation(GetComponent<Script_Player>().findNormalVector(ramp), 
+									Random.insideUnitSphere);
+		Vector3 explosionPos = GetComponent<Script_Player>().findContactPoint(ramp) + explosionRot * (new Vector3(0,0,0.2f));
+
+		Instantiate(superExplosion, explosionPos, explosionRot);
+	}
 }

@@ -61,9 +61,7 @@ public class Script_Player_Move : MonoBehaviour {
                 speed = superSpeed; //fast movement on purple surfaces
 				maxSpeed = maxSuperSpeed; //if on fast panel, maxSuperSpeed is used for speed calcs below
 
-				if(SettingsManager.DisplayTrails) {
-					GetComponent<Script_Player_Trails>().updateColours("Fast");
-				}
+				GetComponent<Script_Player_Trails>().updateColours("Fast");
                 break;
              
             }

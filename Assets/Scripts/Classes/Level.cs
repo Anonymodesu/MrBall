@@ -12,6 +12,12 @@ public class Level : IEquatable<Level> {
 
 	public readonly int stage;
 	public readonly int substage;
+
+	public int Index {
+		get {
+			return stage * numSubstages + substage;
+		}
+	}
 		
 	public Level(int stage, int substage) {
 		this.stage = stage;

@@ -183,7 +183,7 @@ public class Script_Player_Trails : MonoBehaviour {
 					StartCoroutine(setColour(perpendicularColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
-				case "Booster": case "Gravity":
+				case "Booster": case "Gravity": //booster and gravity ramps are both blue
 					StartCoroutine(setColour(boosterColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;

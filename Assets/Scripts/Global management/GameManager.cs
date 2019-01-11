@@ -11,10 +11,12 @@ public class GameManager { //a singleton
 	
 
 	private const int linesPerLevel = 5; //each description in the txt file is allowed 5 lines
-	
+
+	public const int numFields = 4; //achievements: (cubies,deaths,time,points)
+
 	private Level currentLevel = null; //stores the level that was just loaded
 
-	private Quicksave quickSave; //the quicksave of the current player
+	private Achievement[] requirements;
 
 	private static GameManager instance = null;
 	
@@ -29,7 +31,7 @@ public class GameManager { //a singleton
 	private GameManager() {
 
 		//exiting to the main menu always generates a quicksave
-		Quicksave save = getQuickSave(SettingsManager.CurrentPlayer);
+		Quicksave save = PlayerManager.getInstance().getQuicksave(SettingsManager.CurrentPlayer);
 		if(save == null) {
 			currentLevel = new Level(0,0); //pretend that the first level was just loaded
 		} else {
@@ -45,7 +47,9 @@ public class GameManager { //a singleton
 		
 		
 		SceneManager.sceneLoaded += changedScene; //add changedScene() as a listener to new scenes being loaded
-		quickSave = null;
+
+		parseRequirements();
+
 		//Level.testLevel();
 	}
 	
@@ -94,59 +98,70 @@ public class GameManager { //a singleton
 		
 		return new Level(stage,subStage);
 	}
-	
 
-	//returns null if the quicksave does not exist for this player
-	public Quicksave getQuickSave(string player) {
-
-		//save hasn't been loaded yet or the last loaded quick save belongs to another player
-		if(quickSave == null || quickSave.player != player) { 
-			quickSave = readQuickSave(player);
-		}
-		
-		return quickSave;
+	//return the requirements for getting achievements for a particular level
+	public Achievement getRequirement(Level level) { //null return value means leveldata.txt is missing or invalid
+		return requirements[level.Index];
 	}
 
-	private Quicksave readQuickSave(string player) {
-		string path = getQuickSavePath(player);
+	//returns true if successful
+	private bool parseRequirements() {
+		string[] lines;
+		string directory = Application.streamingAssetsPath + "/leveldata.txt";
+		requirements = new Achievement[Level.numLevels];
 
-		if(File.Exists(path)) {
-			BinaryFormatter bf = new BinaryFormatter();
-			FileStream file = File.Open(path, FileMode.Open);
-			Quicksave save = (Quicksave) bf.Deserialize(file);
-			file.Close();
-			return save;
-
+		if(File.Exists(directory)) {
+			lines =  System.IO.File.ReadAllLines(directory);
 		} else {
+			Debug.Log("missing leveldata.txt");
+			return false;
+		}
+
+		if(lines.Length < requirements.Length) {
+			Debug.Log("incorrect number of lines in leveldata.txt");
+			return false;
+		}
+
+		for(int i = 0; i < requirements.Length; i++) {
+
+			requirements[i] = parseRequirement(lines[i]);
+			
+			if(requirements[i] == null) { //null if parsing is unsuccessful
+
+	        	requirements[i] = new Achievement(0,0,0,0);
+				Debug.Log("invalid field at line " + i + " in leveldata.txt");
+	        }
+		}
+
+		return true;
+	}
+
+	//parse a single achievement, received as plaintext; returns null if unsuccessful
+	private Achievement parseRequirement(string line) {
+		string[] fields = line.Split(new char[] {' '});
+		
+		if(fields.Length != numFields) {
 			return null;
+			
+		} else {
+
+			int cubies = 0;
+			int deaths = 0;
+			float time = 0;
+			int points = 0;
+			
+			//leveldata.txt is in the format cubies/deaths/time/points
+			bool success = Int32.TryParse(fields[0], out cubies) && //parse each field in the entry
+						   Int32.TryParse(fields[1], out deaths) && 
+						   Single.TryParse(fields[2], out time) &&
+						   Int32.TryParse(fields[3], out points);
+
+			if(success) {
+				return new Achievement(cubies, deaths, time, points);
+			} else {
+				return null;
+			}
 		}
 	}
-
-	public void storeQuickSave(string player, Quicksave save) {
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create(getQuickSavePath(player));
-		bf.Serialize(file, save);
-		file.Close();
-
-		quickSave = save;
-	}
-
-	public void deleteQuickSave(string player) {
-		string path = getQuickSavePath(player);
-		if(File.Exists(path)) {
-			File.Delete(path);	
-		}
-
-		if(File.Exists(path + ".meta")) {
-			File.Delete(path + ".meta");	
-		}
-
-		quickSave = null;
-	}
-
-	private static string getQuickSavePath(string player) {
-		return Application.streamingAssetsPath + "/" + player + ".save";
-	}
-
 
 }

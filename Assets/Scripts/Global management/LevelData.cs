@@ -58,7 +58,7 @@ Some are faster (and less obvious) than others.");
 @"If Mr. Ball is in contact with many surfaces, he will take advantage of any special effects that they have to offer.");
 		levelDescriptions.Add(new Level(1,6), 
 @"The Sun just unleashed a violent burst of radiation!	
-The once docile ramps have begun moving of their own will!");
+Be advised that the once docile ramps have begun moving of their own will.");
 		levelDescriptions.Add(new Level(1,7), 
 @"Although other balls provide nice bonuses, good ol' Mr. Ball is sufficient to complete every level in the game.");
 		levelDescriptions.Add(new Level(1,8), 
@@ -80,7 +80,11 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(2,5), 
 @"Brace yourself.");
 		levelDescriptions.Add(new Level(2,6), 
-@"The centre of rotating ramps has the least movement."); 
+@"The centre of rotating ramps moves the least."); 
+		levelDescriptions.Add(new Level(2,7), 
+@"Hop on board!");
+		levelDescriptions.Add(new Level(2,8), 
+@"Pay extra attention to the timer in this level."); 
 
 		levelDescriptions.Add(new Level(3,0), 
 @"Orange ramps propel Mr. Ball in the direction that they are facing when he jumps on them.");

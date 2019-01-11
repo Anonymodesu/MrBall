@@ -12,7 +12,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 	
 	public override void OnPointerEnter(PointerEventData eventData) {
 
-		Quicksave save = GameManager.getInstance().getQuickSave(SettingsManager.CurrentPlayer);
+		Quicksave save = PlayerManager.getInstance().getQuicksave(SettingsManager.CurrentPlayer);
 		if(save != null) {
 			level = save.level;
 			levelText.text = LevelData.getInstance().getLevelName(level);
@@ -25,7 +25,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 			}
 			Achievement current = new Achievement(cubies, save.deaths, save.time, 
 													HighScore.calculateScore(cubies, save.deaths, save.time));
-			Achievement required = AchievementManager.getInstance().getRequirement(level);
+			Achievement required = GameManager.getInstance().getRequirement(level);
 			displayRecords(current, required);
 
 			levelImage.sprite = levelImages.levelImages[level.stage * Level.numSubstages + level.substage];

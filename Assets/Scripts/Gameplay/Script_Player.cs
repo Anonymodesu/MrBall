@@ -97,7 +97,7 @@ public class Script_Player : MonoBehaviour {
         reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
-		requirements = AchievementManager.getInstance().getRequirement(currentLevel);
+		requirements = GameManager.getInstance().getRequirement(currentLevel);
 		if(requirements == null) {
 			Debug.Log("error parsing achievements");
 			requirements = new Achievement(0,0,0,0);
@@ -240,9 +240,8 @@ public class Script_Player : MonoBehaviour {
 		}
 
 		if(hitStrength > collisionImpactThreshold) {
-			ContactPoint contactPoint = collision.contacts[0];
-			GameObject rampImpact = Instantiate(rampImpactEffect, contactPoint.point, 
-						Quaternion.LookRotation(contactPoint.normal, UnityEngine.Random.insideUnitSphere));
+			GameObject rampImpact = Instantiate(rampImpactEffect, findContactPoint(collision.gameObject), 
+						Quaternion.LookRotation(findNormalVector(collision.gameObject), UnityEngine.Random.insideUnitSphere));
 			rampImpact.transform.localScale = hitStrength * collisionImpactDamper * Vector3.one;
 		}
 	}
@@ -296,7 +295,7 @@ public class Script_Player : MonoBehaviour {
 	private void win() {
         pauseable = false;
         pause();
-        GameManager.getInstance().deleteQuickSave(player);
+        PlayerManager.getInstance().deleteQuicksave(player);
 		processScoreAchievements();
     }
 	
@@ -318,8 +317,8 @@ public class Script_Player : MonoBehaviour {
 			GUIScript.displayScoreAchievements(cubies, deaths, getTime(), requirements, null);
 		}
 		
-		Achievement current = new Achievement(cubies,deaths, getTime(), HighScore.calculateScore(cubies,deaths, getTime()));
-		AchievementManager.getInstance().saveAchievement(player, current, currentLevel); //save records to player data txt
+		Achievement newRecord = new Achievement(cubies,deaths, getTime(), HighScore.calculateScore(cubies,deaths, getTime()));
+		PlayerManager.getInstance().saveRecord(player, newRecord, currentLevel); //save records to player data txt
 		
     }
 
@@ -345,7 +344,7 @@ public class Script_Player : MonoBehaviour {
 		SettingsManager.QuickSaveLoaded = false;
 
 		//load the quick save for the current player
-		Quicksave save = GameManager.getInstance().getQuickSave(player);
+		Quicksave save = PlayerManager.getInstance().getQuicksave(player);
 
 		if(save != null) {
 			if(save.level.Equals(currentLevel)) {
@@ -407,7 +406,7 @@ public class Script_Player : MonoBehaviour {
 										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
 										getTime(), deaths, rampAnimationTimes);
 
-		GameManager.getInstance().storeQuickSave(player, save);
+		PlayerManager.getInstance().storeQuicksave(player, save);
 	}
 
     public static bool isPhysical(string surface) {        

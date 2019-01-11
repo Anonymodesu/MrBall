@@ -70,9 +70,8 @@ public class Script_Menu_Settings : MonoBehaviour {
 		string currentPlayer = SettingsManager.CurrentPlayer;
 		nameInputField.text = currentPlayer;
 
-		//read existing achievement files for old players to add to the dropdown
-		foreach(string playerPath in Directory.GetFiles(Application.streamingAssetsPath, "*.dat")) {
-			string player = Path.GetFileNameWithoutExtension(playerPath);
+		//add existing players to dropdown
+		foreach(string player in PlayerManager.getInstance().getPlayers()) {
 			createNewPlayer(player);
 		}
 
@@ -243,8 +242,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 				}
 
 				//delete everything blyat
-				AchievementManager.getInstance().deleteAchievement(playerContainer.name);
-				GameManager.getInstance().deleteQuickSave(playerContainer.name);
+				PlayerManager.getInstance().deletePlayer(playerContainer.name);
 				Destroy(playerContainer);
 				break;
 		}

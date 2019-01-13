@@ -84,7 +84,7 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(2,7), 
 @"Hop on board!");
 		levelDescriptions.Add(new Level(2,8), 
-@"Pay extra attention to the timer in this level."); 
+@"Pay extra attention to the timer."); 
 
 		levelDescriptions.Add(new Level(3,0), 
 @"Orange ramps propel Mr. Ball in the direction that they are facing when he jumps on them.");

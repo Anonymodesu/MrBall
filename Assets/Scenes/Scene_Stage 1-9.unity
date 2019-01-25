@@ -1854,11 +1854,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5034e6de8c4f6b9498bd75b9d35da362, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &525228665 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1987907772696296, guid: 1ac2a1ffbca1d8743a28a65e1804046c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1796425647}
 --- !u!4 &543413984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4038578862112690, guid: 7a186c49af33bf2469bf75a27c8b5ad6,
@@ -4559,7 +4554,7 @@ Prefab:
         type: 2}
       propertyPath: startPos
       value: 
-      objectReference: {fileID: 525228665}
+      objectReference: {fileID: 0}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[0]

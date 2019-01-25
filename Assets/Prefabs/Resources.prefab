@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114005131404682600}
   - component: {fileID: 114736134254049876}
   - component: {fileID: 114499877118563594}
+  - component: {fileID: 114148328249868822}
   m_Layer: 0
   m_Name: Resources
   m_TagString: Untagged
@@ -72,6 +73,39 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e9e0ae27bcee50247a9a2753230c1352, type: 3}
   - {fileID: 8300000, guid: 003f9e268144f6b4db5e91ddce139091, type: 3}
   - {fileID: 8300000, guid: 00eb21e00062abc46b084b4381ad3624, type: 3}
+--- !u!114 &114148328249868822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331483372099504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7473e476013bbf4fabfd540a5fbbb74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballSprites:
+  - {fileID: 21300000, guid: a02c0074ca471416d9a79fd5a0cc2b02, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  balls:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114499877118563594
 MonoBehaviour:
   m_ObjectHideFlags: 1

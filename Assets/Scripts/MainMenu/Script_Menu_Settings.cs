@@ -28,10 +28,15 @@ public class Script_Menu_Settings : MonoBehaviour {
 	private GameObject playerNameContainer;
 
 	[SerializeField]
-	private Toggle shadowToggle, trailsToggle;
+	private Toggle shadowToggle, trailsToggle, dustToggle, jumpEffectsToggle;
 
 	[SerializeField]
 	private Transform cameraPreviewOverlay;
+
+	[SerializeField]
+	private Transform ballSelection;
+	[SerializeField]
+	private GameObject ballButton;
 
 	#pragma warning restore 0649
 
@@ -39,11 +44,14 @@ public class Script_Menu_Settings : MonoBehaviour {
 	private Transform crosshair; 
 	private Script_Menu_Camera cameraScript;
 
+	private Balls ballResources;
+
 	// Use this for initialization
 	void Start () {
 
 		cameraScript = Camera.main.GetComponent<Script_Menu_Camera>();
 		crosshair = cameraPreviewOverlay.Find("Crosshair");
+		ballResources = GameObject.Find("Resources").GetComponent<Balls>();
 		initSettings();
 	}
 
@@ -57,12 +65,24 @@ public class Script_Menu_Settings : MonoBehaviour {
 		crossHairSlider.value = SettingsManager.CrosshairSize;
 		forwardDistSlider.value = SettingsManager.ForwardDistance;
 		upDistSlider.value = SettingsManager.UpwardDistance;
+		dustToggle.isOn = SettingsManager.DisplayDust;
+		jumpEffectsToggle.isOn = SettingsManager.DisplayJumpEffects;
 
 		setMusicVolume();
 		setSFXVolume();
 
+		initBallSelection();
 		initPlayerNameSettings();
 		initControlSettings();
+	}
+
+	private void initBallSelection() {
+
+		for(int i = 1; i < Balls.numBalls; i++) {
+			Instantiate(ballButton, ballSelection);
+		}
+
+		//the ball images are updated in initPlayerNameSettings()->setNewPlayer()->setOldPlayer()->updateBallSelection()
 	}
 
 	private void initPlayerNameSettings() {
@@ -75,7 +95,6 @@ public class Script_Menu_Settings : MonoBehaviour {
 			createNewPlayer(player);
 		}
 
-		//the only time when playerNames does not contain currentPlayer is when currentPlayer has not finished any levels
 		//inputField.text has been set above
 		setNewPlayer();
 	}
@@ -96,6 +115,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 			button.onClick.AddListener(delegate { StartCoroutine(assignCommandKey(command, assignedKey)); });
 		}
 	}
+
 
 	//allows user to bind a new key to a command
 	private IEnumerator assignCommandKey(Command command, Text assignedKey) {
@@ -131,6 +151,8 @@ public class Script_Menu_Settings : MonoBehaviour {
 		crossHairSlider.value = SettingsManager.defaultCrosshairSize;
 		upDistSlider.value = SettingsManager.defaultUpDist;
 		forwardDistSlider.value = SettingsManager.defaultForwardDist;
+		dustToggle.isOn = true;
+		jumpEffectsToggle.isOn = true;
 
 		setMusicVolume();
 		setSFXVolume();
@@ -140,6 +162,9 @@ public class Script_Menu_Settings : MonoBehaviour {
 		setCrosshairSize();
 		setUpwardDistance();
 		setForwardDistance();
+		setCollisionDust();
+		setJumpEffects();
+		setBall(SettingsManager.defaultBallType);
 
 		//restore control settings to their defaults
 		for(int i = 0; i < InputManager.numCommands; i++) {
@@ -168,6 +193,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 	}
 
 	//creates a new player from the inputfield's text
+	//calls setOldPlayer()
 	public void setNewPlayer() {
 		string newPlayer = nameInputField.text;
         if(!newPlayer.Equals("")) {
@@ -202,6 +228,8 @@ public class Script_Menu_Settings : MonoBehaviour {
 		playerButton.GetComponentInChildren<Text>().fontStyle = FontStyle.BoldAndItalic;
 
         SettingsManager.CurrentPlayer = player;
+
+        updateBallSelection(player);
 	}
 
 	//puts a player name in the scroll rect; returns the player's corresponding button
@@ -297,5 +325,45 @@ public class Script_Menu_Settings : MonoBehaviour {
 		cameraPreviewOverlay.gameObject.SetActive(false);
 
 		StartCoroutine(cameraScript.switchMenus(transform));
+	}
+
+	public void setCollisionDust() {
+		SettingsManager.DisplayDust = dustToggle.isOn;
+	}
+
+	public void setJumpEffects() {
+		SettingsManager.DisplayJumpEffects = jumpEffectsToggle.isOn;
+	}
+
+	//shows the unlocked balls for the player
+	private void updateBallSelection(string player) {
+		int totalCubies = PlayerManager.getInstance().getTotalCubies(player);
+
+		//ignore index 0 which corresponds to Ball.None
+		for(int i = 1; i < Balls.numBalls; i++) {
+			BallType ballType = (BallType) i;
+			Script_Ball_Select ballButton = ballSelection.GetChild(i - 1).GetComponent<Script_Ball_Select>();
+
+			if(totalCubies >= ballResources.cubiesRequired(ballType)) { //ball has been unlocked
+				ballButton.updateBall(ballType); //each ball in the grid corresponds to a different skin
+
+			} else { //ball has not been unlocked yet
+				ballButton.updateBall(BallType.None);
+			}
+		}
+
+		//if the player does not have enough cubies for the previously selected ball, revert back to Mr. Ball
+		if(totalCubies < ballResources.cubiesRequired(SettingsManager.CurrentBall)) {
+
+			setBall(SettingsManager.defaultBallType);
+			
+		} else {
+			setBall(SettingsManager.CurrentBall);
+		}
+	}
+
+	private void setBall(BallType type) { //each index corresponds to a type of ball
+		//index 0 corresponds to BallType.None, so skip over it
+		ballSelection.GetChild( ((int) type) - 1 ).GetComponent<Script_Ball_Select>().setBall();
 	}
 }

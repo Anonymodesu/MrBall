@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 
-public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
+public class Script_Menu_Stage_Select_Button : Button {
 
 	protected Text cubiesText, deathsText, timeText, scoreText, levelText;
 
@@ -15,8 +15,8 @@ public class Script_Menu_Stage_Select_Button : Script_Menu_Button {
 	protected LevelImages levelImages; //a list storing all level images
 
 	// Use this for initialization
-	protected void Start () {
-		base.init();
+	new protected void Start () {
+		base.Start();
 		GetComponent<Button>().onClick.AddListener(delegate {StartLevel(); });
 
 		cubiesText = GameObject.Find("CubiesText").GetComponent<Text>();

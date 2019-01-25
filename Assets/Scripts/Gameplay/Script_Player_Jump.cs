@@ -20,9 +20,12 @@ public class Script_Player_Jump : MonoBehaviour {
 	private const float perpendicularJumpStrength = 12;
 	private const float jumpAngle = 91; //used to stop wall jumping
 
+	private bool playAnimations;
+
 	// Use this for initialization
 	void Start () {		
 		rb = GetComponent<Rigidbody>();
+		playAnimations = SettingsManager.DisplayJumpEffects;
 	}
 	
 	public void processJump(List<GameObject> contacts) {
@@ -53,7 +56,10 @@ public class Script_Player_Jump : MonoBehaviour {
                     } else if(tag == "Perpendicular") {
 						perpend = true;
 						normalVector += normal;
-						StartCoroutine(perpendicularFX(obj));
+
+						if(playAnimations) {
+							StartCoroutine(perpendicularFX(obj));
+						}
 					}
 					
 					//checks if the angle between gravity and the surface normal is more than 90 deg
@@ -116,6 +122,7 @@ public class Script_Player_Jump : MonoBehaviour {
 		GameObject trail = Instantiate(perpendicularTrail);
 		while(trail.activeSelf) {
 			trail.transform.position = transform.position;
+			trail.transform.rotation = Quaternion.LookRotation(-rb.velocity); //spark emit in the opposite direction of velocity
 			yield return new WaitForFixedUpdate();
 		}
 

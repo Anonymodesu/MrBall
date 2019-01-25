@@ -11,8 +11,11 @@ public class Script_Booster : MonoBehaviour {
 	private const float boostStrength = 12;
 	private const float rotationSpeed = 0.2f;
 
+	private bool playAnimation;
+
 	void Start() {
 		GetComponent<MeshRenderer>().enabled = false;
+		playAnimation = SettingsManager.DisplayJumpEffects;
 	}
 
 	void Update() {
@@ -39,7 +42,10 @@ public class Script_Booster : MonoBehaviour {
 			//do pretty aesthetic stuff
 			other.GetComponent<Script_Player_Trails>().updateColours("Booster");
 			SoundManager.getInstance().playSoundFX(SoundFX.Booster);
-			StartCoroutine(spawnLightning(other.gameObject));
+
+			if(playAnimation) {
+				StartCoroutine(spawnLightning(other.gameObject));
+			}
 		}
 	}
 

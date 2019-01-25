@@ -13,8 +13,10 @@ public class SettingsManager {
 	public const float defaultCrosshairSize = 1;
 	public const float defaultForwardDist = 2.5f;
 	public const float defaultUpDist = 0.7f;
-
-
+	public const int defaultSaveState = 0;
+	public const int defaultDustState = 1;
+	public const int defaultJumpEffectsState = 1;
+	public const BallType defaultBallType = BallType.MrBall; 
 
 	public static float MusicVolume {
 		get { return PlayerPrefs.GetFloat("musicVol", defaultMusicVolume); }
@@ -62,7 +64,22 @@ public class SettingsManager {
 	}
 
 	public static bool QuickSaveLoaded {
-		get { return PlayerPrefs.GetInt("save") == 1; }
+		get { return PlayerPrefs.GetInt("save", defaultSaveState) == 1; }
 		set { PlayerPrefs.SetInt("save", value ? 1 : 0); }
+	}
+
+	public static bool DisplayDust {
+		get { return PlayerPrefs.GetInt("dust", defaultDustState) == 1; }
+		set { PlayerPrefs.SetInt("dust", value ? 1 : 0); }
+	}
+
+	public static bool DisplayJumpEffects {
+		get { return PlayerPrefs.GetInt("jumpEffects", defaultJumpEffectsState) == 1; }
+		set { PlayerPrefs.SetInt("jumpEffects", value ? 1 : 0); }
+	}
+
+	public static BallType CurrentBall {
+		get { return (BallType) PlayerPrefs.GetInt("ballType", (int) defaultBallType); }
+		set { PlayerPrefs.SetInt("ballType", (int) value); }
 	}
 }

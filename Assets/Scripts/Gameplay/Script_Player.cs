@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 //organising class for the all the player's functionality ingame
 [RequireComponent(typeof(Script_Player_Move))]
 [RequireComponent(typeof(Script_OutOfBounds))]
@@ -56,7 +57,8 @@ public class Script_Player : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject rampImpactEffect;
-		private const float collisionImpactThreshold = 3.5f;
+	private bool displayDust;
+	private const float collisionImpactThreshold = 3.5f;
 	private const float collisionImpactDamper = 0.16f;
 	private const float collisionSoundThreshold = 1;
 	private const float collisionSoundDamper = 0.1f;
@@ -111,6 +113,8 @@ public class Script_Player : MonoBehaviour {
 		if(SettingsManager.QuickSaveLoaded) {
 			loadQuickSave();
 		}
+		
+		displayDust = SettingsManager.DisplayDust;
 		if(player == "pokemon") {
 			GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Materials>().pokeBall;
 		}
@@ -239,7 +243,7 @@ public class Script_Player : MonoBehaviour {
 			SoundManager.getInstance().playSoundFX(SoundFX.Collision, volume);
 		}
 
-		if(hitStrength > collisionImpactThreshold) {
+		if(displayDust && hitStrength > collisionImpactThreshold) {
 			GameObject rampImpact = Instantiate(rampImpactEffect, findContactPoint(collision.gameObject), 
 						Quaternion.LookRotation(findNormalVector(collision.gameObject), UnityEngine.Random.insideUnitSphere));
 			rampImpact.transform.localScale = hitStrength * collisionImpactDamper * Vector3.one;

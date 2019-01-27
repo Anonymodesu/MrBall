@@ -223,7 +223,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 			selectButton.GetComponentInChildren<Text>().fontStyle = FontStyle.Normal;
 		}
 
-		string player = playerButton.GetComponentInChildren<Text>().text;
+		string player = playerButton.transform.parent.name;
 		nameInputField.text = player;
 		playerButton.GetComponentInChildren<Text>().fontStyle = FontStyle.BoldAndItalic;
 
@@ -338,6 +338,7 @@ public class Script_Menu_Settings : MonoBehaviour {
 	//shows the unlocked balls for the player
 	private void updateBallSelection(string player) {
 		int totalCubies = PlayerManager.getInstance().getTotalCubies(player);
+		//Debug.Log("player " + player + " has " + totalCubies + " cubies");
 
 		//ignore index 0 which corresponds to Ball.None
 		for(int i = 1; i < Balls.numBalls; i++) {

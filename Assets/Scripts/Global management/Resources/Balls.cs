@@ -27,12 +27,12 @@ public class Balls : MonoBehaviour {
 	private List<Sprite> ballSprites;
 
 	[SerializeField]
-	private List<GameObject> balls;
+	private List<Material> balls;
 
 	private int[] numCubiesRequired; //how many cubies are required to unlock each ball
 	private Dictionary<BallType, BallDescription> ballDescriptions;
 
-	void Start() {
+	void Awake() {
 		numCubiesRequired = new int[numBalls];
 		numCubiesRequired[(int) BallType.None] = 0;
 		numCubiesRequired[(int) BallType.MrBall] = 0;
@@ -75,7 +75,7 @@ public class Balls : MonoBehaviour {
 		return ballSprites[(int) type];
 	}
 
-	public GameObject getBall(BallType type) {
+	public Material getBall(BallType type) {
 		return balls[(int) type];
 	}
 

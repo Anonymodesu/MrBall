@@ -122,7 +122,9 @@ public class Script_Player_Jump : MonoBehaviour {
 		GameObject trail = Instantiate(perpendicularTrail);
 		while(trail.activeSelf) {
 			trail.transform.position = transform.position;
-			trail.transform.rotation = Quaternion.LookRotation(-rb.velocity); //spark emit in the opposite direction of velocity
+
+			////spark emit in the opposite direction of velocity
+			trail.transform.rotation = Quaternion.LookRotation(-rb.velocity + 0.001f * Random.insideUnitSphere); 
 			yield return new WaitForFixedUpdate();
 		}
 

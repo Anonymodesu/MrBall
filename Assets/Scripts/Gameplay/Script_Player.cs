@@ -115,9 +115,8 @@ public class Script_Player : MonoBehaviour {
 		}
 		
 		displayDust = SettingsManager.DisplayDust;
-		if(player == "pokemon") {
-			GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Materials>().pokeBall;
-		}
+
+		GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Balls>().getBall(SettingsManager.CurrentBall);
     }
 
     // Update is called once per frame

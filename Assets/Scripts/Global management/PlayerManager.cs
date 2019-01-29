@@ -159,6 +159,7 @@ public class PlayerManager {
 	//deletes the profile a player
 	public void deletePlayer(string player) {
 		playersProfiles.Remove(player);
+		saveProfiles();
 	}
 
 	private static string getPlayerDataPath() {

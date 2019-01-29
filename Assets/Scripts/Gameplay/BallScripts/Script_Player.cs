@@ -1,3 +1,4 @@
+﻿
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,10 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-//organising class for the all the player's functionality ingame
-[RequireComponent(typeof(Script_Player_Move))]
-[RequireComponent(typeof(Script_OutOfBounds))]
-[RequireComponent(typeof(Script_Player_Jump))]
+//organising class for the all the player's functionality ingameprivate 
 public class Script_Player : MonoBehaviour {
 	
 	//player collider variables
@@ -33,9 +31,6 @@ public class Script_Player : MonoBehaviour {
 	[SerializeField]
     private GameObject startPos;
 
-    //pausing
-    private bool stopGame;
-	private bool pauseable;
 	
 	//gravity variables
 	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint
@@ -49,10 +44,19 @@ public class Script_Player : MonoBehaviour {
 	//scoring variables
 	private string player;
     private float startTime;
-    int cubies;
-    int deaths;
-    Level currentLevel; //'const'
-	Achievement requirements; //'const'
+    private int cubies;
+    private int deaths;
+    private Level currentLevel; //'const'
+	private Achievement requirements; //'const'
+
+	public int Cubies {
+		get { return cubies; }
+	}
+
+	public int Deaths {
+		get { return deaths; }
+	}
+
 
 
 	[SerializeField]
@@ -84,14 +88,11 @@ public class Script_Player : MonoBehaviour {
 		
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();
         
-        stopGame = true;
         player = SettingsManager.CurrentPlayer;
         startTime = Time.timeSinceLevelLoad;
         cubies = 0;
         deaths = 0;
-        
-        pauseable = false;
-        
+                
         if(startPos == null) {
         	startPos = GameObject.Find("Ramp_Start");
         }
@@ -121,9 +122,7 @@ public class Script_Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update () { //REPLACE WITH FIXED UPDATE?    
-        if(!stopGame) {
-			Cursor.lockState = CursorLockMode.Locked;
-            GUIScript.displayProgress(cubies, getTime(), deaths, requirements);
+        if(Time.timeScale != 0) {
 
             jumpScript.processJump(contacts);
 
@@ -131,58 +130,14 @@ public class Script_Player : MonoBehaviour {
             	die();
             }
             
-        } else {
-			Cursor.lockState = CursorLockMode.None; 
-		}
-        
-        if(InputManager.getInput().buttonDown(Command.Pause) && pauseable) {
-            pause();
         }
-
 		movementScript.processNextInstruction(); //process user input regardless of pause state
     }
 
 	
-	void FixedUpdate() { //for physics interactions
-		if(!stopGame) {
-			processCollider();
-			movementScript.processMovement(contacts);
-		}
-	}
-
-	public void startGame() {
-        pauseable = true;
-        pause();
-        Cursor.visible = false;
-		GUIScript.startGame(); //hides the starting interface
-    }
-	
-	public void endGame() {
-		if(!contacts.Contains(GameObject.Find("Ramp_Win"))) {
-			storeQuickSave(); //don't store the save when exiting from the winning screen
-		}
-
-		Physics.gravity = defaultGravityDirection * gravityStrength;
-		SceneManager.LoadScene("Scene_Menu");
-    }
-	
-	public void restartGame() {
-		Physics.gravity = defaultGravityDirection * gravityStrength;
-		SceneManager.LoadScene(currentLevel.ToString());
-	}
-	
-	public void nextLevel() {
-		Physics.gravity = defaultGravityDirection * gravityStrength;
-		Level nextLevel;
-		
-		if(currentLevel.substage == Level.numSubstages - 1) { //this is last level of the stage
-			nextLevel = new Level(currentLevel.stage + 1, 0);
-			
-		} else { //there are further levels in this stage
-			nextLevel = new Level(currentLevel.stage, currentLevel.substage + 1);
-		}
-			
-		SceneManager.LoadSceneAsync(nextLevel.ToString());
+	void FixedUpdate() { //does not run when Time.timeScale = 0
+		processCollider();
+		movementScript.processMovement(contacts);
 	}
 
 	void OnTriggerEnter(Collider other) { 
@@ -208,7 +163,7 @@ public class Script_Player : MonoBehaviour {
                 
                 case "Win":
                 SoundManager.getInstance().playSoundFX(SoundFX.Win);
-                win();
+                GUIScript.processScoreAchievements();
                 break;
         	}
 
@@ -295,53 +250,10 @@ public class Script_Player : MonoBehaviour {
 		deaths++;
 	}
 	
-	private void win() {
-        pauseable = false;
-        pause();
-        PlayerManager.getInstance().deleteQuicksave(player);
-		processScoreAchievements();
-    }
-	
 	public float getTime() {
 		return (Time.timeSinceLevelLoad - startTime);
 	}
 		
-	//when the level ends, process the final score and any acquired achievements
-    private void processScoreAchievements() {
-	
-		HighScore currentHighScore = new HighScore(player, cubies, deaths, getTime());
-			 
-		//returns true if theres a new highscore
-		if(ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore)) {
-			
-			GUIScript.displayScoreAchievements(cubies, deaths, getTime(), requirements, ScoreManager.getInstance().getHighScores(currentLevel));
-			
-		} else {
-			GUIScript.displayScoreAchievements(cubies, deaths, getTime(), requirements, null);
-		}
-		
-		Achievement newRecord = new Achievement(cubies,deaths, getTime(), HighScore.calculateScore(cubies,deaths, getTime()));
-		PlayerManager.getInstance().saveRecord(player, newRecord, currentLevel); //save records to player data txt
-		
-    }
-
-
-    private void pause() {
-        if(stopGame) {
-            GUIScript.hidePauseMenu();
-            Time.timeScale = 1;
-            stopGame = false;
-            Cursor.visible = false;
-
-        } else {
-            GUIScript.showPauseMenu();
-            Time.timeScale = 0;
-            stopGame = true;
-            Cursor.visible = true;
-        }
-        
-    }
-
     private void loadQuickSave() {
 
 		SettingsManager.QuickSaveLoaded = false;
@@ -390,7 +302,7 @@ public class Script_Player : MonoBehaviour {
 		
 	}
 
-	private void storeQuickSave() {
+	public void storeQuickSave() {
 		//store whether each cubie has been collected
 		List<bool> collectedCubies = new List<bool>();
 		Transform cubies = GameObject.Find("Cubies").transform;
@@ -405,7 +317,7 @@ public class Script_Player : MonoBehaviour {
 			rampAnimationTimes.Add(animationTime);
 		}
 
-		Quicksave save = new Quicksave(player, currentLevel, transform.position, rb.velocity, rb.angularVelocity,
+		Quicksave save = new Quicksave(currentLevel, transform.position, rb.velocity, rb.angularVelocity,
 										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
 										getTime(), deaths, rampAnimationTimes);
 
@@ -421,6 +333,10 @@ public class Script_Player : MonoBehaviour {
                surface == "Checkpoint" ||
 			   surface == "Perpendicular" ||
 			   surface == "Gravity";
+    }
+
+    public void resetGravity() {
+    	Physics.gravity = gravityStrength * defaultGravityDirection;
     }
 
 

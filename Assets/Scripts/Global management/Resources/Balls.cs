@@ -29,6 +29,9 @@ public class Balls : MonoBehaviour {
 	[SerializeField]
 	private List<Material> balls;
 
+	[SerializeField]
+	private List<GameObject> ballEffects;
+
 	private int[] numCubiesRequired; //how many cubies are required to unlock each ball
 	private Dictionary<BallType, BallDescription> ballDescriptions;
 
@@ -93,5 +96,9 @@ public class Balls : MonoBehaviour {
 
 	public string getPowers(BallType type) {
 		return ballDescriptions[type].powers;
+	}
+
+	public GameObject getEffect(BallType type) {
+		return ballEffects[(int) type];
 	}
 }

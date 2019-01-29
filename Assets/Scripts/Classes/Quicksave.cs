@@ -19,10 +19,11 @@ public class Quicksave {
 	public readonly float time;
 	public readonly int deaths;
 	public readonly List<float> rampAnimationTimes;
+	public readonly BallType ballUsed;
 
 	public Quicksave(Level level, Vector3 position, Vector3 velocity, Vector3 angularVelocity,
 					Vector3 startGravityDirection, Vector3 currentGravityDirection, List<bool> cubies,
-					string startPos, float time, int deaths, List<float> rampAnimationTimes) {
+					string startPos, float time, int deaths, List<float> rampAnimationTimes, BallType ballUsed) {
 		this.level = level;
 		this.position = position;
 		this.velocity = velocity;
@@ -34,5 +35,6 @@ public class Quicksave {
 		this.time = time;
 		this.deaths = deaths;
 		this.rampAnimationTimes = rampAnimationTimes;
+		this.ballUsed = ballUsed;
 	}
 }

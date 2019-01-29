@@ -19,11 +19,12 @@ public class Script_Player_Move : MonoBehaviour {
         }
     }
 	
-	//user input variables
-    private const float normalSpeed = 106.48f; //original values were 880/3600
-    private const float superSpeed = 435.6f;
-	private const float maxNormalSpeed = 13;
-	private const float maxSuperSpeed = 100;
+	//user input variables; original speed values were 880/3600
+	//protected variables are used by usain bowl
+    protected virtual float normalSpeed { get { return 106.48f; } }
+    protected const float superSpeed = 435.6f;
+	protected virtual float maxNormalSpeed { get { return 13; } }
+	protected const float maxSuperSpeed = 100;
     private const float brakeStrength = 20;
 	private const float maxTorque = 60; //maximum rotational speed
     private Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
@@ -34,7 +35,7 @@ public class Script_Player_Move : MonoBehaviour {
 	
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
 		rb = GetComponent<Rigidbody>();
 		lastInstruction = new Movement(0,0,false);
 		rb.maxAngularVelocity = maxTorque;
@@ -43,6 +44,10 @@ public class Script_Player_Move : MonoBehaviour {
 	}
 
 	public void processMovement(List<GameObject> contacts) {
+		if(lastInstruction == null) {
+			return; //happens when script_player_move is replaced by a subclass
+		}
+
         float speed = normalSpeed;
 		float maxSpeed = maxNormalSpeed;  //maximum speed depends on the type of panel being contacted
 

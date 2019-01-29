@@ -75,16 +75,13 @@ public class Script_Player : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    protected virtual void Start () {
         contacts = new List<GameObject>();
         
-        Cursor.visible = true; 
 		movementScript = GetComponent<Script_Player_Move>();
 		jumpScript = GetComponent<Script_Player_Jump>();
 		outOfBoundsScript = GetComponent<Script_OutOfBounds>();
         rb = GetComponent<Rigidbody>();     
-
-        Time.timeScale = 0;
 		
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();
         
@@ -117,11 +114,11 @@ public class Script_Player : MonoBehaviour {
 		
 		displayDust = SettingsManager.DisplayDust;
 
-		GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Balls>().getBall(SettingsManager.CurrentBall);
+		loadBall();
     }
 
     // Update is called once per frame
-    void Update () { //REPLACE WITH FIXED UPDATE?    
+    protected virtual void Update () { //REPLACE WITH FIXED UPDATE?    
         if(Time.timeScale != 0) {
 
             jumpScript.processJump(contacts);
@@ -135,9 +132,10 @@ public class Script_Player : MonoBehaviour {
     }
 
 	
-	void FixedUpdate() { //does not run when Time.timeScale = 0
+	protected virtual void FixedUpdate() { //does not run when Time.timeScale = 0
 		processCollider();
 		movementScript.processMovement(contacts);
+
 	}
 
 	void OnTriggerEnter(Collider other) { 
@@ -226,7 +224,7 @@ public class Script_Player : MonoBehaviour {
 		Physics.gravity = -normal.normalized * gravityStrength;
 	}
 	
-    private void reset() {
+    protected virtual void reset() {
         Physics.gravity = startGravityDirection * gravityStrength;
 		transform.position = startPos.transform.position - startGravityDirection; //make sure in startPos, player is not colliding with anything!
         rb.velocity = Vector3.zero;
@@ -302,6 +300,7 @@ public class Script_Player : MonoBehaviour {
 		
 	}
 
+	//called by Script_Game_Menu when prematurely exiting a level
 	public void storeQuickSave() {
 		//store whether each cubie has been collected
 		List<bool> collectedCubies = new List<bool>();
@@ -319,10 +318,21 @@ public class Script_Player : MonoBehaviour {
 
 		Quicksave save = new Quicksave(currentLevel, transform.position, rb.velocity, rb.angularVelocity,
 										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
-										getTime(), deaths, rampAnimationTimes);
+										getTime(), deaths, rampAnimationTimes, SettingsManager.CurrentBall);
 
 		PlayerManager.getInstance().storeQuicksave(player, save);
 	}
+
+	private void loadBall() {
+		GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Balls>().getBall(SettingsManager.CurrentBall);
+
+		switch(SettingsManager.CurrentBall) {
+			case BallType.UsainBowl:
+				Destroy(GetComponent<Script_Player_Move>());
+				movementScript = gameObject.AddComponent<Script_UsainBowl_Move>();
+				break;
+		}
+	} 
 
     public static bool isPhysical(string surface) {        
         return surface == "Fast" || 

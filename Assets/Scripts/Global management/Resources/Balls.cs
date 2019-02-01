@@ -23,6 +23,8 @@ public class Balls : MonoBehaviour {
 
 	public static readonly int numBalls = Enum.GetNames(typeof(BallType)).Length;
 
+	#pragma warning disable 0649
+
 	[SerializeField]
 	private List<Sprite> ballSprites;
 
@@ -30,7 +32,29 @@ public class Balls : MonoBehaviour {
 	private List<Material> balls;
 
 	[SerializeField]
-	private List<GameObject> ballEffects;
+	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, playerTrail, playerTrailGlow;
+
+	#pragma warning restore 0649
+
+	public GameObject UsainBowlEffect {
+		get { return usainBowlEffect; }
+	}
+	public GameObject PerpendicularExplosion {
+		get { return perpendicularExplosion; }
+	}
+	public GameObject PerpendicularTrail {
+		get { return perpendicularTrail; }
+	}
+	public GameObject SuperExplosion {
+		get { return superExplosion; }
+	}
+	public GameObject PlayerTrail {
+		get { return playerTrail; }
+	}
+	public GameObject PlayerTrailGlow {
+		get { return playerTrailGlow; }
+	}
+	
 
 	private int[] numCubiesRequired; //how many cubies are required to unlock each ball
 	private Dictionary<BallType, BallDescription> ballDescriptions;
@@ -96,9 +120,5 @@ public class Balls : MonoBehaviour {
 
 	public string getPowers(BallType type) {
 		return ballDescriptions[type].powers;
-	}
-
-	public GameObject getEffect(BallType type) {
-		return ballEffects[(int) type];
 	}
 }

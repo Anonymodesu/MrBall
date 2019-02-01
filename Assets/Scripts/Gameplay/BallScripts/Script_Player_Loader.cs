@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 
 //organising class for the all the player's functionality ingameprivate 
-public class Script_Player : MonoBehaviour {
+public class Script_Player_Loader : MonoBehaviour {
 	
 	//player collider variables
 	[SerializeField]
@@ -23,8 +23,9 @@ public class Script_Player : MonoBehaviour {
     private List<GameObject> contacts; //holds the current ramps in contact with mr.ball's triggercollider
     
 	//scripts
-	private Script_Player_Move movementScript;
-	private Script_Player_Jump jumpScript;
+	private Player_Move movementScript;
+	private Player_Jump jumpScript;
+	private Empty_Trails trailsScript;
 	private Script_OutOfBounds outOfBoundsScript;
 
 	//last encountered checkpoint; change in editor to allow for testing
@@ -35,7 +36,7 @@ public class Script_Player : MonoBehaviour {
 	//gravity variables
 	private Vector3 startGravityDirection; //stores the gravity at the last checkpoint
 	private const float gravityStrength = 9.8f;
-	private Vector3 defaultGravityDirection = Vector3.down; //stores gravity loaded at the beginning of each level
+	public static readonly Vector3 defaultGravityDirection = Vector3.down; //stores gravity loaded at the beginning of each level
 	private float gravityEpsilon = 10; //minimum change in gravity to change the coordinate axes
 
 	//UI variables
@@ -47,7 +48,6 @@ public class Script_Player : MonoBehaviour {
     private int cubies;
     private int deaths;
     private Level currentLevel; //'const'
-	private Achievement requirements; //'const'
 
 	public int Cubies {
 		get { return cubies; }
@@ -76,33 +76,17 @@ public class Script_Player : MonoBehaviour {
 
     // Use this for initialization
     protected virtual void Start () {
+    	loadBall();
+
         contacts = new List<GameObject>();
-        
-		movementScript = GetComponent<Script_Player_Move>();
-		jumpScript = GetComponent<Script_Player_Jump>();
 		outOfBoundsScript = GetComponent<Script_OutOfBounds>();
         rb = GetComponent<Rigidbody>();     
 		
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();
         
         player = SettingsManager.CurrentPlayer;
-        startTime = Time.timeSinceLevelLoad;
-        cubies = 0;
-        deaths = 0;
-                
-        if(startPos == null) {
-        	startPos = GameObject.Find("Ramp_Start");
-        }
-		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
-        reset();
 				
 		currentLevel = GameManager.getInstance().getLevel();
-		requirements = GameManager.getInstance().getRequirement(currentLevel);
-		if(requirements == null) {
-			Debug.Log("error parsing achievements");
-			requirements = new Achievement(0,0,0,0);
-		}
-
 		checkpointAnimation = GameObject.Find("CheckpointNotification").GetComponent<Script_Checkpoint_Animation>();
 
 		//display panel was used as a start_pos to take screenshots of levels
@@ -110,11 +94,13 @@ public class Script_Player : MonoBehaviour {
 
 		if(SettingsManager.QuickSaveLoaded) {
 			loadQuickSave();
+		} else {
+			loadDefaultSettings();
+			reset();
 		}
 		
 		displayDust = SettingsManager.DisplayDust;
 
-		loadBall();
     }
 
     // Update is called once per frame
@@ -122,6 +108,7 @@ public class Script_Player : MonoBehaviour {
         if(Time.timeScale != 0) {
 
             jumpScript.processJump(contacts);
+            trailsScript.processTrails();
 
             if(outOfBoundsScript.outOfBounds()) {
             	die();
@@ -133,9 +120,12 @@ public class Script_Player : MonoBehaviour {
 
 	
 	protected virtual void FixedUpdate() { //does not run when Time.timeScale = 0
-		processCollider();
 		movementScript.processMovement(contacts);
+		processCollider();
+	}
 
+	public void updateTrails(string tag) {
+		trailsScript.updateColours(tag);
 	}
 
 	void OnTriggerEnter(Collider other) { 
@@ -218,7 +208,7 @@ public class Script_Player : MonoBehaviour {
 
 		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
 			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
-			GetComponent<Script_Player_Trails>().updateColours("Gravity");
+			updateTrails("Gravity");
 		}
 
 		Physics.gravity = -normal.normalized * gravityStrength;
@@ -251,6 +241,18 @@ public class Script_Player : MonoBehaviour {
 	public float getTime() {
 		return (Time.timeSinceLevelLoad - startTime);
 	}
+
+	private void loadDefaultSettings() {
+		cubies = 0;
+		deaths = 0;
+
+		if(startPos == null) {
+        	startPos = GameObject.Find("Ramp_Start");
+        }
+
+		startGravityDirection = defaultGravityDirection;// // -startPos.transform.up; defaultGravityDirection
+		startTime = 0;
+	}
 		
     private void loadQuickSave() {
 
@@ -280,7 +282,7 @@ public class Script_Player : MonoBehaviour {
 				}
 
 				startPos = GameObject.Find(save.startPos);
-				startTime -= save.time;
+				startTime = -save.time;
 				deaths = save.deaths;
 
 				for(int i = 0; i < save.rampAnimationTimes.Count; i++) {
@@ -320,16 +322,27 @@ public class Script_Player : MonoBehaviour {
 										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
 										getTime(), deaths, rampAnimationTimes, SettingsManager.CurrentBall);
 
+
 		PlayerManager.getInstance().storeQuicksave(player, save);
 	}
 
 	private void loadBall() {
 		GetComponent<Renderer>().material = GameObject.Find("Resources").GetComponent<Balls>().getBall(SettingsManager.CurrentBall);
 
+		movementScript = new Player_Move(this);
+		jumpScript = new Player_Jump(this);
+
+		if(SettingsManager.DisplayTrails) {
+			trailsScript = new Player_Trails(this);
+		} else {
+			trailsScript = new Empty_Trails();
+		}
+
 		switch(SettingsManager.CurrentBall) {
+			
+
 			case BallType.UsainBowl:
-				Destroy(GetComponent<Script_Player_Move>());
-				movementScript = gameObject.AddComponent<Script_UsainBowl_Move>();
+				movementScript = new UsainBowl_Move(this);
 				break;
 		}
 	} 

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Script_Player))]
+[CustomEditor(typeof(Script_Player_Loader))]
 public class AnimatedRampsQuicksaveHelper : Editor {
 
 
 	public override void OnInspectorGUI() {
 		DrawDefaultInspector();
-		Script_Player targetScript = (Script_Player) target;
+		Script_Player_Loader targetScript = (Script_Player_Loader) target;
 
 
 		if(GUILayout.Button("Load Ramps Blyat")) {

@@ -86,6 +86,7 @@ public class PlayerManager {
 
 
 	public int getTotalCubies(string playerName) {
+		Debug.Log(getProfile(playerName).TotalCubies);
 		return getProfile(playerName).TotalCubies;
 	}
 

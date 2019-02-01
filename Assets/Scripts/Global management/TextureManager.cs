@@ -83,7 +83,7 @@ public class TextureManager {
 	private void tileTexture(GameObject obj, int stage) {
 
 		//only modify cube meshes
-		if(obj.GetComponent<BoxCollider>() != null && Script_Player.isPhysical(obj.tag)) {
+		if(obj.GetComponent<BoxCollider>() != null && Script_Player_Loader.isPhysical(obj.tag)) {
 
 			Vector3 scale = obj.transform.lossyScale;
 

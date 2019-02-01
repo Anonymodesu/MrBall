@@ -40,7 +40,7 @@ public class Script_Booster : MonoBehaviour {
 			playerRB.AddForce(dir * boostStrength, ForceMode.Impulse);
 
 			//do pretty aesthetic stuff
-			other.GetComponent<Script_Player_Trails>().updateColours("Booster");
+			other.GetComponent<Script_Player_Loader>().updateTrails("Booster");
 			SoundManager.getInstance().playSoundFX(SoundFX.Booster);
 
 			if(playAnimation) {

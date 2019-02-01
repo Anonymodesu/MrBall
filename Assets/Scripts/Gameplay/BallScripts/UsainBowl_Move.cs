@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script_UsainBowl_Move : Script_Player_Move {
+public class UsainBowl_Move : Player_Move {
 
 	private const float duration = 4;
 
@@ -13,7 +13,7 @@ public class Script_UsainBowl_Move : Script_Player_Move {
 	protected override float normalSpeed {
 		get { 
 			if(superSaiyan) {
-				return Script_Player_Move.superSpeed;
+				return Player_Move.superSpeed;
 			} else {
 				return base.normalSpeed;
 			}
@@ -23,7 +23,7 @@ public class Script_UsainBowl_Move : Script_Player_Move {
 	protected override float maxNormalSpeed {
 		get { 
 			if(superSaiyan) {
-				return Script_Player_Move.maxSuperSpeed;
+				return Player_Move.maxSuperSpeed;
 			} else {
 				return base.maxNormalSpeed;
 			}
@@ -32,16 +32,17 @@ public class Script_UsainBowl_Move : Script_Player_Move {
 
 
 
-	protected override void Start() {
-		base.Start();
+	public UsainBowl_Move(Script_Player_Loader playerScript) : base(playerScript) {
 		superSaiyan = false;
-		superSaiyanEffect = GameObject.Find("Resources").GetComponent<Balls>().getEffect(BallType.UsainBowl);
+		superSaiyanEffect = GameObject.Find("Resources").GetComponent<Balls>().UsainBowlEffect;
 	}
 
 
-	void Update() {
+	public override void processNextInstruction() {
+		base.processNextInstruction();
+
 		if(!superSaiyan && Time.timeScale != 0 && InputManager.getInput().buttonDown(Command.Special)) {
-			StartCoroutine(goSuperSaiyan());
+			playerScript.StartCoroutine(goSuperSaiyan());
 		}
 	}
 
@@ -49,10 +50,10 @@ public class Script_UsainBowl_Move : Script_Player_Move {
 		float time = 0;
 		superSaiyan = true;
 		SoundManager.getInstance().playSoundFX(SoundFX.UsainBowl);
-		GameObject ssjEffect = Instantiate(superSaiyanEffect, transform.position, getEffectRotation());
+		GameObject ssjEffect = UnityEngine.Object.Instantiate(superSaiyanEffect, playerScript.transform.position, getEffectRotation());
 
 		while(time < duration) {
-			ssjEffect.transform.position = this.transform.position;
+			ssjEffect.transform.position = playerScript.transform.position;
 			ssjEffect.transform.rotation = getEffectRotation();
 
 			time += Time.deltaTime;
@@ -63,7 +64,7 @@ public class Script_UsainBowl_Move : Script_Player_Move {
 	}
 
 	private Quaternion getEffectRotation() {
-		return Quaternion.LookRotation(-Physics.gravity);		
+		return Quaternion.FromToRotation(Script_Player_Loader.defaultGravityDirection, Physics.gravity);		
 	}
 
 }

@@ -4,12 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //contains jump functionality for the player
-public class Script_Player_Jump : MonoBehaviour {
-	
-	#pragma warning disable 0649
-	[SerializeField]
-	private GameObject perpendicularExplosion, perpendicularTrail, superExplosion;
-	#pragma warning restore 0649
+public class Player_Jump {
 
 	private Rigidbody rb;
 	
@@ -21,11 +16,19 @@ public class Script_Player_Jump : MonoBehaviour {
 	private const float jumpAngle = 91; //used to stop wall jumping
 
 	private bool playAnimations;
+	private Script_Player_Loader playerScript;
+	private GameObject perpendicularExplosion, perpendicularTrail, superExplosion;
 
 	// Use this for initialization
-	void Start () {		
-		rb = GetComponent<Rigidbody>();
+	public Player_Jump(Script_Player_Loader playerScript) {		
 		playAnimations = SettingsManager.DisplayJumpEffects;
+		this.playerScript = playerScript;
+		rb = playerScript.GetComponent<Rigidbody>();
+
+		Balls ballResources = GameObject.Find("Resources").GetComponent<Balls>();
+		perpendicularExplosion = ballResources.PerpendicularExplosion;
+		perpendicularTrail = ballResources.PerpendicularTrail;
+		superExplosion = ballResources.SuperExplosion;
 	}
 	
 	public void processJump(List<GameObject> contacts) {
@@ -45,9 +48,9 @@ public class Script_Player_Jump : MonoBehaviour {
             foreach(GameObject obj in contacts) {
                 string tag = obj.tag;
                 
-                if(Script_Player.isPhysical(tag)) { //is a physically interactable surface
+                if(Script_Player_Loader.isPhysical(tag)) { //is a physically interactable surface
                     jumpStep = jumpCooldown; 
-					Vector3 normal = GetComponent<Script_Player>().findNormalVector(obj);
+					Vector3 normal = playerScript.findNormalVector(obj);
                           
                     if(tag == "Bouncy") {
                         super = true;
@@ -58,13 +61,13 @@ public class Script_Player_Jump : MonoBehaviour {
 						normalVector += normal;
 
 						if(playAnimations) {
-							StartCoroutine(perpendicularFX(obj));
+							playerScript.StartCoroutine(perpendicularFX(obj));
 						}
 					}
 					
 					//checks if the angle between gravity and the surface normal is more than 90 deg
 					//i.e. if the ball is on the ground (as opposed to against a wall)
-					Vector3 fakeNormal = GetComponent<Script_Player>().findFakeNormalVector(obj);
+					Vector3 fakeNormal = playerScript.findFakeNormalVector(obj);
 					if(Vector3.Angle(fakeNormal, Physics.gravity.normalized) > jumpAngle) {
 						onGround = true;
 					}
@@ -80,7 +83,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				SoundManager.getInstance().playSoundFX(SoundFX.YellowJump);
 				specialJump = true;
 
-				GetComponent<Script_Player_Trails>().updateColours("Bouncy");
+				playerScript.updateTrails("Bouncy");
 			}
 			
 			//you can 'jump' on perpendicular panels without a ground
@@ -91,7 +94,7 @@ public class Script_Player_Jump : MonoBehaviour {
 				//rb.AddTorque(normalVector, ForceMode.Impulse);
 				specialJump = true;
 
-				GetComponent<Script_Player_Trails>().updateColours("Perpendicular");
+				playerScript.updateTrails("Perpendicular");
 			}
             
 			if(!specialJump && onGround) { //jump normally
@@ -114,29 +117,29 @@ public class Script_Player_Jump : MonoBehaviour {
 	
     //generate cool special effects for orange ramps
 	private IEnumerator perpendicularFX(GameObject ramp) {
-		Vector3 explosionPos = GetComponent<Script_Player>().findContactPoint(ramp);
-		Quaternion explosionRot = Quaternion.LookRotation(GetComponent<Script_Player>().findNormalVector(ramp), 
+		Vector3 explosionPos = playerScript.findContactPoint(ramp);
+		Quaternion explosionRot = Quaternion.LookRotation(playerScript.findNormalVector(ramp), 
 									Random.insideUnitSphere);
-		Instantiate(perpendicularExplosion, explosionPos, explosionRot);
+		UnityEngine.Object.Instantiate(perpendicularExplosion, explosionPos, explosionRot);
 
-		GameObject trail = Instantiate(perpendicularTrail);
+		GameObject trail = UnityEngine.Object.Instantiate(perpendicularTrail);
 		while(trail.activeSelf) {
-			trail.transform.position = transform.position;
+			trail.transform.position = playerScript.transform.position;
 
 			////spark emit in the opposite direction of velocity
 			trail.transform.rotation = Quaternion.LookRotation(-rb.velocity + 0.001f * Random.insideUnitSphere); 
 			yield return new WaitForFixedUpdate();
 		}
 
-		Destroy(trail);
+		UnityEngine.Object.Destroy(trail);
 	}
 
 	 //generate cool special effects for yellow ramps
 	private void superExplosionFX(GameObject ramp) {
-		Quaternion explosionRot = Quaternion.LookRotation(GetComponent<Script_Player>().findNormalVector(ramp), 
+		Quaternion explosionRot = Quaternion.LookRotation(playerScript.findNormalVector(ramp), 
 									Random.insideUnitSphere);
-		Vector3 explosionPos = GetComponent<Script_Player>().findContactPoint(ramp) + explosionRot * (new Vector3(0,0,0.2f));
+		Vector3 explosionPos = playerScript.findContactPoint(ramp) + explosionRot * (new Vector3(0,0,0.2f));
 
-		Instantiate(superExplosion, explosionPos, explosionRot);
+		UnityEngine.Object.Instantiate(superExplosion, explosionPos, explosionRot);
 	}
 }

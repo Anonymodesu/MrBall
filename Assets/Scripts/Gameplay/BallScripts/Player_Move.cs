@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 
 //process player's movements over panels
-public class Script_Player_Move : MonoBehaviour {
+public class Player_Move {
 
 	private class Movement {
         public int forward;
@@ -31,22 +31,21 @@ public class Script_Player_Move : MonoBehaviour {
 	
 	private Script_Game_Camera cameraScript; 
 	private Rigidbody rb;
-
+	protected Script_Player_Loader playerScript;
 	
 
 	// Use this for initialization
-	protected virtual void Start () {
-		rb = GetComponent<Rigidbody>();
+	public Player_Move(Script_Player_Loader playerScript) {
 		lastInstruction = new Movement(0,0,false);
-		rb.maxAngularVelocity = maxTorque;
 		
 		cameraScript = GameObject.FindWithTag("MainCamera").GetComponent<Script_Game_Camera>();
+		this.playerScript = playerScript;
+		rb = playerScript.GetComponent<Rigidbody>();
+
+		rb.maxAngularVelocity = maxTorque;
 	}
 
 	public void processMovement(List<GameObject> contacts) {
-		if(lastInstruction == null) {
-			return; //happens when script_player_move is replaced by a subclass
-		}
 
         float speed = normalSpeed;
 		float maxSpeed = maxNormalSpeed;  //maximum speed depends on the type of panel being contacted
@@ -57,7 +56,7 @@ public class Script_Player_Move : MonoBehaviour {
         
         foreach(GameObject surface in contacts) { //process the current surfaces in contact with the player
 
-        	if(Script_Player.isPhysical(surface.tag)) {
+        	if(Script_Player_Loader.isPhysical(surface.tag)) {
         		onGround = true;
         	}
 
@@ -66,7 +65,7 @@ public class Script_Player_Move : MonoBehaviour {
                 speed = superSpeed; //fast movement on purple surfaces
 				maxSpeed = maxSuperSpeed; //if on fast panel, maxSuperSpeed is used for speed calcs below
 
-				GetComponent<Script_Player_Trails>().updateColours("Fast");
+				playerScript.updateTrails("Fast");
                 break;
              
             }
@@ -120,7 +119,7 @@ public class Script_Player_Move : MonoBehaviour {
         
     }
 	
-    public void processNextInstruction() {
+    public virtual void processNextInstruction() {
         int forward = 0;
         int right = 0;
         bool brake = false;

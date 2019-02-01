@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //generates speed lines when the player is moving faster than a threshold velocity
-public class Script_Player_Trails : MonoBehaviour {
-	[SerializeField]
-	private GameObject trail;
-
-	[SerializeField]
-	private GameObject glow;
+public class Player_Trails : Empty_Trails {
+	private GameObject trailEffect, glowEffect;
+	private Script_Player_Loader playerScript;
 
 	private ParticleSystem playerGlow;
 	private Color glowColour;
@@ -51,20 +48,21 @@ public class Script_Player_Trails : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	public Player_Trails(Script_Player_Loader playerScript) : base() {
 
-		//get trails settings
-		if(!SettingsManager.DisplayTrails) {
-			return;
-		}
+		this.playerScript = playerScript;
+		Balls ballResources = GameObject.Find("Resources").GetComponent<Balls>();
+		trailEffect = ballResources.PlayerTrail;
+		glowEffect = ballResources.PlayerTrailGlow;
 
-		TrailRenderer trailRenderer = trail.GetComponent<TrailRenderer>();
-		rb = GetComponent<Rigidbody>();
+		TrailRenderer trailRenderer = trailEffect.GetComponent<TrailRenderer>();
+		rb = playerScript.GetComponent<Rigidbody>();
 
 		//main trail is a child of the player game object
 		trailRenderer.time = time;
 		trailRenderer.widthMultiplier = width;
-		mainTrail = Instantiate(trail, transform.position, Quaternion.identity, transform).GetComponent<TrailRenderer>();
+		mainTrail = UnityEngine.Object.Instantiate(trailEffect, playerScript.transform.position, Quaternion.identity, playerScript.transform)
+										.GetComponent<TrailRenderer>();
 		mainTrail.emitting = false;
 
 		//secondary trails are thinner and expire faster
@@ -80,7 +78,7 @@ public class Script_Player_Trails : MonoBehaviour {
 
 		secondaryTrails = new TrailRenderer[numSecondaryTrails];
 		for(int i = 0; i < numSecondaryTrails; i++) {
-			secondaryTrails[i] = Instantiate(trail).GetComponent<TrailRenderer>();
+			secondaryTrails[i] = UnityEngine.Object.Instantiate(trailEffect).GetComponent<TrailRenderer>();
 			secondaryTrails[i].emitting = false;
 		}
 
@@ -94,16 +92,13 @@ public class Script_Player_Trails : MonoBehaviour {
 		colourSpawnDelay = 0;
 		loadedColours = new HashSet<string>();
 
-		playerGlow = Instantiate(glow, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+		playerGlow = UnityEngine.Object.Instantiate(glowEffect, playerScript.transform.position, Quaternion.identity, playerScript.transform)
+						.GetComponent<ParticleSystem>();
 		glowColour = glowBaseColour;
 	}
 	
 	// Toggle trail visibility when above/below velocity thresholds
-	void Update () {
-
-		if(!SettingsManager.DisplayTrails) {
-			return;
-		}
+	public override void processTrails() {
 
 		//show/hide trails
 		if(rb.velocity.magnitude > threshold) {
@@ -114,7 +109,7 @@ public class Script_Player_Trails : MonoBehaviour {
 
 		setSecondaryPositions();
 		if(rb.velocity.magnitude > secondaryThreshold) {
-			StartCoroutine(spawnSecondaryEmission());
+			playerScript.StartCoroutine(spawnSecondaryEmission());
 		} else {
 			despawnSecondaryEmission();
 		}
@@ -158,13 +153,14 @@ public class Script_Player_Trails : MonoBehaviour {
 		Quaternion spinRotation = Quaternion.AngleAxis(spin + previousSecondarySpin, rb.velocity);
 
 		for(int i = 0; i < numSecondaryTrails; i++) {
-			secondaryTrails[i].transform.position = transform.position + spinRotation * velocityRotation * secondaryPositions[i];
+			secondaryTrails[i].transform.position = playerScript.transform.position 
+													+ spinRotation * velocityRotation * secondaryPositions[i];
 		}
 
 		previousSecondarySpin = (previousSecondarySpin + spin) % 360f;
 	}
 
-	public void updateColours(string tag) {
+	public override void updateColours(string tag) {
 		if(!SettingsManager.DisplayTrails) {
 			return;
 		}
@@ -173,18 +169,18 @@ public class Script_Player_Trails : MonoBehaviour {
 
 			switch(tag) {
 				case "Bouncy":
-					StartCoroutine(setColour(bouncyColour, tag));
+					playerScript.StartCoroutine(setColour(bouncyColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
 				case "Fast":
-					StartCoroutine(setColour(fastColour, tag)); //fast ramps often override special jump colours
+					playerScript.StartCoroutine(setColour(fastColour, tag)); //fast ramps often override special jump colours
 					break;
 				case "Perpendicular":
-					StartCoroutine(setColour(perpendicularColour, tag));
+					playerScript.StartCoroutine(setColour(perpendicularColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
 				case "Booster": case "Gravity": //booster and gravity ramps are both blue
-					StartCoroutine(setColour(boosterColour, tag));
+					playerScript.StartCoroutine(setColour(boosterColour, tag));
 					colourSpawnDelay = spawnDelay;
 					break;
 

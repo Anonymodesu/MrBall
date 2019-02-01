@@ -107,17 +107,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1c97699d29709eb4993de00a147c8445, type: 2}
   - {fileID: 2100000, guid: b3b44be6098ad7a4582b79b5b783c533, type: 2}
   - {fileID: 0}
-  ballEffects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 1515817861498370, guid: db0cdfee75177fe4c8fd2b9f006e7ca6, type: 2}
-  - {fileID: 0}
+  usainBowlEffect: {fileID: 1515817861498370, guid: db0cdfee75177fe4c8fd2b9f006e7ca6,
+    type: 2}
+  perpendicularExplosion: {fileID: 1485922024783022, guid: f884e42ffeefd994ead1b693243c15af,
+    type: 2}
+  perpendicularTrail: {fileID: 1422218473251970, guid: 73ffb32291fe81b4289b705b3c563af2,
+    type: 2}
+  superExplosion: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
+    type: 2}
+  playerTrail: {fileID: 1711402184190910, guid: 97f9fd72689e13647a6def2c2f8f5e76,
+    type: 2}
+  playerTrailGlow: {fileID: 1363215143866102, guid: 56c82c90a6be5644aaee25e5af4ceba2,
+    type: 2}
 --- !u!114 &114499877118563594
 MonoBehaviour:
   m_ObjectHideFlags: 1

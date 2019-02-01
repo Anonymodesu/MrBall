@@ -22,7 +22,7 @@ public class Script_Game_Menu : MonoBehaviour {
 
 	public Text scoringText; //scoringText is not a child of 'background'
 	
-	private Script_Player playerScript;
+	private Script_Player_Loader playerScript;
 	private Level currentLevel;
 	private bool paused;
 	private bool pauseable;
@@ -39,7 +39,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		Time.timeScale = 0;
 		
 		//assign methods to each menu button
-		playerScript = GameObject.Find("Player").GetComponent<Script_Player>();
+		playerScript = GameObject.Find("Player").GetComponent<Script_Player_Loader>();
 		startButton.onClick.AddListener(delegate { startGame(); });
 		endButton.onClick.AddListener(delegate { endGame(); });
 		nextButton.onClick.AddListener(delegate { nextLevel(); });
@@ -95,7 +95,6 @@ public class Script_Game_Menu : MonoBehaviour {
     }
 
     public void endGame() {
-    	playerScript.resetGravity();
 
  		//don't store the save when exiting from the winning screen
     	if(!completedLevel) {
@@ -103,6 +102,8 @@ public class Script_Game_Menu : MonoBehaviour {
     	} else {
     		PlayerManager.getInstance().deleteQuicksave(SettingsManager.CurrentPlayer);
     	}
+
+    	playerScript.resetGravity();
 
 		SceneManager.LoadScene("Scene_Menu");
     }

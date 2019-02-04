@@ -7,8 +7,8 @@ public class UsainBowl_Move : Player_Move {
 	private const float duration = 4;
 
 	private GameObject superSaiyanEffect;
-
-	private bool superSaiyan;
+	private bool superSaiyan; //whether Usain Bowl is currently a Super Saiyan
+	public bool superSaiyanable; //whether Usain Bowl can turn Super Saiyan; resets on death
 
 	protected override float normalSpeed {
 		get { 
@@ -34,6 +34,7 @@ public class UsainBowl_Move : Player_Move {
 
 	public UsainBowl_Move(Script_Player_Loader playerScript) : base(playerScript) {
 		superSaiyan = false;
+		superSaiyanable = true;
 		superSaiyanEffect = GameObject.Find("Resources").GetComponent<Balls>().UsainBowlEffect;
 	}
 
@@ -41,7 +42,8 @@ public class UsainBowl_Move : Player_Move {
 	public override void processNextInstruction() {
 		base.processNextInstruction();
 
-		if(!superSaiyan && Time.timeScale != 0 && InputManager.getInput().buttonDown(Command.Special)) {
+		if(superSaiyanable && Time.timeScale != 0 && InputManager.getInput().buttonDown(Command.Special)) {
+			superSaiyanable = false;
 			playerScript.StartCoroutine(goSuperSaiyan());
 		}
 	}
@@ -64,7 +66,6 @@ public class UsainBowl_Move : Player_Move {
 	}
 
 	private Quaternion getEffectRotation() {
-		return Quaternion.FromToRotation(Script_Player_Loader.defaultGravityDirection, Physics.gravity);		
+		return Quaternion.FromToRotation(Player_Controller.defaultGravityDirection, Physics.gravity);		
 	}
-
 }

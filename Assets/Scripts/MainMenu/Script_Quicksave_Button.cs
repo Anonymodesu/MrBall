@@ -5,9 +5,12 @@ using UnityEngine.EventSystems;
 
 public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 
+	private Balls ballResources;
+
 	// Use this for initialization
 	new void Start () {
 		base.Start();
+		ballResources = GameObject.Find("Resources").GetComponent<Balls>();
 	}
 	
 	public override void OnPointerEnter(PointerEventData eventData) {
@@ -23,8 +26,10 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 					cubies++;
 				}
 			}
+
+			float multiplier = ballResources.getScoreMultiplier(save.ballUsed);
 			Achievement current = new Achievement(cubies, save.deaths, save.time, 
-													HighScore.calculateScore(cubies, save.deaths, save.time));
+													HighScore.calculateScore(cubies, save.deaths, save.time, multiplier));
 			Achievement required = GameManager.getInstance().getRequirement(level);
 			displayRecords(current, required);
 

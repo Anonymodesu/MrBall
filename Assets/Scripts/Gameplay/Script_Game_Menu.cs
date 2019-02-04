@@ -29,6 +29,8 @@ public class Script_Game_Menu : MonoBehaviour {
 	private bool completedLevel;
 	private Achievement requirements; //'const'
 
+	private Balls ballResources;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -66,6 +68,8 @@ public class Script_Game_Menu : MonoBehaviour {
 			Debug.Log("error parsing achievements");
 			requirements = new Achievement(0,0,0,0);
 		}
+
+		ballResources = GameObject.Find("Resources").GetComponent<Balls>();
 	}
 	
 	
@@ -127,18 +131,19 @@ public class Script_Game_Menu : MonoBehaviour {
 		SceneManager.LoadSceneAsync(nextLevel.ToString());
 	}
 	
-	public void displayProgress() {
+	private void displayProgress() {
 
 		string player = SettingsManager.CurrentPlayer;
     	int cubies = playerScript.Cubies;
     	int deaths = playerScript.Deaths;
-    	float time = playerScript.getTime();
+    	float time = playerScript.TimePassed;
+    	float scoreMultiplier = ballResources.getScoreMultiplier(playerScript.CurrentBall);
 
 		StringBuilder sb = new StringBuilder();
 		sb.Append("Cubies:").Append(cubies).Append('/').Append(requirements.Cubies)
 		  .Append("\nTime:").Append(time.ToString("0.00")).Append('/').Append(requirements.TimeString)
 		  .Append("\nDeaths:").Append(deaths).Append('/').Append(requirements.Deaths)
-		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,time)).Append('/').Append(requirements.Points);
+		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,time,scoreMultiplier)).Append('/').Append(requirements.Points);
 
 		scoringText.text = sb.ToString();
 	}
@@ -152,21 +157,24 @@ public class Script_Game_Menu : MonoBehaviour {
     	string player = SettingsManager.CurrentPlayer;
     	int cubies = playerScript.Cubies;
     	int deaths = playerScript.Deaths;
-    	float time = playerScript.getTime();
+    	float time = playerScript.TimePassed;
+    	float scoreMultiplier = ballResources.getScoreMultiplier(playerScript.CurrentBall);
 	
-		HighScore currentHighScore = new HighScore(player, cubies, deaths, time);
+		HighScore currentHighScore = new HighScore(player, cubies, deaths, time, scoreMultiplier);
 			 
 		//returns true if theres a new highscore
 		if(ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore)) {
 			
-			displayScoreAchievements(cubies, deaths, time, requirements, ScoreManager.getInstance().getHighScores(currentLevel));
+			displayScoreAchievements(currentHighScore, requirements, ScoreManager.getInstance().getHighScores(currentLevel));
 			
 		} else {
-			displayScoreAchievements(cubies, deaths, time, requirements, null);
+			displayScoreAchievements(currentHighScore, requirements, null);
 		}
 		
-		Achievement newRecord = new Achievement(cubies,deaths, playerScript.getTime(), 
-							HighScore.calculateScore(cubies,deaths, playerScript.getTime()));
+		Achievement newRecord = new Achievement(cubies,deaths, time, 
+							HighScore.calculateScore(cubies,deaths, time,scoreMultiplier));
+
+
 		PlayerManager.getInstance().saveRecord(player, newRecord, currentLevel); //save records to player data txt
 		
     }
@@ -200,7 +208,7 @@ public class Script_Game_Menu : MonoBehaviour {
 	}
 
 	//when the level is completed, display final achievements and high scores; highscores will be null if there are no new high scores
-	public void displayScoreAchievements(int cubies, int deaths, float time, Achievement requirements, HighScore[] highscores) {
+	public void displayScoreAchievements(HighScore currentScore, Achievement requirements, HighScore[] highscores) {
 		
 		nextButton.gameObject.SetActive(true); 
 		menuText.text = "You win!\n";
@@ -217,32 +225,32 @@ public class Script_Game_Menu : MonoBehaviour {
 		int separation = 20;
 		Text cubiesText = Instantiate(achievementText, background.rectTransform);
 		cubiesText.rectTransform.anchoredPosition -= Vector2.up * separation * 0;
-		cubiesText.text = "Cubies: " + cubies + "/" + requirements.Cubies;
+		cubiesText.text = "Cubies: " + currentScore.cubies + "/" + requirements.Cubies;
 		
-		if(cubies == requirements.Cubies) {
+		if(currentScore.cubies == requirements.Cubies) {
 			cubiesText.fontStyle = FontStyle.Bold;
 		}
 		
 		Text timeText = Instantiate(achievementText, background.rectTransform);
 		timeText.rectTransform.anchoredPosition -= Vector2.up * separation * 1;
-		timeText.text = "Time: " + time.ToString("0.00") + "/" + requirements.TimeString;
+		timeText.text = "Time: " + currentScore.time.ToString("0.00") + "/" + requirements.TimeString;
 		
-		if(time < requirements.Time) {
+		if(currentScore.time < requirements.Time) {
 			timeText.fontStyle = FontStyle.Bold;
 		}
 
 		Text deathsText = Instantiate(achievementText, background.rectTransform);
-		deathsText.text = "Deaths: " + deaths + "/" + requirements.Deaths;
+		deathsText.text = "Deaths: " + currentScore.deaths + "/" + requirements.Deaths;
 		deathsText.rectTransform.anchoredPosition -= Vector2.up * separation * 2;
 		
-		if(deaths <= requirements.Deaths) {
+		if(currentScore.deaths <= requirements.Deaths) {
 			deathsText.fontStyle = FontStyle.Bold;
 		}
 
 		Text pointsText = Instantiate(achievementText, background.rectTransform);
 		pointsText.rectTransform.anchoredPosition -= Vector2.up * separation * 3;
-		int points = HighScore.calculateScore(cubies,deaths,time);
-		pointsText.text = "Points: " + points + "/" + requirements.Points;
+		int points = currentScore.calculateScore();
+		pointsText.text = "Points: " + points + "/" + requirements.Points + " (x" + currentScore.scoreMultiplier.ToString("0.00") + ")";
 		
 		if(points >=  requirements.Points) {
 			pointsText.fontStyle = FontStyle.Bold;

@@ -39,7 +39,7 @@ public class PlayerManager {
 				records[level.Index] = newRecord;
 
 			} else {
-				totalCubies += newRecord.Cubies - records[level.Index].Cubies;
+				totalCubies += Math.Abs(newRecord.Cubies - records[level.Index].Cubies);
 				records[level.Index] = Achievement.Max(records[level.Index], newRecord);
 			}
 		}
@@ -86,7 +86,6 @@ public class PlayerManager {
 
 
 	public int getTotalCubies(string playerName) {
-		Debug.Log(getProfile(playerName).TotalCubies);
 		return getProfile(playerName).TotalCubies;
 	}
 

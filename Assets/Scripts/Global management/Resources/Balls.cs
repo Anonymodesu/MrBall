@@ -32,7 +32,8 @@ public class Balls : MonoBehaviour {
 	private List<Material> balls;
 
 	[SerializeField]
-	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, playerTrail, playerTrailGlow;
+	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, playerTrail, playerTrailGlow,
+						rampImpactEffect;
 
 	#pragma warning restore 0649
 
@@ -54,9 +55,13 @@ public class Balls : MonoBehaviour {
 	public GameObject PlayerTrailGlow {
 		get { return playerTrailGlow; }
 	}
+	public GameObject RampImpactEffect {
+		get { return rampImpactEffect; }
+	}
 	
 
 	private int[] numCubiesRequired; //how many cubies are required to unlock each ball
+	private float[] scoreMultipliers;
 	private Dictionary<BallType, BallDescription> ballDescriptions;
 
 	void Awake() {
@@ -70,6 +75,17 @@ public class Balls : MonoBehaviour {
 		numCubiesRequired[(int) BallType.Intangiball] = 7;
 		numCubiesRequired[(int) BallType.BowlVaulter] = 8;
 		numCubiesRequired[(int) BallType.UsainBowl] = 9;
+
+		scoreMultipliers = new float[numBalls];
+		scoreMultipliers[(int) BallType.None] = 0;
+		scoreMultipliers[(int) BallType.MrBall] = 1;
+		scoreMultipliers[(int) BallType.MrsBall] = 1.2f;
+		scoreMultipliers[(int) BallType.MrBowl] = 1;
+		scoreMultipliers[(int) BallType.BalldyBuilder] = 1;
+		scoreMultipliers[(int) BallType.InvisiBall] = 1.5f;
+		scoreMultipliers[(int) BallType.Intangiball] = 1;
+		scoreMultipliers[(int) BallType.BowlVaulter] = 1;
+		scoreMultipliers[(int) BallType.UsainBowl] = 1;
 
 		ballDescriptions = new Dictionary<BallType, BallDescription>();
 		ballDescriptions.Add(BallType.MrBall, new BallDescription("Mr. Ball", 
@@ -110,6 +126,10 @@ public class Balls : MonoBehaviour {
 		return numCubiesRequired[(int) type];
 	}
 
+	public float getScoreMultiplier(BallType type) {
+		return scoreMultipliers[(int) type];
+	}
+
 	public string getName(BallType type) {
 		return ballDescriptions[type].name;
 	}
@@ -121,4 +141,5 @@ public class Balls : MonoBehaviour {
 	public string getPowers(BallType type) {
 		return ballDescriptions[type].powers;
 	}
+
 }

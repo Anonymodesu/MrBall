@@ -119,6 +119,8 @@ MonoBehaviour:
     type: 2}
   playerTrailGlow: {fileID: 1363215143866102, guid: 56c82c90a6be5644aaee25e5af4ceba2,
     type: 2}
+  rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
+    type: 2}
 --- !u!114 &114499877118563594
 MonoBehaviour:
   m_ObjectHideFlags: 1

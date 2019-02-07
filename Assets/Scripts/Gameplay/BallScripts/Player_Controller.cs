@@ -9,7 +9,7 @@ public class Player_Controller {
 	protected Player_Move movementScript;
 	protected Player_Jump jumpScript;
 	protected Player_Trails trailsScript;
-	protected Script_OutOfBounds outOfBoundsScript;
+	protected OutOfBounds outOfBoundsScript;
 
 	//serialized fields in Script_Player_Loader
 	private SphereCollider triggerCollider;
@@ -70,7 +70,7 @@ public class Player_Controller {
 		this.animatedRamps = animatedRamps;
 
 		contacts = new List<GameObject>();
-		outOfBoundsScript = playerScript.GetComponent<Script_OutOfBounds>();
+		outOfBoundsScript = new OutOfBounds(playerScript.gameObject);
         rb = playerScript.GetComponent<Rigidbody>();     
 		
 		GUIScript = GameObject.Find("UI").GetComponent<Script_Game_Menu>();

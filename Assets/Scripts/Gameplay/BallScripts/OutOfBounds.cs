@@ -4,20 +4,23 @@ using UnityEngine;
 
 //detects when the ball falls out of bounds (dies)
 //attached to the Player gameObject
-public class Script_OutOfBounds : MonoBehaviour {
+public class OutOfBounds {
 
 	private Vector3 maxima; //max x,y,z values
 	private Vector3 minima; //min x,y,z values
 	private const float leeway = 15;
 
+	private GameObject player;
+
 	// Use this for initialization
-	void Start () {
+	public OutOfBounds(GameObject player) {
+		this.player = player;
 		setExtrema();
 	}
 	
 
 	public bool outOfBounds() {
-		Vector3 pos = gameObject.transform.position;
+		Vector3 pos = player.transform.position;
 
 		//if either of these conditions are true, then the ball has exited the bounding box
 		return maxima != Vector3.Max(maxima, pos) || minima != Vector3.Min(minima, pos);

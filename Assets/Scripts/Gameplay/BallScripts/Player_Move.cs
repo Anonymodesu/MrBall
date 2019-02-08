@@ -25,7 +25,7 @@ public class Player_Move {
     protected const float superSpeed = 435.6f;
 	protected virtual float maxNormalSpeed { get { return 13; } }
 	protected const float maxSuperSpeed = 100;
-    private const float brakeStrength = 20;
+    protected virtual float brakeStrength { get { return 20; } }
 	private const float maxTorque = 60; //maximum rotational speed
     private Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
 	
@@ -72,15 +72,7 @@ public class Player_Move {
         }
                     
         if(lastInstruction.brake) { //currently braking
-  
-        	//braking force proportional to current velocity
-        	if(onGround) {
-        		rb.AddForce(-brakeStrength * rb.velocity * Time.deltaTime);
-        		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime);
-        	} else {
-        		//brake at half the strength
-        		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime / 2);
-        	}
+  			brake(onGround);
 
         } else {
             Vector3 forwardDirection = cameraScript.forwardVector();
@@ -156,6 +148,17 @@ public class Player_Move {
 	
 	public float getMaxNormalSpeed() {
 		return maxNormalSpeed;
+	}
+
+	protected virtual void brake(bool onGround) {
+		//braking force proportional to current velocity
+    	if(onGround) {
+    		rb.AddForce(-brakeStrength * rb.velocity * Time.deltaTime);
+    		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime);
+    	} else {
+    		//brake at half the strength
+    		rb.AddTorque(-brakeStrength * rb.angularVelocity * Time.deltaTime / 2);
+    	}
 	}
 
 }

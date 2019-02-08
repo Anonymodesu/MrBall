@@ -77,6 +77,7 @@ public class Script_Menu_Stage_Select_Button : Button {
 	}
 
 	public virtual void StartLevel() { //only for buttons in level select menu
+		SettingsManager.QuickSaveLoaded = false;
         AsyncOperation loader = SceneManager.LoadSceneAsync(level.ToString());
     }
 }

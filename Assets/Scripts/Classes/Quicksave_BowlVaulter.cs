@@ -4,14 +4,14 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Quicksave_UsainBowl : Quicksave {
+public class Quicksave_BowlVaulter : Quicksave {
 
-	public readonly bool superSaiyanable;
+	public readonly bool vaultable;
 
-	public Quicksave_UsainBowl(Quicksave baseSave, bool superSaiyanable) : base(baseSave.level, baseSave.position, baseSave.velocity, baseSave.angularVelocity,
+	public Quicksave_BowlVaulter(Quicksave baseSave, bool vaultable) : base(baseSave.level, baseSave.position, baseSave.velocity, baseSave.angularVelocity,
 					baseSave.startGravityDirection, baseSave.currentGravityDirection, baseSave.cubies,
 					baseSave.startPosIDs, baseSave.time, baseSave.deaths, baseSave.rampAnimationTimes, baseSave.ballUsed) {
 
-		this.superSaiyanable = superSaiyanable;
+		this.vaultable = vaultable;
 	}
 }

@@ -1377,7 +1377,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
     type: 2}
   m_PrefabInternal: {fileID: 1140958047}
-  m_Script: {fileID: 11500000, guid: a2c41800036c1bd4faadf4ce4e7748ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ca97fb289231f0498b1b5b5adc216a8, type: 3}
 --- !u!1001 &338060540
 Prefab:
   m_ObjectHideFlags: 0

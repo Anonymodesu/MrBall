@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
 
 public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 
@@ -52,7 +54,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
     public override void StartLevel() {
     	if(level != null) { // null if level does not exist
     		SettingsManager.QuickSaveLoaded = true;
-        	base.StartLevel();
+        	SceneManager.LoadSceneAsync(level.ToString());
     	}
     	
     }

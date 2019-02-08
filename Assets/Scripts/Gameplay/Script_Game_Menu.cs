@@ -109,11 +109,13 @@ public class Script_Game_Menu : MonoBehaviour {
 
     	playerScript.resetGravity();
 
+		SettingsManager.QuickSaveLoaded = false;
 		SceneManager.LoadScene("Scene_Menu");
     }
 
     public void restartGame() {
     	playerScript.resetGravity();
+    	SettingsManager.QuickSaveLoaded = false;
 		SceneManager.LoadScene(currentLevel.ToString());
 	}
 	
@@ -128,6 +130,7 @@ public class Script_Game_Menu : MonoBehaviour {
 			nextLevel = new Level(currentLevel.stage, currentLevel.substage + 1);
 		}
 			
+		SettingsManager.QuickSaveLoaded = false;
 		SceneManager.LoadSceneAsync(nextLevel.ToString());
 	}
 	

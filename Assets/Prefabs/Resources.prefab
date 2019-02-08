@@ -115,11 +115,15 @@ MonoBehaviour:
     type: 2}
   superExplosion: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
     type: 2}
+  bowlVaulterEffect: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
+    type: 2}
   playerTrail: {fileID: 1711402184190910, guid: 97f9fd72689e13647a6def2c2f8f5e76,
     type: 2}
   playerTrailGlow: {fileID: 1363215143866102, guid: 56c82c90a6be5644aaee25e5af4ceba2,
     type: 2}
   rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
+    type: 2}
+  balldyBuilderEffect: {fileID: 1851240175327900, guid: e83a2563889f5354ab51f33d6ca6f968,
     type: 2}
 --- !u!114 &114499877118563594
 MonoBehaviour:

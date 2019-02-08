@@ -21,10 +21,4 @@ public class UsainBowl_Controller : Player_Controller {
 		return save;
 	}
 
-	protected override Quicksave loadQuickSave() {
-		Debug.Log("subclass quicksave loaded");
-		Quicksave_UsainBowl save = (Quicksave_UsainBowl) base.loadQuickSave();
-		((UsainBowl_Move) movementScript).superSaiyanable = save.superSaiyanable;
-		return save;
-	}
 }

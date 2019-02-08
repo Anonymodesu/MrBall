@@ -4,14 +4,15 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Quicksave_UsainBowl : Quicksave {
+public class Quicksave_BalldyBuilder : Quicksave {
 
-	public readonly bool superSaiyanable;
+	public readonly List<int> checkpointParents;
 
-	public Quicksave_UsainBowl(Quicksave baseSave, bool superSaiyanable) : base(baseSave.level, baseSave.position, baseSave.velocity, baseSave.angularVelocity,
+	public Quicksave_BalldyBuilder(Quicksave baseSave, List<int> checkpointParents) 
+					: base(baseSave.level, baseSave.position, baseSave.velocity, baseSave.angularVelocity,
 					baseSave.startGravityDirection, baseSave.currentGravityDirection, baseSave.cubies,
 					baseSave.startPosIDs, baseSave.time, baseSave.deaths, baseSave.rampAnimationTimes, baseSave.ballUsed) {
 
-		this.superSaiyanable = superSaiyanable;
+		this.checkpointParents = checkpointParents;
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Player_Controller {
 
@@ -20,8 +21,8 @@ public class Player_Controller {
 	private const float minSize = 0.55f;
 	private const float maxSize = 1;
 	private const float maxSpeed = 22; //maxSpeed under most circumstances
-	private Rigidbody rb;
-    private List<GameObject> contacts; //holds the current ramps in contact with mr.ball's triggercollider
+	protected Rigidbody rb;
+    protected List<GameObject> contacts; //holds the current ramps in contact with mr.ball's triggercollider
 
 	//collision FX
 	private bool displayDust;
@@ -56,6 +57,8 @@ public class Player_Controller {
 		get { return Time.timeSinceLevelLoad - startTime; }
 	}
 
+	private readonly GameObject rootObject; //"Rollercoaster"
+
 	private GameObject rampImpactEffect;
 
 	public Player_Controller(Script_Player_Loader playerScript, Player_Jump jumpScript, Player_Move movementScript, Player_Trails trailsScript, 
@@ -82,6 +85,8 @@ public class Player_Controller {
 
 		//display panel was used as a start_pos to take screenshots of levels
 		GameObject.Find("displaypanel").SetActive(false);
+
+		rootObject = GameObject.Find("Rollercoaster");
 
 		if(SettingsManager.QuickSaveLoaded) {
 			loadQuickSave();
@@ -207,16 +212,33 @@ public class Player_Controller {
 	
     protected virtual void reset() {
         Physics.gravity = startGravityDirection * gravityStrength;
-		playerScript.transform.position = startPos.transform.position - startGravityDirection; //make sure in startPos, player is not colliding with anything!
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        //calculate the point at which to respawn the ball
+        Ray ray = new Ray(startPos.transform.position, -startGravityDirection);
+        float distance = Math.Abs(Vector3.Dot(startPos.transform.lossyScale, startGravityDirection));
+        //cast a from origin and reverse it to obtain the point on the surface, above which the ball spawns
+        ray.origin = ray.GetPoint(distance);
+        ray.direction = -ray.direction;
+        RaycastHit hit;
+        if(startPos.GetComponent<Collider>().Raycast(ray, out hit, distance)) {
+        	playerScript.transform.position = hit.point - startGravityDirection;
+
+        } else {
+        	Debug.Log("could not find collider in reset()");
+        	playerScript.transform.position = startPos.transform.position - startGravityDirection;
+        }
+         //make sure in startPos, player is not colliding with anything!
+
 		
         movementScript.resetInput();
     }
 	
-	private void setCheckpoint(GameObject checkPoint, Vector3 gravity) {
+	protected void setCheckpoint(GameObject checkPoint, Vector3 gravity) {
 		//check if a new checkpoint has been reached
 		if(checkPoint != startPos || gravity != startGravityDirection) {
+
 			startPos = checkPoint;
 			startGravityDirection = gravity.normalized;
 			SoundManager.getInstance().playSoundFX(SoundFX.Checkpoint);
@@ -241,9 +263,7 @@ public class Player_Controller {
 		startTime = 0;
 	}
 		
-    protected virtual Quicksave loadQuickSave() {
-
-		SettingsManager.QuickSaveLoaded = false;
+    private void loadQuickSave() {
 
 		//load the quick save for the current player
 		Quicksave save = PlayerManager.getInstance().getQuicksave(player);
@@ -268,7 +288,7 @@ public class Player_Controller {
 					}
 				}
 
-				startPos = GameObject.Find(save.startPos);
+				startPos = findObject(save.startPosIDs);
 				startTime = -save.time;
 				deaths = save.deaths;
 
@@ -286,8 +306,6 @@ public class Player_Controller {
 				Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
 			}
 		}
-		
-		return save;
 	}
 
 	//called by Script_Game_Menu when prematurely exiting a level
@@ -307,7 +325,7 @@ public class Player_Controller {
 		}
 
 		Quicksave save = new Quicksave(currentLevel, playerScript.transform.position, rb.velocity, rb.angularVelocity,
-										startGravityDirection, Physics.gravity.normalized, collectedCubies, startPos.name,
+										startGravityDirection, Physics.gravity.normalized, collectedCubies, getUniqueID(startPos),
 										TimePassed, deaths, rampAnimationTimes, SettingsManager.CurrentBall);
 
 
@@ -318,5 +336,29 @@ public class Player_Controller {
 
 	public void resetGravity() {
     	Physics.gravity = gravityStrength * defaultGravityDirection;
+    }
+
+    //returns a list of sibling indices which can be used to find the target
+    protected List<int> getUniqueID(GameObject target) {
+    	List<int> parentSiblingIndices = new List<int>();
+
+		Transform current = target.transform;
+		while(current.parent != null) {
+			parentSiblingIndices.Add(current.GetSiblingIndex());
+			current = current.parent;
+		}
+
+		return parentSiblingIndices;
+    }
+
+    //find the gameobject given its parents' sibling indices
+    protected GameObject findObject(List<int> parentSiblingIndices) {
+    	Transform current = rootObject.transform;
+
+		for(int i = parentSiblingIndices.Count - 1; i >= 0; i--) {
+			current = current.GetChild(parentSiblingIndices[i]);
+		}
+
+		return current.gameObject;
     }
 }

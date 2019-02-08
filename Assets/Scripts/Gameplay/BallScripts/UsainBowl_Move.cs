@@ -33,8 +33,14 @@ public class UsainBowl_Move : Player_Move {
 
 
 	public UsainBowl_Move(Script_Player_Loader playerScript) : base(playerScript) {
+
+		if(SettingsManager.QuickSaveLoaded) {
+			loadQuickSave();
+		} else {
+			superSaiyanable = true;
+		}
+
 		superSaiyan = false;
-		superSaiyanable = true;
 		superSaiyanEffect = GameObject.Find("Resources").GetComponent<Balls>().UsainBowlEffect;
 	}
 
@@ -67,5 +73,11 @@ public class UsainBowl_Move : Player_Move {
 
 	private Quaternion getEffectRotation() {
 		return Quaternion.FromToRotation(Player_Controller.defaultGravityDirection, Physics.gravity);		
+	}
+
+
+	private void loadQuickSave() {
+		Quicksave_UsainBowl save = (Quicksave_UsainBowl) PlayerManager.getInstance().getQuicksave(SettingsManager.CurrentPlayer);
+		superSaiyanable = save.superSaiyanable;
 	}
 }

@@ -94,7 +94,6 @@ public class Script_Player_Loader : MonoBehaviour {
 		Player_Move movementScript = null;
 		Player_Jump jumpScript = null;
 
-		//default components for MrBall
 		if(SettingsManager.DisplayTrails) {
 		    trailsScript = new Enabled_Trails(this);
 		} else {
@@ -102,8 +101,16 @@ public class Script_Player_Loader : MonoBehaviour {
 		}
 		jumpScript = new Player_Jump(this);
 
-		//custom components
+		//movement component
 		switch(currentBall) {
+			case BallType.MrsBall:
+				movementScript = new MrsBall_Move(this);
+				break;
+
+			case BallType.MrBowl:
+				movementScript = new MrBowl_Move(this);
+				break;
+
 			case BallType.UsainBowl:
 				movementScript = new UsainBowl_Move(this);
 				break;
@@ -113,9 +120,20 @@ public class Script_Player_Loader : MonoBehaviour {
 				break;
 		}
 
+		//controller component
 		switch(currentBall) {
 			case BallType.UsainBowl:
 				controlScript = new UsainBowl_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.BalldyBuilder:
+				controlScript = new BalldyBuilder_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.BowlVaulter:
+				controlScript = new BowlVaulter_Controller(this, jumpScript, movementScript, trailsScript,
 										startPos, triggerCollider, animatedRamps);
 				break;
 

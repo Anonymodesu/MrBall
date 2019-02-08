@@ -15,7 +15,7 @@ public class Quicksave {
 	public readonly SerializableVector3 currentGravityDirection;
 	//public SerializableVector3 cameraRotation;
 	public readonly List<bool> cubies; //true if the corresponding child in cubies still exists (i.e. has not been collected)
-	public readonly string startPos;
+	public readonly List<int> startPosIDs;
 	public readonly float time;
 	public readonly int deaths;
 	public readonly List<float> rampAnimationTimes;
@@ -23,7 +23,7 @@ public class Quicksave {
 
 	public Quicksave(Level level, Vector3 position, Vector3 velocity, Vector3 angularVelocity,
 					Vector3 startGravityDirection, Vector3 currentGravityDirection, List<bool> cubies,
-					string startPos, float time, int deaths, List<float> rampAnimationTimes, BallType ballUsed) {
+					List<int> startPosIDs, float time, int deaths, List<float> rampAnimationTimes, BallType ballUsed) {
 		this.level = level;
 		this.position = position;
 		this.velocity = velocity;
@@ -31,7 +31,7 @@ public class Quicksave {
 		this.startGravityDirection = startGravityDirection;
 		this.currentGravityDirection = currentGravityDirection;
 		this.cubies = cubies;
-		this.startPos = startPos;
+		this.startPosIDs = startPosIDs;
 		this.time = time;
 		this.deaths = deaths;
 		this.rampAnimationTimes = rampAnimationTimes;

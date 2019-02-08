@@ -32,8 +32,8 @@ public class Balls : MonoBehaviour {
 	private List<Material> balls;
 
 	[SerializeField]
-	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, playerTrail, playerTrailGlow,
-						rampImpactEffect;
+	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, bowlVaulterEffect, playerTrail, 
+						playerTrailGlow, rampImpactEffect, balldyBuilderEffect;
 
 	#pragma warning restore 0649
 
@@ -49,6 +49,9 @@ public class Balls : MonoBehaviour {
 	public GameObject SuperExplosion {
 		get { return superExplosion; }
 	}
+	public GameObject BowlVaulterEffect {
+		get { return bowlVaulterEffect; }
+	}
 	public GameObject PlayerTrail {
 		get { return playerTrail; }
 	}
@@ -57,6 +60,9 @@ public class Balls : MonoBehaviour {
 	}
 	public GameObject RampImpactEffect {
 		get { return rampImpactEffect; }
+	}
+	public GameObject BalldyBuilderEffect {
+		get { return balldyBuilderEffect; }
 	}
 	
 
@@ -68,13 +74,13 @@ public class Balls : MonoBehaviour {
 		numCubiesRequired = new int[numBalls];
 		numCubiesRequired[(int) BallType.None] = 0;
 		numCubiesRequired[(int) BallType.MrBall] = 0;
-		numCubiesRequired[(int) BallType.MrsBall] = 2;
-		numCubiesRequired[(int) BallType.MrBowl] = 3;
-		numCubiesRequired[(int) BallType.BalldyBuilder] = 4;
-		numCubiesRequired[(int) BallType.InvisiBall] = 6;
-		numCubiesRequired[(int) BallType.Intangiball] = 7;
-		numCubiesRequired[(int) BallType.BowlVaulter] = 8;
-		numCubiesRequired[(int) BallType.UsainBowl] = 9;
+		numCubiesRequired[(int) BallType.MrsBall] = 0;
+		numCubiesRequired[(int) BallType.MrBowl] = 0;
+		numCubiesRequired[(int) BallType.BalldyBuilder] = 0;
+		numCubiesRequired[(int) BallType.InvisiBall] = 0;
+		numCubiesRequired[(int) BallType.Intangiball] = 0;
+		numCubiesRequired[(int) BallType.BowlVaulter] = 0;
+		numCubiesRequired[(int) BallType.UsainBowl] = 0;
 
 		scoreMultipliers = new float[numBalls];
 		scoreMultipliers[(int) BallType.None] = 0;
@@ -108,7 +114,7 @@ public class Balls : MonoBehaviour {
 			"Phases through matter."));
 		ballDescriptions.Add(BallType.BowlVaulter, new BallDescription("Bowl Vaulter", 
 			"",
-			"Do 1 super jump at any time."));
+			"Gives a boost to current velocity."));
 		ballDescriptions.Add(BallType.UsainBowl, new BallDescription("Usain Bowl", 
 			"",
 			"Temporary super speed."));

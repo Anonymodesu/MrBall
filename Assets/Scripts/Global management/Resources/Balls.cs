@@ -33,7 +33,10 @@ public class Balls : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, bowlVaulterEffect, playerTrail, 
-						playerTrailGlow, rampImpactEffect, balldyBuilderEffect;
+						playerTrailGlow, rampImpactEffect, balldyBuilderEffect, intangiballHelper;
+
+	[SerializeField]
+	private Material intangiballTransparent;
 
 	#pragma warning restore 0649
 
@@ -63,6 +66,12 @@ public class Balls : MonoBehaviour {
 	}
 	public GameObject BalldyBuilderEffect {
 		get { return balldyBuilderEffect; }
+	}
+	public GameObject IntangiballHelper {
+		get { return intangiballHelper; }
+	}
+	public Material IntangiballTransparent {
+		get { return intangiballTransparent; }
 	}
 	
 

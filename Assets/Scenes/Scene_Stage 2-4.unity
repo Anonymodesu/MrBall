@@ -367,11 +367,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4994734663971442, guid: e0bb78574e9499244937462f83ac47f3,
     type: 2}
   m_PrefabInternal: {fileID: 147811061}
---- !u!1 &165849673 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1537996985202348, guid: e0bb78574e9499244937462f83ac47f3,
-    type: 2}
-  m_PrefabInternal: {fileID: 328411928}
 --- !u!1 &177329178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,7 +1115,7 @@ Prefab:
         type: 2}
       propertyPath: startPos
       value: 
-      objectReference: {fileID: 165849673}
+      objectReference: {fileID: 0}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[0]

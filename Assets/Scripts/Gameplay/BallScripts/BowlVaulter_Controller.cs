@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BowlVaulter_Controller : Player_Controller {
 	private const float vaultStrength = 12;
+	private const float vaultThreshold = 0.5f;
 
 	private GameObject explosionEffect;
 
@@ -28,18 +29,26 @@ public class BowlVaulter_Controller : Player_Controller {
 		base.Update();
 
 		if(Time.timeScale != 0 && vaultable && InputManager.getInput().buttonDown(Command.Special)) {
-			vault();
+			playerScript.StartCoroutine(vault());
 		}
 	}
 
-	private void vault() {
-		if(rb.velocity != Vector3.zero) {
+	private IEnumerator vault() {
+		if(rb.velocity.magnitude > vaultThreshold) {
 			vaultable = false;
 			rb.AddForce(vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
-			rb.AddTorque(0.4f * vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
+			//rb.AddTorque(0.4f * vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
 			updateTrails("Perpendicular");
-			UnityEngine.Object.Instantiate(explosionEffect, playerScript.transform.position, Quaternion.LookRotation(rb.velocity));
+			SoundManager.getInstance().playSoundFX(SoundFX.BowlVaulter);
+
+			GameObject effect = UnityEngine.Object.Instantiate(explosionEffect);
+			while(effect != null) {
+				effect.transform.position = playerScript.transform.position;
+				effect.transform.rotation = Quaternion.LookRotation(rb.velocity);
+				yield return null;
+			}
 		}
+
 	}
 
 	protected override void die() {

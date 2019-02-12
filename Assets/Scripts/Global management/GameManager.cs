@@ -60,7 +60,7 @@ public class GameManager { //a singleton
 	void changedScene(Scene scene, LoadSceneMode mode) {
 		 //destroys the materials created in TextureManager; whenever a material is modified, a clone of it is made
 		//already called when the scene changes
-		//Resources.UnloadUnusedAssets();
+		Resources.UnloadUnusedAssets();
 		
 		Level newLevel = null;		
 		

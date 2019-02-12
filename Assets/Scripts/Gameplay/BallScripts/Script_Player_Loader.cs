@@ -12,10 +12,12 @@ using UnityEngine.SceneManagement;
 
 //stores variables assigned by inspector, and provides an interface for other classes to access the ball's transform
 public class Script_Player_Loader : MonoBehaviour {
-	
+
+	#pragma warning disable 0649
+
 	//player collider variables
 	[SerializeField]
-	private SphereCollider triggerCollider; 
+	private SphereCollider triggerCollider, physicCollider; 
 
 	//last encountered checkpoint; change in editor to allow for testing
 	[SerializeField]
@@ -26,6 +28,8 @@ public class Script_Player_Loader : MonoBehaviour {
 
 	[SerializeField]
 	public List<Script_Ramp_Animator> animatedRamps;
+
+	#pragma warning restore 0649
 
 	private Player_Controller controlScript;
 
@@ -135,6 +139,11 @@ public class Script_Player_Loader : MonoBehaviour {
 			case BallType.BowlVaulter:
 				controlScript = new BowlVaulter_Controller(this, jumpScript, movementScript, trailsScript,
 										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.Intangiball:
+				controlScript = new Intangiball_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps, physicCollider);
 				break;
 
 			default: 

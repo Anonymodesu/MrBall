@@ -13,7 +13,7 @@ public class Player_Controller {
 	protected OutOfBounds outOfBoundsScript;
 
 	//serialized fields in Script_Player_Loader
-	private SphereCollider triggerCollider;
+	protected SphereCollider triggerCollider;
 	private GameObject startPos;
 	private List<Script_Ramp_Animator> animatedRamps;
 
@@ -114,7 +114,7 @@ public class Player_Controller {
 		movementScript.processNextInstruction(); //process user input regardless of pause state
 	}
 
-	public void FixedUpdate() {
+	public virtual void FixedUpdate() {
 		movementScript.processMovement(contacts);
 		processCollider();
 	}

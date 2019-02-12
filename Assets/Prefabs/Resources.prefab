@@ -74,6 +74,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 003f9e268144f6b4db5e91ddce139091, type: 3}
   - {fileID: 8300000, guid: 00eb21e00062abc46b084b4381ad3624, type: 3}
   - {fileID: 8300000, guid: 9f0bcd68113de2d409bce50930eca10e, type: 3}
+  - {fileID: 8300000, guid: 1d60aa4073b6f37488977db53ccf6c51, type: 3}
 --- !u!114 &114148328249868822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,7 +104,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 57f597210bbb59542ad849202dd42497, type: 2}
   - {fileID: 2100000, guid: 92360d90c1dd40c4dbfde9bd71d705c8, type: 2}
   - {fileID: 2100000, guid: 23f905a9ddf935145bc94085e0130e88, type: 2}
-  - {fileID: 2100000, guid: 4eeb9044fe17113438d809bf51a3605e, type: 2}
+  - {fileID: 2100000, guid: 1956770c9ad31154795f931e0fe73d71, type: 2}
   - {fileID: 2100000, guid: 1c97699d29709eb4993de00a147c8445, type: 2}
   - {fileID: 2100000, guid: b3b44be6098ad7a4582b79b5b783c533, type: 2}
   - {fileID: 0}
@@ -113,7 +114,7 @@ MonoBehaviour:
     type: 2}
   perpendicularTrail: {fileID: 1422218473251970, guid: 73ffb32291fe81b4289b705b3c563af2,
     type: 2}
-  superExplosion: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
+  superExplosion: {fileID: 1611978299810578, guid: e83a2563889f5354ab51f33d6ca6f968,
     type: 2}
   bowlVaulterEffect: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
     type: 2}
@@ -123,7 +124,11 @@ MonoBehaviour:
     type: 2}
   rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
     type: 2}
-  balldyBuilderEffect: {fileID: 1851240175327900, guid: e83a2563889f5354ab51f33d6ca6f968,
+  balldyBuilderEffect: {fileID: 1228904882026248, guid: e6331be39cd4f084cbdbf66ffcdcc34e,
+    type: 2}
+  intangiballHelper: {fileID: 1146090155951170, guid: 6c927a94ab215c446b0c8cfe02d601b4,
+    type: 2}
+  intangiballTransparent: {fileID: 2100000, guid: 4eeb9044fe17113438d809bf51a3605e,
     type: 2}
 --- !u!114 &114499877118563594
 MonoBehaviour:

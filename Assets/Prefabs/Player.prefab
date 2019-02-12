@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1806125922945208}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.024, y: 19.857, z: 17.33}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerCollider: {fileID: 135501661417138096}
+  physicCollider: {fileID: 135198749066153198}
   startPos: {fileID: 0}
   rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
     type: 2}

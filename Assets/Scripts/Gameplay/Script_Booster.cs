@@ -25,7 +25,7 @@ public class Script_Booster : MonoBehaviour {
 	
 	//booster regions are configured to only collider with the player in Physics settings
 	void OnTriggerEnter(Collider other) {
-		if(other.isTrigger) { //only interact with the player's trigger collider
+		if(other.isTrigger && other.gameObject.GetComponent<Script_Player_Loader>() != null) { //only interact with the player's trigger collider
 
 			//do physics stuff
 			Rigidbody playerRB = other.GetComponent<Rigidbody>();

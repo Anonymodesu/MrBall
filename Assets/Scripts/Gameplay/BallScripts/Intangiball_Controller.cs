@@ -9,6 +9,7 @@ public class Intangiball_Controller : Player_Controller {
 	private SphereCollider physicCollider;
 	private bool vanishing;
 	private Intangiball_Helper helper;
+	private GameObject poofEffect;
 	private Renderer renderer;
 	private Material opaqueMaterial;
 	private Material transparentMaterial;
@@ -26,6 +27,8 @@ public class Intangiball_Controller : Player_Controller {
 		renderer = playerScript.GetComponent<Renderer>();
 		helper = UnityEngine.Object.Instantiate(ballResources.IntangiballHelper, playerScript.transform, false)
 												.GetComponent<Intangiball_Helper>();
+		poofEffect = ballResources.IntangiballPoof;
+
 		opaqueMaterial = renderer.material;
 		transparentMaterial = ballResources.IntangiballTransparent;
 		
@@ -38,16 +41,22 @@ public class Intangiball_Controller : Player_Controller {
 
 			//helper.transform.position = playerScript.transform.position;
 
-			if(InputManager.getInput().buttonDown(Command.Special) ) {
+			if(InputManager.getInput().buttonDown(Command.Special)) {
+
+				if(!vanishing) { //onl
+					UnityEngine.Object.Instantiate(poofEffect, playerScript.transform.position, Quaternion.identity);
+				}
+
 				vanishing = true;
 				renderer.material = transparentMaterial;
+
 
 
 			} else if(vanishing && helper.Colliding) {
 				//do nothing
 				//can't unvanish if currently passing through objects
 
-			} else { //special button has been released and not colliding with anything
+			} else if (vanishing) { //special button has been released and not colliding with anything
 				vanishing = false;
 				renderer.material = opaqueMaterial;
 				

@@ -128,6 +128,8 @@ MonoBehaviour:
     type: 2}
   intangiballHelper: {fileID: 1146090155951170, guid: 6c927a94ab215c446b0c8cfe02d601b4,
     type: 2}
+  intangiballPoof: {fileID: 1833253356188098, guid: d6baf098be9a66d41a5fe6d4076458e8,
+    type: 2}
   intangiballTransparent: {fileID: 2100000, guid: 4eeb9044fe17113438d809bf51a3605e,
     type: 2}
 --- !u!114 &114499877118563594

@@ -635,7 +635,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
     type: 2}
   m_PrefabInternal: {fileID: 1140958047}
-  m_Script: {fileID: 11500000, guid: a2c41800036c1bd4faadf4ce4e7748ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ca97fb289231f0498b1b5b5adc216a8, type: 3}
 --- !u!1001 &358651036
 Prefab:
   m_ObjectHideFlags: 0
@@ -1376,7 +1376,7 @@ Prefab:
         type: 2}
       propertyPath: startPos
       value: 
-      objectReference: {fileID: 1799155671}
+      objectReference: {fileID: 0}
     - target: {fileID: 114650213433824368, guid: e9fcc8202f45452418b91ed453a9192d,
         type: 2}
       propertyPath: animatedRamps.Array.data[0]
@@ -1762,11 +1762,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74fb1db50927b3d4481e78765556dc1a, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &1799155671 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1870993403751002, guid: d5c98f7f48792144e82226fa2b33582f,
-    type: 2}
-  m_PrefabInternal: {fileID: 2066040228}
 --- !u!1001 &1885681070
 Prefab:
   m_ObjectHideFlags: 0

@@ -200,14 +200,22 @@ public class Player_Controller {
 	
 	//change the gravity to the vector opposing the normal of the surface
 	private void processGravity(GameObject surface) {
-		Vector3 normal = playerScript.findFakeNormalVector(surface);
+		Vector3 prevNormal = -Physics.gravity.normalized;
+		Vector3 newNormal = playerScript.findFakeNormalVector(surface).normalized;
 
-		if(Vector3.Angle(-Physics.gravity, normal) > gravityEpsilon) { //change in gravity is significant enough
+		if(Vector3.Angle(-Physics.gravity, newNormal) > gravityEpsilon) { //change in gravity is significant enough
 			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
 			updateTrails("Gravity");
+
+				//pushes the ball a little when going to a new surface
+			//prevents frequently alternating gravity when at the edge of a cube
+			Vector3 forceDirection = Vector3.ProjectOnPlane(newNormal - prevNormal, newNormal).normalized;
+			rb.AddForce(forceDirection, ForceMode.Impulse);
 		}
 
-		Physics.gravity = -normal.normalized * gravityStrength;
+
+
+		Physics.gravity = -newNormal.normalized * gravityStrength;
 	}
 	
     protected virtual void reset() {
@@ -304,6 +312,8 @@ public class Player_Controller {
 
 			} else {
 				Debug.Log("quicksave " + save.level.ToString() + " loaded for " + currentLevel.ToString());
+				loadDefaultSettings();
+				reset();
 			}
 		}
 	}

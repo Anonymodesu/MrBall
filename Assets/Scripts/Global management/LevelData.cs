@@ -85,6 +85,8 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 @"Hop on board!");
 		levelDescriptions.Add(new Level(2,8), 
 @"Pay extra attention to the timer."); 
+		levelDescriptions.Add(new Level(2,9), 
+@"Dying may be required to proceed."); 
 
 		levelDescriptions.Add(new Level(3,0), 
 @"Orange ramps propel Mr. Ball in the direction that they are facing when he jumps on them.");
@@ -144,7 +146,7 @@ Usually.");
 		levelNames.Add(new Level(2,6), "Spinning");
 		levelNames.Add(new Level(2,7), "Adventure time");
 		levelNames.Add(new Level(2,8), "Every 10 seconds");
-
+		levelNames.Add(new Level(2,9), "Shallow grave");
 
 		levelNames.Add(new Level(3,0), "Perpendicular jumping");
 		levelNames.Add(new Level(3,1), "Ultra jumping");

@@ -7,7 +7,7 @@ using UnityEngine;
 //process player's movements over panels
 public class Player_Move {
 
-	private class Movement {
+	protected class Movement {
         public int forward;
         public int right;
         public bool brake;
@@ -27,7 +27,7 @@ public class Player_Move {
 	protected const float maxSuperSpeed = 100;
     protected virtual float brakeStrength { get { return 20; } }
 	private const float maxTorque = 60; //maximum rotational speed
-    private Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
+    protected Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
 	
 	private Script_Game_Camera cameraScript; 
 	private Rigidbody rb;
@@ -52,13 +52,9 @@ public class Player_Move {
 
 		//torque is applied regardless of whether mr ball is on the ground
 		//force is only applied on ground
-		bool onGround = false;
+		bool onGround = contactingRamp(contacts);
         
         foreach(GameObject surface in contacts) { //process the current surfaces in contact with the player
-
-        	if(Script_Player_Loader.isPhysical(surface.tag)) {
-        		onGround = true;
-        	}
 
             switch(surface.tag) {
                 case "Fast":
@@ -108,7 +104,17 @@ public class Player_Move {
 			//Debug.Log(velocityRatio + " " + rb.velocity.magnitude + "/" + maxSpeed);
         }
         
-        
+    }
+
+    //returns whether the player is contacting a ramp
+    protected virtual bool contactingRamp(List<GameObject> contacts) {
+    	foreach(GameObject ramp in contacts) {
+    		if(Script_Player_Loader.isPhysical(ramp.tag)) {
+    			return true;
+    		}
+    	}
+
+    	return false;
     }
 	
     public virtual void processNextInstruction() {

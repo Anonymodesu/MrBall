@@ -5,7 +5,7 @@ using System;
 
 
 public enum BallType : int {None = 0, MrBall = 1, MrsBall = 2, MrBowl = 3, BalldyBuilder = 4, InvisiBall = 5,
-							Intangiball = 6, BowlVaulter = 7, UsainBowl = 8};
+							Intangiball = 6, BowlVaulter = 7, UsainBowl = 8, Reballious = 9, GyroBall = 10, NielsBall = 11};
 
 public class Balls : MonoBehaviour {
 
@@ -96,7 +96,7 @@ public class Balls : MonoBehaviour {
 
 		scoreMultipliers = new float[numBalls];
 		scoreMultipliers[(int) BallType.None] = 0;
-		scoreMultipliers[(int) BallType.MrBall] = 1;
+		scoreMultipliers[(int) BallType.MrBall] = 1.1f;
 		scoreMultipliers[(int) BallType.MrsBall] = 1.2f;
 		scoreMultipliers[(int) BallType.MrBowl] = 1;
 		scoreMultipliers[(int) BallType.BalldyBuilder] = 1;
@@ -104,11 +104,14 @@ public class Balls : MonoBehaviour {
 		scoreMultipliers[(int) BallType.Intangiball] = 1;
 		scoreMultipliers[(int) BallType.BowlVaulter] = 1;
 		scoreMultipliers[(int) BallType.UsainBowl] = 1;
+		scoreMultipliers[(int) BallType.Reballious] = 1.5f;
+		scoreMultipliers[(int) BallType.GyroBall] = 1;
+		scoreMultipliers[(int) BallType.NielsBall] = 1;
 
 		ballDescriptions = new Dictionary<BallType, BallDescription>();
 		ballDescriptions.Add(BallType.MrBall, new BallDescription("Mr. Ball", 
 			"The breadwinner of the family. Old-fashioned and reliable.",
-			"None."));
+			"Points earned +10%"));
 		ballDescriptions.Add(BallType.MrsBall, new BallDescription("Mrs. Ball", 
 			"Mr. Ball's ambitious wife who always wants just a little bit more.",
 			"Points earned +20%. Can't brake."));
@@ -130,6 +133,15 @@ public class Balls : MonoBehaviour {
 		ballDescriptions.Add(BallType.UsainBowl, new BallDescription("Usain Bowl", 
 			"",
 			"Temporary super speed."));
+		ballDescriptions.Add(BallType.Reballious, new BallDescription("Reballious", 
+			"They see me rolling...",
+			"Can only roll left and backward. Points earned +50%."));
+		ballDescriptions.Add(BallType.GyroBall, new BallDescription("Gyro Ball", 
+			"Uses super state-of-the-art gyroscope technology.",
+			"Can change direction in midair."));
+		ballDescriptions.Add(BallType.NielsBall, new BallDescription("Niels Ball", 
+			"The first Noball Laureate in Ball family.",
+			"Reverses gravity."));
 	}
 
 	public Sprite getSprite(BallType type) {

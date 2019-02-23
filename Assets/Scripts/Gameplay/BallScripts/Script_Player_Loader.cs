@@ -119,6 +119,14 @@ public class Script_Player_Loader : MonoBehaviour {
 				movementScript = new UsainBowl_Move(this);
 				break;
 
+			case BallType.Reballious:
+				movementScript = new Reballious_Move(this);
+				break;
+
+			case BallType.GyroBall:
+				movementScript = new GyroBall_Move(this);
+				break;
+
 			default: 
 				movementScript = new Player_Move(this);
 				break;
@@ -143,6 +151,11 @@ public class Script_Player_Loader : MonoBehaviour {
 
 			case BallType.Intangiball:
 				controlScript = new Intangiball_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps, physicCollider);
+				break;
+
+			case BallType.NielsBall:
+				controlScript = new NielsBall_Controller(this, jumpScript, movementScript, trailsScript,
 										startPos, triggerCollider, animatedRamps, physicCollider);
 				break;
 

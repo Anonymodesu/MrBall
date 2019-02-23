@@ -203,7 +203,11 @@ public class Player_Controller {
 		Vector3 prevNormal = -Physics.gravity.normalized;
 		Vector3 newNormal = playerScript.findFakeNormalVector(surface).normalized;
 
-		if(Vector3.Angle(-Physics.gravity, newNormal) > gravityEpsilon) { //change in gravity is significant enough
+		processGravity(prevNormal, newNormal);
+	}
+
+	protected void processGravity(Vector3 prevNormal, Vector3 newNormal) {
+		if(Vector3.Angle(prevNormal, newNormal) > gravityEpsilon) { //change in gravity is significant enough
 			SoundManager.getInstance().playSoundFX(SoundFX.Gravity);
 			updateTrails("Gravity");
 
@@ -212,8 +216,6 @@ public class Player_Controller {
 			Vector3 forceDirection = Vector3.ProjectOnPlane(newNormal - prevNormal, newNormal).normalized;
 			rb.AddForce(forceDirection, ForceMode.Impulse);
 		}
-
-
 
 		Physics.gravity = -newNormal.normalized * gravityStrength;
 	}

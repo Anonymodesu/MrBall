@@ -97,6 +97,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   balls:
   - {fileID: 2100000, guid: 44f8846d7f8eb774d97ae9c11690c0fa, type: 2}
   - {fileID: 2100000, guid: 582d665562c472f4eaf617ded397c026, type: 2}
@@ -107,7 +109,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1956770c9ad31154795f931e0fe73d71, type: 2}
   - {fileID: 2100000, guid: 1c97699d29709eb4993de00a147c8445, type: 2}
   - {fileID: 2100000, guid: b3b44be6098ad7a4582b79b5b783c533, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 6be22adf925cdde4f8ec624e6aaabb38, type: 2}
+  - {fileID: 2100000, guid: c6ff6a4b32d248346bed47790dc3fd6e, type: 2}
+  - {fileID: 2100000, guid: 41e1d1b8c53583e4382ee67248f93d47, type: 2}
   usainBowlEffect: {fileID: 1515817861498370, guid: db0cdfee75177fe4c8fd2b9f006e7ca6,
     type: 2}
   perpendicularExplosion: {fileID: 1485922024783022, guid: f884e42ffeefd994ead1b693243c15af,

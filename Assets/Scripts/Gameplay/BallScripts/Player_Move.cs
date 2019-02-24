@@ -30,7 +30,7 @@ public class Player_Move {
     protected Movement lastInstruction; //last movement instruction being processed; see processNextInstruction()
 	
 	private Script_Game_Camera cameraScript; 
-	private Rigidbody rb;
+	protected Rigidbody rb;
 	protected Script_Player_Loader playerScript;
 	
 
@@ -45,7 +45,9 @@ public class Player_Move {
 		rb.maxAngularVelocity = maxTorque;
 	}
 
-	public void processMovement(List<GameObject> contacts) {
+
+	//should be called in FixedUpdate()
+	public virtual void processMovement(List<GameObject> contacts) {
 
         float speed = normalSpeed;
 		float maxSpeed = maxNormalSpeed;  //maximum speed depends on the type of panel being contacted
@@ -88,10 +90,10 @@ public class Player_Move {
 			float velocityRatio = (max - current * Vector3.Dot(current.normalized, movingDirection.normalized)).magnitude;
 			velocityRatio = (float) Math.Pow(velocityRatio / maxSpeed, 2);
 			
-			Vector3 torque = torqueDirection.normalized * speed * velocityRatio * Time.deltaTime;
+			Vector3 torque = torqueDirection.normalized * speed * velocityRatio * Time.fixedDeltaTime;
 
 			if(onGround) {
-				Vector3 force = 4 * movingDirection.normalized * speed * velocityRatio * Time.deltaTime;
+				Vector3 force = 4 * movingDirection.normalized * speed * velocityRatio * Time.fixedDeltaTime;
 				rb.AddForce(force);
 				rb.AddTorque(torque);
 

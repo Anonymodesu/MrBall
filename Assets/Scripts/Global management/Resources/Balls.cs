@@ -5,7 +5,8 @@ using System;
 
 
 public enum BallType : int {None = 0, MrBall = 1, MrsBall = 2, MrBowl = 3, BalldyBuilder = 4, InvisiBall = 5,
-							Intangiball = 6, BowlVaulter = 7, UsainBowl = 8, Reballious = 9, GyroBall = 10, NielsBall = 11};
+							Intangiball = 6, BowlVaulter = 7, UsainBowl = 8, Reballious = 9, GyroBall = 10, NielsBall = 11,
+							Unstoppaball = 12, Ballerina = 13};
 
 public class Balls : MonoBehaviour {
 
@@ -107,6 +108,8 @@ public class Balls : MonoBehaviour {
 		scoreMultipliers[(int) BallType.Reballious] = 1.5f;
 		scoreMultipliers[(int) BallType.GyroBall] = 1;
 		scoreMultipliers[(int) BallType.NielsBall] = 1;
+		scoreMultipliers[(int) BallType.Unstoppaball] = 1.5f;
+		scoreMultipliers[(int) BallType.Ballerina] = 1;
 
 		ballDescriptions = new Dictionary<BallType, BallDescription>();
 		ballDescriptions.Add(BallType.MrBall, new BallDescription("Mr. Ball", 
@@ -137,11 +140,17 @@ public class Balls : MonoBehaviour {
 			"They see me rolling...",
 			"Can only roll left and backward. Points earned +50%."));
 		ballDescriptions.Add(BallType.GyroBall, new BallDescription("Gyro Ball", 
-			"Uses super state-of-the-art gyroscope technology.",
+			"An offensive technique that grows stronger as the user slows down.",
 			"Can change direction in midair."));
 		ballDescriptions.Add(BallType.NielsBall, new BallDescription("Niels Ball", 
 			"The first Noball Laureate in Ball family.",
 			"Reverses gravity."));
+		ballDescriptions.Add(BallType.Unstoppaball, new BallDescription("Unstoppaball", 
+			"'Keeping us down is impossible,' exclaimed the brothers Unstoppaball and Impossiball.",
+			"Cannot be stopped. Points earned +50%"));
+		ballDescriptions.Add(BallType.Ballerina, new BallDescription("Ballerina", 
+			"",
+			""));
 	}
 
 	public Sprite getSprite(BallType type) {

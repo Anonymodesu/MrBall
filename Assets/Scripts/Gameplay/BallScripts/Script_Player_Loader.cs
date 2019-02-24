@@ -127,6 +127,10 @@ public class Script_Player_Loader : MonoBehaviour {
 				movementScript = new GyroBall_Move(this);
 				break;
 
+			case BallType.Unstoppaball:
+				movementScript = new Unstoppaball_Move(this);
+				break;
+
 			default: 
 				movementScript = new Player_Move(this);
 				break;

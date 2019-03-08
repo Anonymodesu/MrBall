@@ -98,8 +98,18 @@ public class Script_Player_Loader : MonoBehaviour {
 		Player_Move movementScript = null;
 		Player_Jump jumpScript = null;
 
+		//trails component
 		if(SettingsManager.DisplayTrails) {
-		    trailsScript = new Enabled_Trails(this);
+			switch(currentBall) {
+				case BallType.Ballerina:
+					trailsScript = new Ballerina_Trails(this);
+					break;
+
+				default: 
+					trailsScript = new Enabled_Trails(this);
+					break;
+			}
+
 		} else {
 			trailsScript = new Empty_Trails();
 		}
@@ -160,7 +170,12 @@ public class Script_Player_Loader : MonoBehaviour {
 
 			case BallType.NielsBall:
 				controlScript = new NielsBall_Controller(this, jumpScript, movementScript, trailsScript,
-										startPos, triggerCollider, animatedRamps, physicCollider);
+										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.Ballerina:
+				controlScript = new Ballerina_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps);
 				break;
 
 			default: 

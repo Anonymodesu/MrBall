@@ -32,6 +32,10 @@ public class Script_Game_Camera : Script_Camera {
 	private Dictionary<GameObject, GameObject> hiddenRamps;
 	private const float transparency = 0.5f;
 
+	public Vector3 YAxis {
+		get { return yAxis; }
+	}
+
     // Use this for initialization
     void Start () {
         mouseSensitivity = SettingsManager.CameraSensitivity;

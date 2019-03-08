@@ -75,6 +75,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 00eb21e00062abc46b084b4381ad3624, type: 3}
   - {fileID: 8300000, guid: 9f0bcd68113de2d409bce50930eca10e, type: 3}
   - {fileID: 8300000, guid: 1d60aa4073b6f37488977db53ccf6c51, type: 3}
+  - {fileID: 8300000, guid: 1d60aa4073b6f37488977db53ccf6c51, type: 3}
 --- !u!114 &114148328249868822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,6 +138,8 @@ MonoBehaviour:
   intangiballHelper: {fileID: 1146090155951170, guid: 6c927a94ab215c446b0c8cfe02d601b4,
     type: 2}
   intangiballPoof: {fileID: 1833253356188098, guid: d6baf098be9a66d41a5fe6d4076458e8,
+    type: 2}
+  ballerinaEffect: {fileID: 1799336036625850, guid: 572f6ceb51629944c84ba02d483747e7,
     type: 2}
   intangiballTransparent: {fileID: 2100000, guid: 4eeb9044fe17113438d809bf51a3605e,
     type: 2}

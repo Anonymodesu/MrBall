@@ -43,17 +43,13 @@ public class Intangiball_Controller : Player_Controller {
 
 			if(InputManager.getInput().buttonDown(Command.Special)) {
 
-				if(!vanishing) { //onl
-					UnityEngine.Object.Instantiate(poofEffect, playerScript.transform.position, Quaternion.identity);
-				}
-
+				UnityEngine.Object.Instantiate(poofEffect, playerScript.transform.position, Quaternion.identity);
 				vanishing = true;
 				renderer.material = transparentMaterial;
 
-
-
-			} else if(vanishing && helper.Colliding) {
-				//do nothing
+			} else if((InputManager.getInput().buttonHold(Command.Special)) || 
+						(vanishing && helper.Colliding)) {
+				//keep vanishing
 				//can't unvanish if currently passing through objects
 
 			} else if (vanishing) { //special button has been released and not colliding with anything

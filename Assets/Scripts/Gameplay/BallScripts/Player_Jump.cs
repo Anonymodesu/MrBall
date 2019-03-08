@@ -109,7 +109,7 @@ public class Player_Jump {
 
     //cancels out velocities that oppose the jump direction
     //needed when the trigger collider has contacted but the physical collider hasnt yet
-    private void cancelVelocity(Vector3 jumpDirection) {
+    public void cancelVelocity(Vector3 jumpDirection) {
     	if(Vector3.Dot(rb.velocity, jumpDirection) < 0) {
 			rb.velocity = Vector3.ProjectOnPlane(rb.velocity, jumpDirection);
 		}

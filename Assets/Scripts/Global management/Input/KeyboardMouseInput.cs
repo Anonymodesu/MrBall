@@ -38,13 +38,19 @@ public class KeyboardMouseInput : InputType<KeyCode> {
 	//should only be called within Update()
 	public bool buttonDown(Command command) {
 		KeyCode assignedKey = keyCodes[(int) command];
+		return Input.GetKeyDown(assignedKey);
+	}
 
-		if(command == Command.Jump || command == Command.Pause) { //prevent repeated jumping/pausing
-			return Input.GetKeyDown(assignedKey);
+	//should only be called within Update()
+	public bool buttonUp(Command command) {
+		KeyCode assignedKey = keyCodes[(int) command];
+		return Input.GetKeyUp(assignedKey);
+	}
 
-		} else {
-			return Input.GetKey(assignedKey);
-		}		
+	//should only be called within Update()
+	public bool buttonHold(Command command) {
+		KeyCode assignedKey = keyCodes[(int) command];
+		return Input.GetKey(assignedKey);		
 	}
 
 	//the string representation of the command is used as the key for PlayerPrefs

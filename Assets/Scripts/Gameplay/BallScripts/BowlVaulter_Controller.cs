@@ -34,21 +34,19 @@ public class BowlVaulter_Controller : Player_Controller {
 	}
 
 	private IEnumerator vault() {
-		if(rb.velocity.magnitude > vaultThreshold) {
-			vaultable = false;
-			rb.AddForce(vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
-			//rb.AddTorque(0.4f * vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
-			updateTrails("Perpendicular");
-			SoundManager.getInstance().playSoundFX(SoundFX.BowlVaulter);
+		vaultable = false;
+		jumpScript.cancelVelocity(-Physics.gravity);
+		rb.AddForce(vaultStrength * (-Physics.gravity.normalized), ForceMode.Impulse);
+		//rb.AddTorque(0.4f * vaultStrength * rb.velocity.normalized, ForceMode.Impulse);
+		updateTrails("Perpendicular");
+		SoundManager.getInstance().playSoundFX(SoundFX.BowlVaulter);
 
-			GameObject effect = UnityEngine.Object.Instantiate(explosionEffect);
-			while(effect != null) {
-				effect.transform.position = playerScript.transform.position;
-				effect.transform.rotation = Quaternion.LookRotation(rb.velocity);
-				yield return null;
-			}
+		GameObject effect = UnityEngine.Object.Instantiate(explosionEffect);
+		while(effect != null) {
+			effect.transform.position = playerScript.transform.position;
+			effect.transform.rotation = Quaternion.LookRotation(rb.velocity);
+			yield return null;
 		}
-
 	}
 
 	protected override void die() {

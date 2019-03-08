@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enabled_Trails : Player_Trails {
 	private GameObject trailEffect, glowEffect;
-	private Script_Player_Loader playerScript;
+	protected Script_Player_Loader playerScript;
 
 	private ParticleSystem playerGlow;
 	private Color glowColour;
@@ -19,7 +19,7 @@ public class Enabled_Trails : Player_Trails {
 
 	//trail colours vary depending on ramp interactions
 	//actual trail colours lag a bit behind these
-	private Color mainColour;
+	protected Color mainColour;
 	private Color[] secondaryColours;
 	private float colourSpawnDelay; //prevents changed colours from being overriden too quickly
 	private HashSet<string> loadedColours; //prevents fast ramps from overriding other colours
@@ -36,7 +36,7 @@ public class Enabled_Trails : Player_Trails {
 	private const float spawnDelay = 0.3f;
 	private const float secondarySpinSpeed = 0.03f;
 
-	private const float colourChangeSpeed = 0.1f; //how quickly colours change to special colours
+	protected const float colourChangeSpeed = 0.1f; //how quickly colours change to special colours
 	private const float colourRevertSpeed = 0.005f; //how quickly colours revert back to white
 	private static readonly Color fastColour = new Color(255f/255, 0f/255, 255f/255, 1);
 	private static readonly Color perpendicularColour = new Color(255f/255, 0f/255, 0f/255, 1);
@@ -97,7 +97,7 @@ public class Enabled_Trails : Player_Trails {
 	}
 	
 	// Toggle trail visibility when above/below velocity thresholds
-	public void processTrails() {
+	public virtual void processTrails() {
 
 		//show/hide trails
 		if(rb.velocity.magnitude > threshold) {
@@ -216,7 +216,7 @@ public class Enabled_Trails : Player_Trails {
 	private void processColours() {
 		float speed = Time.deltaTime * 60;
 
-		//modify actual trail and glow colours
+		//modify actual trail colours
 		mainTrail.startColor = Color.Lerp(mainTrail.startColor, mainColour, colourChangeSpeed * speed);
 		mainTrail.endColor = Color.Lerp(mainTrail.endColor, mainColour, colourChangeSpeed * speed);
 		for(int i = 0; i < numSecondaryTrails; i++) {
@@ -225,7 +225,7 @@ public class Enabled_Trails : Player_Trails {
 			secondaryTrails[i].endColor = Color.Lerp(
 				secondaryTrails[i].endColor, secondaryColours[i], colourChangeSpeed * speed);
 		}
-		var main = playerGlow.main;
+		var main = playerGlow.main; //modify actual glow color
 		main.startColor = Color.Lerp(main.startColor.color, glowColour, colourChangeSpeed * speed);
 
 

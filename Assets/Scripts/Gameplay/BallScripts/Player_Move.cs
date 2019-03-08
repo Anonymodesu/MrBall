@@ -125,21 +125,21 @@ public class Player_Move {
         bool brake = false;
         
         //braking overrides all other movement instructions
-        if(InputManager.getInput().buttonDown(Command.Brake)) { 
+        if(InputManager.getInput().buttonHold(Command.Brake)) { 
             brake = true;
 
         } else { //released brake
 
         	//able to process other movement instructions
-			if(InputManager.getInput().buttonDown(Command.Forward)) {
+			if(InputManager.getInput().buttonHold(Command.Forward)) {
 				forward = 1;
-			} else if(InputManager.getInput().buttonDown(Command.Backward)) {
+			} else if(InputManager.getInput().buttonHold(Command.Backward)) {
 				forward = -1;
 			}
 
-			if(InputManager.getInput().buttonDown(Command.Right)) {
+			if(InputManager.getInput().buttonHold(Command.Right)) {
 				right = 1;
-			} else if(InputManager.getInput().buttonDown(Command.Left)) {
+			} else if(InputManager.getInput().buttonHold(Command.Left)) {
 				right = -1;
 			}
 		}

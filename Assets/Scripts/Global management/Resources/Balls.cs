@@ -34,7 +34,7 @@ public class Balls : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject usainBowlEffect, perpendicularExplosion, perpendicularTrail, superExplosion, bowlVaulterEffect, playerTrail, 
-						playerTrailGlow, rampImpactEffect, balldyBuilderEffect, intangiballHelper, intangiballPoof;
+						playerTrailGlow, rampImpactEffect, balldyBuilderEffect, intangiballHelper, intangiballPoof, ballerinaEffect;
 
 	[SerializeField]
 	private Material intangiballTransparent;
@@ -76,6 +76,9 @@ public class Balls : MonoBehaviour {
 	}
 	public Material IntangiballTransparent {
 		get { return intangiballTransparent; }
+	}
+	public GameObject BallerinaEffect {
+		get { return ballerinaEffect; }
 	}
 	
 
@@ -132,7 +135,7 @@ public class Balls : MonoBehaviour {
 			"Phases through matter."));
 		ballDescriptions.Add(BallType.BowlVaulter, new BallDescription("Bowl Vaulter", 
 			"",
-			"Gives a boost to current velocity."));
+			"Do a super jump at any time."));
 		ballDescriptions.Add(BallType.UsainBowl, new BallDescription("Usain Bowl", 
 			"",
 			"Temporary super speed."));
@@ -150,7 +153,7 @@ public class Balls : MonoBehaviour {
 			"Cannot be stopped. Points earned +50%"));
 		ballDescriptions.Add(BallType.Ballerina, new BallDescription("Ballerina", 
 			"",
-			""));
+			"Pirouettes to float."));
 	}
 
 	public Sprite getSprite(BallType type) {

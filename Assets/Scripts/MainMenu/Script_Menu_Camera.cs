@@ -8,6 +8,8 @@ public class Script_Menu_Camera : Script_Camera {
 
     [SerializeField]
     private List<GameObject> menus;
+    [SerializeField]
+    private GameObject screenspaceMenu;
 
     #pragma warning restore 0649
 
@@ -28,10 +30,14 @@ public class Script_Menu_Camera : Script_Camera {
     
     //switches view from current menu to dest menu
     public IEnumerator switchMenus(Transform dest) {
+
+      //disable every menu
        foreach(GameObject menu in menus) {
        		menu.GetComponent<CanvasGroup>().interactable = false;
        }
+       screenspaceMenu.GetComponent<CanvasGroup>().interactable = false;
 
+       //rotate camera to face target menu
        Vector3 sourcePos = transform.position;
        Vector3 targetPos = dest.position - distance * dest.forward + offset;
        Quaternion sourceRot = transform.rotation;
@@ -49,6 +55,8 @@ public class Script_Menu_Camera : Script_Camera {
        transform.position = targetPos;
        transform.rotation = targetRot;
 
+       //enable target menu and main menu
        dest.GetComponent<CanvasGroup>().interactable = true;
+       screenspaceMenu.GetComponent<CanvasGroup>().interactable = true;
     }
 }

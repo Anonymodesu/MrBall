@@ -106,12 +106,15 @@ EditorBuildSettings:
     guid: 5a2f68e36675b0647ae4ca43c86dbedf
   - enabled: 1
     path: Assets/Scenes/Scene_Stage 3-2.unity
-    guid: cb54e25b5c3dae14d88711f9a021e5c6
+    guid: 6b34324314de131449614d5cf62a1fdc
   - enabled: 1
     path: Assets/Scenes/Scene_Stage 3-4.unity
+    guid: cb54e25b5c3dae14d88711f9a021e5c6
+  - enabled: 1
+    path: Assets/Scenes/Scene_Stage 3-8.unity
     guid: 4d18b703d9d52e44dba58e3563d2217a
   - enabled: 1
-    path: Assets/Scenes/Scene_Stage 3-3.unity
+    path: Assets/Scenes/Scene_Stage 3-6.unity
     guid: cc1793cadea4f0542a98f8aae20984ea
   - enabled: 1
     path: Assets/Scenes/Scene_Stage 4-0.unity

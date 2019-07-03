@@ -166,7 +166,7 @@ public class Player_Controller {
 			processGravity(other.gameObject);
     	}
 	}
-
+	
 	public void OnCollisionEnter(Collision collision) {
 		float hitStrength = collision.impulse.magnitude;
 

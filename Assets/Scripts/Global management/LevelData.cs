@@ -94,6 +94,8 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 @"If Mr.Ball is touching both yellow and orange ramps, both types of jump effects will be applied.");
 		levelDescriptions.Add(new Level(3,2), 
 @"Don't lose your balance here.");
+		levelDescriptions.Add(new Level(3,3), 
+@"Idk what to put here.");
 		levelDescriptions.Add(new Level(3,4), 
 @"The Sun just unleashed another a burst of radiation!	
 Some ramps have mutated, but functionally behave the same.");
@@ -153,6 +155,7 @@ Usually.");
 		levelNames.Add(new Level(3,0), "Perpendicular jumping");
 		levelNames.Add(new Level(3,1), "Ultra jumping");
 		levelNames.Add(new Level(3,2), "Wibbly wobbly timey wimey");
+		levelNames.Add(new Level(3,3), "Roads");
 		levelNames.Add(new Level(3,4), "Mr. Balls");
 		levelNames.Add(new Level(3,6), "Mr. Cube Senior");
 		levelNames.Add(new Level(3,8), "So close, yet so far");

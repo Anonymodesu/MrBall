@@ -12,12 +12,12 @@ public class Script_Game_Menu : MonoBehaviour {
 
 	//stuff are already loaded into these
 	public Image background;
-	public Text menuText;
+	public Text levelText;
 	public Button startButton;
 	public Button endButton;
 	public Button restartButton;
 	public Button nextButton;
-	public Text achievementText; 
+	public UI_Achievement achievementText; 
 	public Text crossHair;
 
 	public Text scoringText; //scoringText is not a child of 'background'
@@ -53,7 +53,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		crossHair.gameObject.SetActive(false);
 		
 		currentLevel = GameManager.getInstance().getLevel();
-		menuText.text = LevelData.getInstance().getLevelName(currentLevel) + "\n\n"
+		levelText.text = LevelData.getInstance().getLevelName(currentLevel) + "\n\n"
 						+ LevelData.getInstance().getLevelDescription(currentLevel);
 
 		crossHair.transform.localScale = SettingsManager.CrosshairSize * Vector3.one;
@@ -72,7 +72,6 @@ public class Script_Game_Menu : MonoBehaviour {
 		ballResources = GameObject.Find("Resources").GetComponent<Balls>();
 	}
 	
-	
 	// Update is called once per frame
 	void Update () {
 		if(!paused) {
@@ -85,7 +84,6 @@ public class Script_Game_Menu : MonoBehaviour {
 
 	}
 	
-
 	public void startGame() {
         pauseable = true;
         pause();
@@ -95,7 +93,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		startButton.gameObject.SetActive(false); //otherwise pressing space activates pause
 		endButton.gameObject.SetActive(true);
 		restartButton.gameObject.SetActive(true);
-		menuText.text = LevelData.getInstance().getLevelName(currentLevel) + "\nPaused";
+		levelText.text = LevelData.getInstance().getLevelName(currentLevel) + "\nPaused";
     }
 
     public void endGame() {
@@ -164,22 +162,18 @@ public class Script_Game_Menu : MonoBehaviour {
     	float scoreMultiplier = ballResources.getScoreMultiplier(playerScript.CurrentBall);
 	
 		HighScore currentHighScore = new HighScore(player, cubies, deaths, time, scoreMultiplier);
-			 
-		//returns true if theres a new highscore
-		if(ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore)) {
-			
-			displayScoreAchievements(currentHighScore, requirements, ScoreManager.getInstance().getHighScores(currentLevel));
-			
-		} else {
-			displayScoreAchievements(currentHighScore, requirements, null);
-		}
-		
+
+		Achievement oldRecord = PlayerManager.getInstance().getRecord(player, currentLevel);
+
+		//save record to file system
 		Achievement newRecord = new Achievement(cubies,deaths, time, 
 							HighScore.calculateScore(cubies,deaths, time,scoreMultiplier));
+		Achievement maxRecord = PlayerManager.getInstance().saveRecord(player, newRecord, requirements, currentLevel);
 
-
-		PlayerManager.getInstance().saveRecord(player, newRecord, currentLevel); //save records to player data txt
-		
+									//setHighScore() returns true if theres a new highscore
+		bool newHighScoreObtained = ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore);
+		HighScore[] highScores = ScoreManager.getInstance().getHighScores(currentLevel);
+		displayScoreAchievements(oldRecord, newRecord, requirements, highScores, newHighScoreObtained);
     }
 
 	private void pause() {
@@ -211,52 +205,26 @@ public class Script_Game_Menu : MonoBehaviour {
 	}
 
 	//when the level is completed, display final achievements and high scores; highscores will be null if there are no new high scores
-	public void displayScoreAchievements(HighScore currentScore, Achievement requirements, HighScore[] highscores) {
+	public void displayScoreAchievements(Achievement oldRecord, Achievement newRecord, Achievement requirements, 
+										HighScore[] highscores, bool newHighScore) {
 		
 		nextButton.gameObject.SetActive(true); 
-		menuText.text = "You win!\n";
-		
-		if(highscores != null) { //if highscores is null, then the current session did not introduce a new high score
-			menuText.text += "New HighScore!\n" + "Name\tCubies\tDeaths\tTime\tScore\n";
-			for(int i = 0; i < ScoreManager.numHighScoresPerSubstage; i++) {
-				if(highscores[i] != null) {
-					menuText.text += highscores[i].display();
-				}
+
+		//display high scores
+		levelText.text = "You win!\n";
+		if(newHighScore) {
+			levelText.text += "New HighScore!\n" + "Name\tCubies\tDeaths\tTime\tScore\n";
+		}
+		for(int i = 0; i < ScoreManager.numHighScoresPerSubstage; i++) {
+			if(highscores[i] != null) {
+				levelText.text += highscores[i].display();
 			}
 		}
 		
-		int separation = 20;
-		Text cubiesText = Instantiate(achievementText, background.rectTransform);
-		cubiesText.rectTransform.anchoredPosition -= Vector2.up * separation * 0;
-		cubiesText.text = "Cubies: " + currentScore.cubies + "/" + requirements.Cubies;
-		
-		if(currentScore.cubies == requirements.Cubies) {
-			cubiesText.fontStyle = FontStyle.Bold;
-		}
-		
-		Text timeText = Instantiate(achievementText, background.rectTransform);
-		timeText.rectTransform.anchoredPosition -= Vector2.up * separation * 1;
-		timeText.text = "Time: " + currentScore.time.ToString("0.00") + "/" + requirements.TimeString;
-		
-		if(currentScore.time < requirements.Time) {
-			timeText.fontStyle = FontStyle.Bold;
-		}
-
-		Text deathsText = Instantiate(achievementText, background.rectTransform);
-		deathsText.text = "Deaths: " + currentScore.deaths + "/" + requirements.Deaths;
-		deathsText.rectTransform.anchoredPosition -= Vector2.up * separation * 2;
-		
-		if(currentScore.deaths <= requirements.Deaths) {
-			deathsText.fontStyle = FontStyle.Bold;
-		}
-
-		Text pointsText = Instantiate(achievementText, background.rectTransform);
-		pointsText.rectTransform.anchoredPosition -= Vector2.up * separation * 3;
-		int points = currentScore.calculateScore();
-		pointsText.text = "Points: " + points + "/" + requirements.Points + " (x" + currentScore.scoreMultiplier.ToString("0.00") + ")";
-		
-		if(points >=  requirements.Points) {
-			pointsText.fontStyle = FontStyle.Bold;
+		//display achievement progress
+		foreach (var eval in Achievement.EvaluateAchievement(requirements, newRecord, oldRecord))  {
+			UI_Achievement achievementDisplay = Instantiate(achievementText, levelText.transform.parent);
+			achievementDisplay.loadValues(eval);
 		}
 	}
 }

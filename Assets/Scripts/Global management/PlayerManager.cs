@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 public class PlayerManager {
 
@@ -31,17 +32,39 @@ public class PlayerManager {
 			totalCubies = 0;
 		}
 
-		public void saveRecord(Achievement newRecord, Level level) {
+		//save any new achievements
+		public Achievement saveRecord(Achievement current, Achievement required, Level level) {
+			Achievement oldBest = records[level.Index];
 
 			//check whether an achievement record for the level already exists
-			if(records[level.Index] == null) {
-				totalCubies += newRecord.Cubies;
-				records[level.Index] = newRecord;
+			if(oldBest == null) {
+				int numAchieved = current.numSatisfied(required);
+				totalCubies += current.Cubies + numAchieved;
+				records[level.Index] = current;
 
+				Debug.Log("----");
+				Debug.Log(current);
+				Debug.Log(totalCubies);
 			} else {
-				totalCubies += Math.Abs(newRecord.Cubies - records[level.Index].Cubies);
-				records[level.Index] = Achievement.Max(records[level.Index], newRecord);
+				//calculate best records among the old and new records for the level
+				Achievement newBest = Achievement.Max(current, oldBest);
+
+				//number of achievements acquired by the old best and new best 
+				int numOldAchieved = oldBest.numSatisfied(required);
+				int numNewAchieved = newBest.numSatisfied(required);
+
+				totalCubies += (newBest.Cubies - oldBest.Cubies) + (numNewAchieved - numOldAchieved);
+
+				records[level.Index] = newBest;				
+
+				Debug.Log("----");
+				Debug.Log(oldBest);
+				Debug.Log(current);
+				Debug.Log(newBest);
+				Debug.Log(totalCubies);
 			}
+
+			return records[level.Index];
 		}
 	}
 
@@ -67,11 +90,11 @@ public class PlayerManager {
 		return playersProfiles.Keys;
 	}
 
-	
-	//each player has their own file storing their best achievements for each level
-	public void saveRecord(string playerName, Achievement current, Level level) {
-		getProfile(playerName).saveRecord(current, level);
+	//returns the new set of records held by the player
+	public Achievement saveRecord(string playerName, Achievement current, Achievement required, Level level) {
+		Achievement newRecord = getProfile(playerName).saveRecord(current, required, level);
 		saveProfiles();
+		return newRecord;
 	}
 	
 	//retrieves all the records for a player
@@ -146,13 +169,27 @@ public class PlayerManager {
 		if(File.Exists(getPlayerDataPath())) {
 
 			BinaryFormatter bf = new BinaryFormatter();
-			FileStream file = File.Open(getPlayerDataPath(), FileMode.Open);
-			PlayerProfile[] players = (PlayerProfile[]) bf.Deserialize(file);
-			file.Close();
+			FileStream file = null;
 
-			foreach(PlayerProfile profile in players) {
-				playersProfiles.Add(profile.playerName, profile);
+			try{
+				file = File.Open(getPlayerDataPath(), FileMode.Open);
+				PlayerProfile[] players = (PlayerProfile[]) bf.Deserialize(file);
+
+				foreach(PlayerProfile profile in players) {
+					playersProfiles.Add(profile.playerName, profile);
+				}
+
+			} catch (SerializationException e) {
+				Debug.Log(e.Message);
+
+			} finally {
+				if(file != null) {
+					file.Close();
+				}
 			}
+			
+
+			
 		}
 	}
 

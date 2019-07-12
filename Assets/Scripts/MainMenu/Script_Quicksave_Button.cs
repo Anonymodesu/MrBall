@@ -40,10 +40,11 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 		} else {
 			level = null;
 			levelImage.sprite = null;
-			cubiesText.text = "";
-			deathsText.text = "";
-			timeText.text = "";
-			scoreText.text = "";
+			
+			foreach(UI_Achievement text in achievementText) {
+				text.reset();
+			}
+
 			levelText.text = "No Quicksave";
 		}
 		

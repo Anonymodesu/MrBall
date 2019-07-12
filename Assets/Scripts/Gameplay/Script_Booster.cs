@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Script_Booster : MonoBehaviour {
 
+	#pragma warning disable 0649
+
 	[SerializeField]
 	private GameObject lightningEffect;
+
+	#pragma warning restore 0649
+	
 	private const float lightningDuration = 1;
 
 	private const float boostStrength = 12;

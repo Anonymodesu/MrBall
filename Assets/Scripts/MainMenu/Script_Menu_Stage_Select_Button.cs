@@ -8,7 +8,9 @@ using UnityEngine.EventSystems;
 
 public class Script_Menu_Stage_Select_Button : Button {
 
-	protected Text cubiesText, deathsText, timeText, scoreText, levelText;
+	protected UI_Achievement[] achievementText;
+
+	protected Text levelText;
 
 	protected Image levelImage; //the UI container for the image
 	protected Level level;
@@ -19,10 +21,12 @@ public class Script_Menu_Stage_Select_Button : Button {
 		base.Start();
 		GetComponent<Button>().onClick.AddListener(delegate {StartLevel(); });
 
-		cubiesText = GameObject.Find("CubiesText").GetComponent<Text>();
-		deathsText = GameObject.Find("DeathsText").GetComponent<Text>();
-		timeText = GameObject.Find("TimeText").GetComponent<Text>();
-		scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+		achievementText = new UI_Achievement[4];
+		achievementText[0] = GameObject.Find("CubiesText").GetComponent<UI_Achievement>();
+		achievementText[1] = GameObject.Find("DeathsText").GetComponent<UI_Achievement>();
+		achievementText[2] = GameObject.Find("TimeText").GetComponent<UI_Achievement>();
+		achievementText[3] = GameObject.Find("ScoreText").GetComponent<UI_Achievement>();
+
 		levelText = GameObject.Find("LevelName").GetComponent<Text>();
 
 		levelImage = GameObject.Find("LevelImage").GetComponent<Image>();
@@ -45,31 +49,17 @@ public class Script_Menu_Stage_Select_Button : Button {
 
 
     protected void displayRecords(Achievement current, Achievement required) {
-    	if(current == null) { //player has not completed this level
 
-			cubiesText.text = "-/\n" + required.Cubies;
-			deathsText.text = "-/\n" + required.Deaths;
-			timeText.text = "-/\n" + required.TimeString;
-			scoreText.text = "-/\n" + required.Points;
+    	var e1 = Achievement.EvaluateAchievement(required, current).GetEnumerator();
+    	var e2 = achievementText.GetEnumerator(); 
+    	{
+    		while(e1.MoveNext() && e2.MoveNext()) {
+    			var eval = e1.Current;
+    			UI_Achievement achievementData = (UI_Achievement) e2.Current;
 
-			cubiesText.fontStyle = FontStyle.Normal;
-			deathsText.fontStyle = FontStyle.Normal;
-			timeText.fontStyle = FontStyle.Normal;
-			scoreText.fontStyle = FontStyle.Normal;
-
-		} else { //player has completed this level
-
-			cubiesText.text = current.Cubies + "/\n" + required.Cubies;
-			deathsText.text = current.Deaths + "/\n" + required.Deaths;
-			timeText.text = current.TimeString + "/\n" + required.TimeString;
-			scoreText.text = current.Points + "/\n" + required.Points;
-
-			//check if any of the achievements have been reached
-			cubiesText.fontStyle = (current.Cubies == required.Cubies) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			deathsText.fontStyle = (current.Deaths <= required.Deaths) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			timeText.fontStyle = (current.Time <= required.Time) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-			scoreText.fontStyle = (current.Points >= required.Points) ? FontStyle.BoldAndItalic : FontStyle.Normal;
-		}
+    			achievementData.loadValues(eval, false);
+    		}
+    	}
     }
 	
 	public void setLevel(Level level) {

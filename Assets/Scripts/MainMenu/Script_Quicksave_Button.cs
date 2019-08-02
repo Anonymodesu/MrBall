@@ -48,7 +48,7 @@ public class Script_Quicksave_Button : Script_Menu_Stage_Select_Button {
 			levelText.text = "No Quicksave";
 		}
 		
-				
+		achievementsTitleText.text = "Progress";		
     }
 
 

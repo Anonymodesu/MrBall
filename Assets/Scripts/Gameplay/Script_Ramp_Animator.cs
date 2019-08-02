@@ -41,7 +41,6 @@ public class Script_Ramp_Animator : MonoBehaviour {
 	}
 
 	public void setNormalisedPlayTime(float time) {
-
 		anim.Play(0, -1, time);
 	}
 

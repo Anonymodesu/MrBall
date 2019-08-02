@@ -99,6 +99,8 @@ Which means Mr. Ball should have a run-up before attempting the jumps in this le
 		levelDescriptions.Add(new Level(3,4), 
 @"The Sun just unleashed another a burst of radiation!	
 Some ramps have mutated, but functionally behave the same.");
+		levelDescriptions.Add(new Level(3,5), 
+@"During the development of Mr. Ball, every tester has said that it was too hard.");		
 		levelDescriptions.Add(new Level(3,6), 
 @"Some people ask me how Mr. Ball rolls with such elegance. 
 I say that it's with state-of-the-art gyroscope technology.");
@@ -121,7 +123,7 @@ Usually.");
 
 		levelNames.Add(new Level(0,0), "Rolling");
 		levelNames.Add(new Level(0,1), "Jumping");
-		levelNames.Add(new Level(0,2), "Rolling hills");
+		levelNames.Add(new Level(0,2), "Slopes");
 		levelNames.Add(new Level(0,3), "Super jumping");
 		levelNames.Add(new Level(0,4), "Super jumping 2");
 		levelNames.Add(new Level(0,5), "Checkpoints");
@@ -157,6 +159,7 @@ Usually.");
 		levelNames.Add(new Level(3,2), "Wibbly wobbly timey wimey");
 		levelNames.Add(new Level(3,3), "Railroads");
 		levelNames.Add(new Level(3,4), "Mr. Balls");
+		levelNames.Add(new Level(3,5), "Rolling hills");
 		levelNames.Add(new Level(3,6), "Mr. Cube Senior");
 		levelNames.Add(new Level(3,8), "So close, yet so far");
 

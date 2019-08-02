@@ -213,8 +213,10 @@ public class Script_Game_Menu : MonoBehaviour {
 		//display high scores
 		levelText.text = "You win!\n";
 		if(newHighScore) {
-			levelText.text += "New HighScore!\n" + "Name\tCubies\tDeaths\tTime\tScore\n";
+			levelText.text += "New HighScore!\n";
 		}
+		
+		levelText.text += "Name\tCubies\tDeaths\tTime\tScore\n";
 		for(int i = 0; i < ScoreManager.numHighScoresPerSubstage; i++) {
 			if(highscores[i] != null) {
 				levelText.text += highscores[i].display();

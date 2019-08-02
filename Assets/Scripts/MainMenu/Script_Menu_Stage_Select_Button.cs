@@ -8,7 +8,9 @@ using UnityEngine.EventSystems;
 
 public class Script_Menu_Stage_Select_Button : Button {
 
+
 	protected UI_Achievement[] achievementText;
+	protected Text achievementsTitleText;
 
 	protected Text levelText;
 
@@ -26,6 +28,8 @@ public class Script_Menu_Stage_Select_Button : Button {
 		achievementText[1] = GameObject.Find("DeathsText").GetComponent<UI_Achievement>();
 		achievementText[2] = GameObject.Find("TimeText").GetComponent<UI_Achievement>();
 		achievementText[3] = GameObject.Find("ScoreText").GetComponent<UI_Achievement>();
+
+		achievementsTitleText = GameObject.Find("Achievements").transform.Find("Title").GetComponent<Text>();
 
 		levelText = GameObject.Find("LevelName").GetComponent<Text>();
 
@@ -45,11 +49,14 @@ public class Script_Menu_Stage_Select_Button : Button {
 		displayRecords(current, required);
 		
 		levelImage.sprite = levelImages.levelImages[level.stage * Level.numSubstages + level.substage];
+		
+		achievementsTitleText.text = "Records";
     }
 
 
     protected void displayRecords(Achievement current, Achievement required) {
 
+    	//loop over the two lists simultaneously
     	var e1 = Achievement.EvaluateAchievement(required, current).GetEnumerator();
     	var e2 = achievementText.GetEnumerator(); 
     	{

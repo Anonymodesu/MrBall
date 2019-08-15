@@ -42,9 +42,6 @@ public class PlayerManager {
 				totalCubies += current.Cubies + numAchieved;
 				records[level.Index] = current;
 
-				Debug.Log("----");
-				Debug.Log(current);
-				Debug.Log(totalCubies);
 			} else {
 				//calculate best records among the old and new records for the level
 				Achievement newBest = Achievement.Max(current, oldBest);
@@ -56,12 +53,6 @@ public class PlayerManager {
 				totalCubies += (newBest.Cubies - oldBest.Cubies) + (numNewAchieved - numOldAchieved);
 
 				records[level.Index] = newBest;				
-
-				Debug.Log("----");
-				Debug.Log(oldBest);
-				Debug.Log(current);
-				Debug.Log(newBest);
-				Debug.Log(totalCubies);
 			}
 
 			return records[level.Index];

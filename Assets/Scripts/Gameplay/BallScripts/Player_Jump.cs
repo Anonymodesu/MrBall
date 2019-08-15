@@ -13,7 +13,7 @@ public class Player_Jump {
     private int jumpStep;
     private const float superJumpStrength = 12;
 	private const float perpendicularJumpStrength = 12;
-	private const float jumpAngle = 91; //used to stop wall jumping
+	private const float jumpAngle = 100; //used to stop wall jumping
 
 	private bool playAnimations;
 	private Script_Player_Loader playerScript;

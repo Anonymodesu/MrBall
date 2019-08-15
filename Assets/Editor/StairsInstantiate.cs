@@ -8,7 +8,6 @@ public class StairsInstantiate : ScriptableWizard {
 	[System.NonSerialized]
 	private bool loadedValues = false;
 
-	[System.NonSerialized]
 	public GameObject target;
 
 	public int count = 1;

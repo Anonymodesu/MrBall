@@ -227,7 +227,10 @@ public class Player_Controller {
 
         //calculate the point at which to respawn the ball
         Ray ray = new Ray(startPos.transform.position, -startGravityDirection);
-        float distance = Math.Abs(Vector3.Dot(startPos.transform.lossyScale, startGravityDirection));
+
+        // Below used to be the distance formula, but it fails for some animated ramps (outputs 'could not find collider in reset')
+        //Math.Abs(Vector3.Dot(startPos.transform.lossyScale, startGravityDirection))
+        float distance = 100;
         //cast a from origin and reverse it to obtain the point on the surface, above which the ball spawns
         ray.origin = ray.GetPoint(distance);
         ray.direction = -ray.direction;

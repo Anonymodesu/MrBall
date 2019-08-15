@@ -7,7 +7,6 @@ public class RadialInstantiate : ScriptableWizard {
 	[System.NonSerialized]
 	private bool loadedValues = false;
 
-	[System.NonSerialized]
 	public GameObject target;
 	
 	public float radius = 0;

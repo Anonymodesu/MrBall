@@ -104,6 +104,8 @@ Some ramps have mutated, but functionally behave the same.");
 		levelDescriptions.Add(new Level(3,6), 
 @"Some people ask me how Mr. Ball rolls with such elegance. 
 I say that it's with state-of-the-art gyroscope technology.");
+		levelDescriptions.Add(new Level(3,7),
+@"When push comes to shove, push back harder.");
 		levelDescriptions.Add(new Level(3,8), 
 @"In case you were wondering, cubies also gyrate using state-of-the-art gyroscope tech.");
 
@@ -161,6 +163,7 @@ Usually.");
 		levelNames.Add(new Level(3,4), "Mr. Balls");
 		levelNames.Add(new Level(3,5), "Rolling hills");
 		levelNames.Add(new Level(3,6), "Mr. Cube Senior");
+		levelNames.Add(new Level(3,7), "Rollercoaster 2");
 		levelNames.Add(new Level(3,8), "So close, yet so far");
 
 		levelNames.Add(new Level(4,0), "Change of perspective");

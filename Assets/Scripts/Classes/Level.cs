@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 [Serializable]
 public class Level : IEquatable<Level> {
@@ -22,6 +24,10 @@ public class Level : IEquatable<Level> {
 	public Level(int stage, int substage) {
 		this.stage = stage;
 		this.substage = substage;
+	}
+
+	public void Load() {
+		SceneManager.LoadSceneAsync(this.ToString());
 	}
 		
 	public override string ToString() {

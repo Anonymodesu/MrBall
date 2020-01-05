@@ -56,6 +56,9 @@ public class Player_Controller {
 	public float TimePassed {
 		get { return Time.timeSinceLevelLoad - startTime; }
 	}
+	public virtual int BonusPoints {
+		get { return 0; }
+	}
 
 	private readonly GameObject rootObject; //"Rollercoaster"
 

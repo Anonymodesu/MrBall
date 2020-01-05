@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1331483372099504}
-  m_IsPrefabAsset: 1
 --- !u!1 &1331483372099504
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4352211893278168}
@@ -32,9 +22,10 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4352211893278168
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331483372099504}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.6771255, y: 11.8736515, z: 2.1556983}
@@ -45,9 +36,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114005131404682600
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331483372099504}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -76,11 +68,70 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9f0bcd68113de2d409bce50930eca10e, type: 3}
   - {fileID: 8300000, guid: 1d60aa4073b6f37488977db53ccf6c51, type: 3}
   - {fileID: 8300000, guid: 1d60aa4073b6f37488977db53ccf6c51, type: 3}
+  - {fileID: 8300000, guid: cbb68a142fa9dfa47b7956896ff1680f, type: 3}
+--- !u!114 &114736134254049876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331483372099504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8570f7208c133645bfc3f9a5730c497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rampTextures:
+  - {fileID: 2800000, guid: 0109cfb664501da46874432f4cf5b22a, type: 3}
+  - {fileID: 2800000, guid: 9ae12a29067d3d94da01a595d33c188b, type: 3}
+  - {fileID: 2800000, guid: c6f7e830486bcf3419a4c956d4a1fd5a, type: 3}
+  - {fileID: 2800000, guid: 3360a07f61aad2941bfd66d9e8579b3c, type: 3}
+  - {fileID: 2800000, guid: 613743ff341cef04887f26f0abb93810, type: 3}
+  - {fileID: 2800000, guid: 629bd471f494c1948a22248b30d26f03, type: 3}
+  - {fileID: 2800000, guid: cd4ef666e80696f42ad1220d47af4cae, type: 3}
+  rampNormalMaps:
+  - {fileID: 2800000, guid: 4e61b643066f16c419acfba56fd6c0db, type: 3}
+  - {fileID: 2800000, guid: a0eb73163dffd09409f89e8dabeb133c, type: 3}
+  - {fileID: 2800000, guid: e57a61eea69732c4eb0e30e5884d482f, type: 3}
+  - {fileID: 2800000, guid: e11c7017fab89604ea4c20ce8906613d, type: 3}
+  - {fileID: 2800000, guid: 684d94c4c5c21e444a9847a86fe5f16b, type: 3}
+  - {fileID: 2800000, guid: fbf7efc34cefea349a3a645e3a954c7c, type: 3}
+  - {fileID: 2800000, guid: b0c9031cf9c0a584887c185863e99033, type: 3}
+  pokeBall: {fileID: 2100000, guid: 44f8846d7f8eb774d97ae9c11690c0fa, type: 2}
+--- !u!114 &114499877118563594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331483372099504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6180552e0d92ed4b89350dc4665a34f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skyBox0: {fileID: 2100000, guid: 7400269f7d341bc41b1f21adeccb2a5f, type: 2}
+  skyBox1: {fileID: 2100000, guid: e9705e00f62f62849b89fc9fd55aa0e3, type: 2}
+  skyBox2: {fileID: 2100000, guid: 93d43b027dc267444af7412b8e607dbd, type: 2}
+  skyBox3: {fileID: 2100000, guid: 13fde35df00f2384598d84d32a7bacd8, type: 2}
+  skyBox4: {fileID: 2100000, guid: d07d2172e76d3fa429e80a14d2ae3616, type: 2}
+  skyBox5: {fileID: 2100000, guid: 4aa30c3a4a7a34bbd9256623e194cf78, type: 2}
+  skyBox6: {fileID: 2100000, guid: 2eeba5a34e2f1440797d2b0056f3356c, type: 2}
+  skyBox7: {fileID: 2100000, guid: ff330f6226d1d44838ee63a8824f8def, type: 2}
+  flare0: {fileID: 12100000, guid: eb7f2fdf6cf18496a8300de97efb5eac, type: 2}
+  flare1: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
+  flare2: {fileID: 12100000, guid: 8541d94808d5849d8bfa480259334205, type: 2}
+  flare3: {fileID: 12100000, guid: f3cd23d6d3e3d490cb471c69069c97a1, type: 2}
+  flare4: {fileID: 12100000, guid: 3ca3d4e332e9641439d689a9005a1813, type: 2}
+  flare5: {fileID: 12100000, guid: e59f068002a7b47858274b3c71e10ea7, type: 2}
+  flare6: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
+  flare7: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
 --- !u!114 &114148328249868822
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331483372099504}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -89,6 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSprites:
   - {fileID: 21300000, guid: a02c0074ca471416d9a79fd5a0cc2b02, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
+  - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
   - {fileID: 21300000, guid: 9f8eeae144e1e464fb2fe20de2d3941f, type: 3}
@@ -117,84 +170,33 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 41e1d1b8c53583e4382ee67248f93d47, type: 2}
   - {fileID: 2100000, guid: 73bf85e1634527b429336c8bbc57c69b, type: 2}
   - {fileID: 2100000, guid: c0e7fca6c0698c54ea8406c6e6bddf64, type: 2}
+  - {fileID: 2100000, guid: 2b3947640f3577e4680951072a4d236f, type: 2}
+  - {fileID: 2100000, guid: 9cb84901946b25548bc68133939b6265, type: 2}
   usainBowlEffect: {fileID: 1515817861498370, guid: db0cdfee75177fe4c8fd2b9f006e7ca6,
-    type: 2}
+    type: 3}
   perpendicularExplosion: {fileID: 1485922024783022, guid: f884e42ffeefd994ead1b693243c15af,
-    type: 2}
+    type: 3}
   perpendicularTrail: {fileID: 1422218473251970, guid: 73ffb32291fe81b4289b705b3c563af2,
-    type: 2}
+    type: 3}
   superExplosion: {fileID: 1611978299810578, guid: e83a2563889f5354ab51f33d6ca6f968,
-    type: 2}
+    type: 3}
   bowlVaulterEffect: {fileID: 1587829186220998, guid: 4e8195a9722eda342970efb70e8911dd,
-    type: 2}
+    type: 3}
   playerTrail: {fileID: 1711402184190910, guid: 97f9fd72689e13647a6def2c2f8f5e76,
-    type: 2}
+    type: 3}
   playerTrailGlow: {fileID: 1363215143866102, guid: 56c82c90a6be5644aaee25e5af4ceba2,
-    type: 2}
+    type: 3}
   rampImpactEffect: {fileID: 1885469372294660, guid: a50465c9149199f4f9bb23fd1ca295ce,
-    type: 2}
+    type: 3}
   balldyBuilderEffect: {fileID: 1228904882026248, guid: e6331be39cd4f084cbdbf66ffcdcc34e,
-    type: 2}
+    type: 3}
   intangiballHelper: {fileID: 1146090155951170, guid: 6c927a94ab215c446b0c8cfe02d601b4,
-    type: 2}
+    type: 3}
   intangiballPoof: {fileID: 1833253356188098, guid: d6baf098be9a66d41a5fe6d4076458e8,
-    type: 2}
+    type: 3}
   ballerinaEffect: {fileID: 1799336036625850, guid: 572f6ceb51629944c84ba02d483747e7,
-    type: 2}
+    type: 3}
+  mrMisterEffect: {fileID: 8299649821476078861, guid: 3c1a03737a5406842820089c3670a8dd,
+    type: 3}
   intangiballTransparent: {fileID: 2100000, guid: 4eeb9044fe17113438d809bf51a3605e,
     type: 2}
---- !u!114 &114499877118563594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331483372099504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6180552e0d92ed4b89350dc4665a34f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skyBox0: {fileID: 2100000, guid: 7400269f7d341bc41b1f21adeccb2a5f, type: 2}
-  skyBox1: {fileID: 2100000, guid: e9705e00f62f62849b89fc9fd55aa0e3, type: 2}
-  skyBox2: {fileID: 2100000, guid: 93d43b027dc267444af7412b8e607dbd, type: 2}
-  skyBox3: {fileID: 2100000, guid: 13fde35df00f2384598d84d32a7bacd8, type: 2}
-  skyBox4: {fileID: 2100000, guid: d07d2172e76d3fa429e80a14d2ae3616, type: 2}
-  skyBox5: {fileID: 2100000, guid: 4aa30c3a4a7a34bbd9256623e194cf78, type: 2}
-  skyBox6: {fileID: 2100000, guid: 2eeba5a34e2f1440797d2b0056f3356c, type: 2}
-  skyBox7: {fileID: 2100000, guid: ff330f6226d1d44838ee63a8824f8def, type: 2}
-  flare0: {fileID: 12100000, guid: eb7f2fdf6cf18496a8300de97efb5eac, type: 2}
-  flare1: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
-  flare2: {fileID: 12100000, guid: 8541d94808d5849d8bfa480259334205, type: 2}
-  flare3: {fileID: 12100000, guid: f3cd23d6d3e3d490cb471c69069c97a1, type: 2}
-  flare4: {fileID: 12100000, guid: 3ca3d4e332e9641439d689a9005a1813, type: 2}
-  flare5: {fileID: 12100000, guid: e59f068002a7b47858274b3c71e10ea7, type: 2}
-  flare6: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
-  flare7: {fileID: 12100000, guid: 5b3026c31624045d9abe8cdfdcc20776, type: 2}
---- !u!114 &114736134254049876
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331483372099504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8570f7208c133645bfc3f9a5730c497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rampTextures:
-  - {fileID: 2800000, guid: 0109cfb664501da46874432f4cf5b22a, type: 3}
-  - {fileID: 2800000, guid: 9ae12a29067d3d94da01a595d33c188b, type: 3}
-  - {fileID: 2800000, guid: c6f7e830486bcf3419a4c956d4a1fd5a, type: 3}
-  - {fileID: 2800000, guid: 3360a07f61aad2941bfd66d9e8579b3c, type: 3}
-  - {fileID: 2800000, guid: 613743ff341cef04887f26f0abb93810, type: 3}
-  - {fileID: 2800000, guid: 629bd471f494c1948a22248b30d26f03, type: 3}
-  - {fileID: 2800000, guid: cd4ef666e80696f42ad1220d47af4cae, type: 3}
-  rampNormalMaps:
-  - {fileID: 2800000, guid: 4e61b643066f16c419acfba56fd6c0db, type: 3}
-  - {fileID: 2800000, guid: a0eb73163dffd09409f89e8dabeb133c, type: 3}
-  - {fileID: 2800000, guid: e57a61eea69732c4eb0e30e5884d482f, type: 3}
-  - {fileID: 2800000, guid: e11c7017fab89604ea4c20ce8906613d, type: 3}
-  - {fileID: 2800000, guid: 684d94c4c5c21e444a9847a86fe5f16b, type: 3}
-  - {fileID: 2800000, guid: fbf7efc34cefea349a3a645e3a954c7c, type: 3}
-  - {fileID: 2800000, guid: b0c9031cf9c0a584887c185863e99033, type: 3}
-  pokeBall: {fileID: 2100000, guid: 44f8846d7f8eb774d97ae9c11690c0fa, type: 2}

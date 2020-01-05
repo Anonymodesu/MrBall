@@ -11,16 +11,18 @@ public class HighScore {
     public readonly int deaths;
     public readonly float time;
     public readonly float scoreMultiplier;
+    public readonly int bonusPoints;
     
     public const int deathPoints = -10;
     public const int cubiePoints = 100;
     
-    public HighScore(string name, int cubies, int deaths, float time, float scoreMultiplier) {
+    public HighScore(string name, int cubies, int deaths, float time, float scoreMultiplier, int bonusPoints = 0) {
         this.name = name;
         this.cubies = cubies;
         this.deaths = deaths;
         this.time = time;
         this.scoreMultiplier = scoreMultiplier;
+        this.bonusPoints = bonusPoints;
     }
     
     public string display() {
@@ -32,12 +34,12 @@ public class HighScore {
     public int Deaths() { return deaths; }
     public float Time() { return time; }
 
-    public static int calculateScore(int cubies, int deaths, float time, float scoreMultiplier) {
-        return (int) (scoreMultiplier * (1000 + cubies * cubiePoints + deaths * deathPoints - time));
+    public static int calculateScore(int cubies, int deaths, float time, float scoreMultiplier, int bonusPoints = 0) {
+        return (int) (scoreMultiplier * (1000 + cubies * cubiePoints + deaths * deathPoints - time  + bonusPoints));
     }
     
     public int calculateScore() {
-        return HighScore.calculateScore(this.cubies,this.deaths,this.time,this.scoreMultiplier);
+        return HighScore.calculateScore(this.cubies,this.deaths,this.time,this.scoreMultiplier,this.bonusPoints);
     }
 
 }

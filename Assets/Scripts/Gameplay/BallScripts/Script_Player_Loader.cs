@@ -42,6 +42,9 @@ public class Script_Player_Loader : MonoBehaviour {
 	public float TimePassed {
 		get { return controlScript.TimePassed; }
 	}
+	public int BonusPoints {
+		get { return controlScript.BonusPoints; }
+	}
 
 	private BallType currentBall;
 	public BallType CurrentBall {
@@ -175,6 +178,16 @@ public class Script_Player_Loader : MonoBehaviour {
 
 			case BallType.Ballerina:
 				controlScript = new Ballerina_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.MrMister:
+				controlScript = new MrMister_Controller(this, jumpScript, movementScript, trailsScript,
+										startPos, triggerCollider, animatedRamps);
+				break;
+
+			case BallType.MrsMisses:
+				controlScript = new MrsMisses_Controller(this, jumpScript, movementScript, trailsScript,
 										startPos, triggerCollider, animatedRamps);
 				break;
 

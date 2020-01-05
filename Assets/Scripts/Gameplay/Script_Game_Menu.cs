@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
@@ -12,6 +12,7 @@ public class Script_Game_Menu : MonoBehaviour {
 
 	//stuff are already loaded into these
 	public Image background;
+	public Image newBallNotification;
 	public Text levelText;
 	public Button startButton;
 	public Button endButton;
@@ -114,7 +115,7 @@ public class Script_Game_Menu : MonoBehaviour {
     public void restartGame() {
     	playerScript.resetGravity();
     	SettingsManager.QuickSaveLoaded = false;
-		SceneManager.LoadScene(currentLevel.ToString());
+		currentLevel.Load();
 	}
 	
 	public void nextLevel() {
@@ -129,7 +130,7 @@ public class Script_Game_Menu : MonoBehaviour {
 		}
 			
 		SettingsManager.QuickSaveLoaded = false;
-		SceneManager.LoadSceneAsync(nextLevel.ToString());
+		nextLevel.Load();
 	}
 	
 	private void displayProgress() {
@@ -138,13 +139,15 @@ public class Script_Game_Menu : MonoBehaviour {
     	int cubies = playerScript.Cubies;
     	int deaths = playerScript.Deaths;
     	float time = playerScript.TimePassed;
+    	int bonusPoints = playerScript.BonusPoints;
     	float scoreMultiplier = ballResources.getScoreMultiplier(playerScript.CurrentBall);
 
 		StringBuilder sb = new StringBuilder();
 		sb.Append("Cubies:").Append(cubies).Append('/').Append(requirements.Cubies)
 		  .Append("\nTime:").Append(time.ToString("0.00")).Append('/').Append(requirements.TimeString)
 		  .Append("\nDeaths:").Append(deaths).Append('/').Append(requirements.Deaths)
-		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,time,scoreMultiplier)).Append('/').Append(requirements.Points);
+		  .Append("\nPoints:").Append(HighScore.calculateScore(cubies,deaths,time,scoreMultiplier,bonusPoints))
+		  .Append('/').Append(requirements.Points);
 
 		scoringText.text = sb.ToString();
 	}
@@ -159,21 +162,36 @@ public class Script_Game_Menu : MonoBehaviour {
     	int cubies = playerScript.Cubies;
     	int deaths = playerScript.Deaths;
     	float time = playerScript.TimePassed;
+    	int bonusPoints = playerScript.BonusPoints;
     	float scoreMultiplier = ballResources.getScoreMultiplier(playerScript.CurrentBall);
 	
-		HighScore currentHighScore = new HighScore(player, cubies, deaths, time, scoreMultiplier);
+		HighScore currentHighScore = new HighScore(player, cubies, deaths, time, scoreMultiplier, bonusPoints);
 
 		Achievement oldRecord = PlayerManager.getInstance().getRecord(player, currentLevel);
+		int numOldCubies = PlayerManager.getInstance().getTotalCubies(player);
 
 		//save record to file system
 		Achievement newRecord = new Achievement(cubies,deaths, time, 
-							HighScore.calculateScore(cubies,deaths, time,scoreMultiplier));
+							HighScore.calculateScore(cubies,deaths, time,scoreMultiplier, bonusPoints));
 		Achievement maxRecord = PlayerManager.getInstance().saveRecord(player, newRecord, requirements, currentLevel);
+		int numNewCubies = PlayerManager.getInstance().getTotalCubies(player);
 
-									//setHighScore() returns true if theres a new highscore
+		//setHighScore() returns true if theres a new highscore
 		bool newHighScoreObtained = ScoreManager.getInstance().setHighScore(currentLevel, currentHighScore);
 		HighScore[] highScores = ScoreManager.getInstance().getHighScores(currentLevel);
 		displayScoreAchievements(oldRecord, newRecord, requirements, highScores, newHighScoreObtained);
+
+		//prepare to display newly acquired balls and final results of the game session
+		List<BallType> newBalls = new List<BallType>();
+		foreach(BallType ball in ballResources.newBalls(numOldCubies, numNewCubies)) {
+			newBalls.Add(ball);
+		}
+		NewBallNotification notification = new NewBallNotification(newBalls, newBallNotification, ballResources);
+		notification.initiate(toggleFreezeMenu);
+    }
+
+    public void toggleFreezeMenu(bool freeze) {
+    	background.GetComponent<CanvasGroup>().interactable = freeze;
     }
 
 	private void pause() {

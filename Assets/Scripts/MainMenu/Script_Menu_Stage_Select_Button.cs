@@ -19,7 +19,7 @@ public class Script_Menu_Stage_Select_Button : Button {
 	protected LevelImages levelImages; //a list storing all level images
 
 	// Use this for initialization
-	new protected void Start () {
+	override protected void Start () {
 		base.Start();
 		GetComponent<Button>().onClick.AddListener(delegate {StartLevel(); });
 
@@ -75,6 +75,6 @@ public class Script_Menu_Stage_Select_Button : Button {
 
 	public virtual void StartLevel() { //only for buttons in level select menu
 		SettingsManager.QuickSaveLoaded = false;
-        AsyncOperation loader = SceneManager.LoadSceneAsync(level.ToString());
+        level.Load();
     }
 }

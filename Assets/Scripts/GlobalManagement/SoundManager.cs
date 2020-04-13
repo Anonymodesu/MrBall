@@ -102,6 +102,11 @@ public class SoundManager {
 	}
 
 	public void playSoundFX(SoundFX sound, float volume) {
-		soundFX.PlayOneShot(getSoundFiles().soundFX[(int) sound], volume);
+		getSoundFiles().StartCoroutine(soundFXHelper(sound, volume));
+	}
+
+	private IEnumerator soundFXHelper(SoundFX sound, float volume) {
+		 yield return new WaitForSeconds(0);
+		 soundFX.PlayOneShot(getSoundFiles().soundFX[(int) sound], volume);
 	}
 }

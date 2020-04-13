@@ -15,7 +15,6 @@ public class Unstoppaball_Move : Player_Move {
 		base.processMovement(contacts);
 
 		if(contacts.Count > 0) {
-			Debug.Log(rb.velocity.magnitude);
 			Vector3 lateralVelocity = Vector3.ProjectOnPlane(rb.velocity, Physics.gravity);
 
 			//accelerate ball if its moving too slowly

@@ -201,7 +201,8 @@ public class Balls : MonoBehaviour {
 			}
 		}
 
-		for(int ball = newBall; ballDescriptions[(BallType) ball].cubiesRequired <= newNumCubies; ball++) {
+		
+		for(int ball = newBall; ball < numBalls && ballDescriptions[(BallType) ball].cubiesRequired <= newNumCubies; ball++) {
 			yield return (BallType) ball;
 		}
 	}
